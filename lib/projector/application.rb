@@ -16,6 +16,9 @@ module Projector
       parser.on("-n") { params[:line_numbering_style] ||= :all_lines         }
       parser.on("-b") { params[:line_numbering_style]   = :significant_lines }
       parser.on("-s") { params[:squeeze_extra_newlines] = true               }
+      parser.on("-f", "--full-foo FOO", "Some value of 'foo'") do |foo|
+        params[:foo_param] = foo
+      end
 
       files = parser.parse(argv)
 
