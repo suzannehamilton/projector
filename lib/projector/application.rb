@@ -1,7 +1,9 @@
+require_relative "task_options"
+
 module Projector
   class Application
     def initialize(argv)
-      @params = parse_options(argv)
+      @params = TaskOptions.new(argv)
     end
 
     def run
@@ -34,19 +36,6 @@ module Projector
         db.execute( "select * from tasks" ) do |row|
           p row
         end
-    end
-
-    def parse_options(argv)
-      params = {}
-      parser = OptionParser.new
-
-      parser.on("-a", "--add TASK", "A new task") do |task|
-        params[:task] = task
-      end
-
-      parser.parse(argv)
-
-      params
     end
   end
 end
