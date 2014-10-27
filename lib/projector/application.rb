@@ -12,7 +12,7 @@ module Projector
 
         # Create a database
         rows = db.execute <<-SQL
-          create table tasks (
+          create table if not exists tasks (
             name varchar,
             completion smallint
           );
