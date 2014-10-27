@@ -8,22 +8,22 @@ module Projector
       require "sqlite3"
 
         # Open a database
-        db = SQLite3::Database.new "test.db"
+        db = SQLite3::Database.new "db/tasks.db"
 
         # Create a database
         rows = db.execute <<-SQL
-          create table numbers (
-            name varchar(30),
-            val int
+          create table tasks (
+            name varchar,
+            completion smallint
           );
         SQL
 
         # Execute a few inserts
         {
-          "one" => 1,
-          "two" => 2,
+          "Water the sheep" => 0,
+          "Sheep colletion day" => 10,
         }.each do |pair|
-          db.execute "insert into numbers values ( ?, ? )", pair
+          db.execute "insert into tasks values ( ?, ? )", pair
         end
 
         # Execute inserts with parameter markers
@@ -31,7 +31,7 @@ module Projector
         #             VALUES (?, ?, ?, ?)", [@name, @email, @grade, @blog])
 
         # Find a few rows
-        db.execute( "select * from numbers" ) do |row|
+        db.execute( "select * from tasks" ) do |row|
           p row
         end
     end
