@@ -21,7 +21,7 @@ module Projector
         # Execute a few inserts
         {
           "Water the sheep" => 0,
-          "Sheep colletion day" => 10,
+          "Sheep collection day" => 10,
         }.each do |pair|
           db.execute "insert into tasks values ( ?, ? )", pair
         end
