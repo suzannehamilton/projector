@@ -5,7 +5,7 @@ module Projector
     def initialize(argv)
       parser = OptionParser.new
 
-      parser.on("-a", "--add TASK", "A new task") do |task|
+      parser.on("-aTASK", "--add TASK", "A new task") do |task|
         @task = task
       end
 
