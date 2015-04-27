@@ -1,10 +1,3 @@
-require "thor"
+#!/usr/bin/env ruby
 
-class Projector < Thor
-  desc "hello NAME", "say hello to NAME"
-  def hello(name)
-    puts "Hello #{name}"
-  end
-end
-
-Projector.start(ARGV)
+require_relative "../lib/projector"
