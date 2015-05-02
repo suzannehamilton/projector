@@ -7,8 +7,6 @@ class TestProjector < Minitest::Test
   end
 
   def test_that_basic_test_can_run
-
-    Projector::start(["help", "hello"])
-    assert_equal "Hello kitty", "Hello kitty"
+    assert_output("Hello kitty\n"){Projector::start(["hello", "kitty"])}
   end
 end
