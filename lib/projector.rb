@@ -6,5 +6,3 @@ class Projector < Thor
     puts "Hello #{name}"
   end
 end
-
-Projector.start(ARGV)
