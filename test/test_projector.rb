@@ -14,4 +14,14 @@ class TestProjector < Minitest::Test
       Projector::start(["add", "Shear the sheep"])
     end
   end
+
+  def test_adding_a_task_adds_it_to_list_of_tasks
+    skip("Unskip once unit tests for adding a task")
+    # TODO: Work out how to suppress the output of this in the console
+    Projector::start(["add", "Shear the sheep"])
+
+    assert_output("Shear the sheep\n") do
+      Projector::start(["list"])
+    end
+  end
 end

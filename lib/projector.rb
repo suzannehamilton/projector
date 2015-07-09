@@ -2,7 +2,11 @@ require "thor"
 
 class Projector < Thor
 
-  desc "list", "list unfinihsed tasks"
+  def initialize(args = [], local_options = {}, config = {})
+    super
+  end
+
+  desc "list", "list unfinished tasks"
   def list
     puts "Nothing left to do!"
   end
