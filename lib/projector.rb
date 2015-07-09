@@ -16,6 +16,6 @@ class Projector < Thor
 
   desc "add TASK", "add a new task named TASK"
   def add(name)
-    puts "Added '#{name}'"
+    puts @application.add(name)
   end
 end
