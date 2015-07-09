@@ -1,9 +1,12 @@
 require "thor"
+require "application"
 
 class Projector < Thor
 
   def initialize(args = [], local_options = {}, config = {})
     super
+
+    @application = Application.new
   end
 
   desc "list", "list unfinished tasks"
