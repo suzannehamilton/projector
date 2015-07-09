@@ -11,7 +11,7 @@ class Projector < Thor
 
   desc "list", "list unfinished tasks"
   def list
-    puts "Nothing left to do!"
+    puts @application.list
   end
 
   desc "add TASK", "add a new task named TASK"
