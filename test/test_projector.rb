@@ -10,6 +10,7 @@ class TestProjector < Minitest::Test
 
   def teardown
     # TODO: Find a better way to get hold of this file name
+    # Use a class-level teardown for this, since it's already being deleted at the start of every test
     File::delete("db/tasks.db")
   end
 
@@ -26,8 +27,9 @@ class TestProjector < Minitest::Test
   end
 
   def test_adding_a_task_adds_it_to_list_of_tasks
-    # TODO: Work out how to suppress the output of this in the console
-    Projector::start(["add", "Shear the sheep"])
+    capture_io do
+      Projector::start(["add", "Shear the sheep"])
+    end
 
     assert_output("Shear the sheep\n") do
       Projector::start(["list"])
