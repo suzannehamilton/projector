@@ -1,12 +1,14 @@
 require "thor"
 require "application"
+require "database"
 
 class Projector < Thor
 
   def initialize(args = [], local_options = {}, config = {})
     super
 
-    @application = Application.new
+    database = Database.new
+    @application = Application.new(database)
   end
 
   desc "list", "list unfinished tasks"

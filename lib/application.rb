@@ -1,7 +1,13 @@
 class Application
 
+  def initialize(database)
+    @database = database
+  end
+
   def list
-    "Nothing left to do!"
+    if @database.list.empty?
+      "Nothing left to do!"
+    end
   end
 
   def add(task)

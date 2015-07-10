@@ -4,7 +4,9 @@ require "application"
 class TestApplication < Minitest::Test
 
   def setup
-    @application = Application.new
+    # TODO: Replace with mock
+    database = Database.new
+    @application = Application.new(database)
   end
 
   def test_listing_empty_task_list_identifies_that_no_tasks_are_available
