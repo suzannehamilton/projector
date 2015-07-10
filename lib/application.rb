@@ -11,6 +11,7 @@ class Application
   end
 
   def add(task)
+    @database.add(task)
     "Added '#{task}'"
   end
 end

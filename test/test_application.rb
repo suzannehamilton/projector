@@ -13,8 +13,9 @@ class TestApplication < Minitest::Test
     assert_equal("Nothing left to do!", @application.list)
   end
 
-  def test_adding_a_task_to_list_returns_task_name
-    # TODO: Verify that mock is called
+  def test_adding_a_task_to_list_adds_task_and_returns_task_name
+    @database.expect(:add, false, ["Some task"])
     assert_equal("Added 'Some task'", @application.add("Some task"))
+    @database.verify
   end
 end
