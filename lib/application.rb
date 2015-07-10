@@ -5,8 +5,11 @@ class Application
   end
 
   def list
-    if @database.list.empty?
+    tasks = @database.list
+    if tasks.empty?
       "Nothing left to do!"
+    else
+      tasks[0]
     end
   end
 
