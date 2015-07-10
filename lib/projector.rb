@@ -1,6 +1,6 @@
 require "thor"
-require "application"
-require "database"
+require_relative "application"
+require_relative "database"
 
 class Projector < Thor
 
