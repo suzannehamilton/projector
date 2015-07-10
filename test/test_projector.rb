@@ -3,6 +3,11 @@ require "projector"
 
 class TestProjector < Minitest::Test
 
+  def setup
+    # TODO: Find a better way to get hold of this file name
+    File::delete("db/tasks.db") if File::exist?("db/tasks.db")
+  end
+
   def teardown
     # TODO: Find a better way to get hold of this file name
     File::delete("db/tasks.db")
