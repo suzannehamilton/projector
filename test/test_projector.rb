@@ -6,13 +6,10 @@ class TestProjector < Minitest::Test
   TEST_DB_FILE = "db/tasks.db"
 
   def setup
-    # TODO: Find a better way to get hold of this file name
     File::delete(TEST_DB_FILE) if File::exist?(TEST_DB_FILE)
   end
 
-  def teardown
-    # TODO: Find a better way to get hold of this file name
-    # Use a class-level teardown for this, since it's already being deleted at the start of every test
+  def after_tests
     File::delete(TEST_DB_FILE)
   end
 

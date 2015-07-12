@@ -6,10 +6,11 @@ class TestDatabase < Minitest::Test
   TEST_DB_FILE = "db/tasks.db"
 
   def setup
+    File::delete(TEST_DB_FILE) if File::exist?(TEST_DB_FILE)
     @database = Database.new(TEST_DB_FILE)
   end
 
-  def teardown
+  def after_tests
     File::delete(TEST_DB_FILE)
   end
 
