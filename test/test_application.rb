@@ -21,8 +21,7 @@ class TestApplication < Minitest::Test
   # TODO: Test multiple tasks
 
   def test_adding_a_task_to_list_adds_task_and_returns_task_name
-    # TODO: Can we skip the unnecessary return value?
-    @database.expect(:add, false, ["Some task"])
+    @database.expect(:add, nil, ["Some task"])
     assert_equal("Added 'Some task'", @application.add("Some task"))
     @database.verify
   end
