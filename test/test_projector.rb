@@ -34,4 +34,15 @@ class TestProjector < Minitest::Test
       Projector::start(["list"])
     end
   end
+
+  def test_list_lists_multiple_added_tasks
+    capture_io do
+      Projector::start(["add", "Shear the sheep"])
+      Projector::start(["add", "Feed the capybara"])
+    end
+
+    assert_output("Shear the sheep\nFeed the capybara\n") do
+      Projector::start(["list"])
+    end
+  end
 end

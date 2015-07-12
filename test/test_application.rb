@@ -18,7 +18,10 @@ class TestApplication < Minitest::Test
     assert_equal("Some task", @application.list)
   end
 
-  # TODO: Test multiple tasks
+  def test_lists_single_task
+    @database.expect(:list, ["some task", "another task", "some other task"])
+    assert_equal("some task\nanother task\nsome other task", @application.list)
+  end
 
   def test_adding_a_task_to_list_adds_task_and_returns_task_name
     @database.expect(:add, nil, ["Some task"])

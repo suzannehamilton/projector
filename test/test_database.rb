@@ -23,5 +23,10 @@ class TestDatabase < Minitest::Test
     assert_equal(["Some task"], @database.list)
   end
 
-  # TODO: Test adding multiple tasks
+  def test_can_add_a_multiple_tasks
+    @database.add("some task")
+    @database.add("other task")
+    @database.add("yet another task")
+    assert_equal(["some task", "other task", "yet another task"], @database.list)
+  end
 end

@@ -6,10 +6,11 @@ class Application
 
   def list
     tasks = @database.list
+    # TODO: Extract to renderer class
     if tasks.empty?
       "Nothing left to do!"
     else
-      tasks[0]
+      tasks.join("\n")
     end
   end
 
