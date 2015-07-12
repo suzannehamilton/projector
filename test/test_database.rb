@@ -3,13 +3,14 @@ require "minitest/autorun"
 
 class TestDatabase < Minitest::Test
 
+  TEST_DB_FILE = "db/tasks.db"
+
   def setup
-    @database = Database.new
+    @database = Database.new(TEST_DB_FILE)
   end
 
   def teardown
-    # Pass DB location into constructor
-    File::delete("db/tasks.db")
+    File::delete(TEST_DB_FILE)
   end
 
   def test_task_list_is_empty_by_default

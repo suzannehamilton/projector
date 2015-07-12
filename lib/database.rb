@@ -2,9 +2,9 @@ require "sqlite3"
 
 class Database
 
-  def initialize
+  def initialize(db_file)
     # Open the database
-    @db = SQLite3::Database.new "db/tasks.db"
+    @db = SQLite3::Database.new db_file
 
     # Create the tasks table if it doesn't already exist
     rows = @db.execute <<-SQL

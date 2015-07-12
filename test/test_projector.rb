@@ -3,15 +3,17 @@ require "projector"
 
 class TestProjector < Minitest::Test
 
+  TEST_DB_FILE = "db/tasks.db"
+
   def setup
     # TODO: Find a better way to get hold of this file name
-    File::delete("db/tasks.db") if File::exist?("db/tasks.db")
+    File::delete(TEST_DB_FILE) if File::exist?(TEST_DB_FILE)
   end
 
   def teardown
     # TODO: Find a better way to get hold of this file name
     # Use a class-level teardown for this, since it's already being deleted at the start of every test
-    File::delete("db/tasks.db")
+    File::delete(TEST_DB_FILE)
   end
 
   def test_listing_empty_task_list_identifies_that_no_tasks_are_available

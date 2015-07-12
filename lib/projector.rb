@@ -7,7 +7,7 @@ class Projector < Thor
   def initialize(args = [], local_options = {}, config = {})
     super
 
-    database = Database.new
+    database = Database.new("db/tasks.db")
     @application = Application.new(database)
   end
 
