@@ -1,6 +1,7 @@
 require "thor"
 require_relative "application"
 require_relative "database"
+require_relative "database_resolver"
 
 class Projector < Thor
 
@@ -8,7 +9,7 @@ class Projector < Thor
     super
 
     # TODO: Use a different DB in production and in tests
-    database = Database.new("db/tasks.db")
+    database = DatabaseResolver.new.get_database
     @application = Application.new(database)
   end
 
