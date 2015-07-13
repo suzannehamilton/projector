@@ -3,7 +3,7 @@ require "projector"
 
 class TestProjector < Minitest::Test
 
-  TEST_DB_FILE = "db/tasks.db"
+  TEST_DB_FILE = "db/tasks_test.db"
 
   def setup
     File::delete(TEST_DB_FILE) if File::exist?(TEST_DB_FILE)

@@ -8,7 +8,6 @@ class Projector < Thor
   def initialize(args = [], local_options = {}, config = {})
     super
 
-    # TODO: Use a different DB in production and in tests
     database = DatabaseResolver.new.get_database
     @application = Application.new(database)
   end

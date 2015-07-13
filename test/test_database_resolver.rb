@@ -3,7 +3,7 @@ require "minitest/autorun"
 
 class TestDatabaseResolver < Minitest::Test
 
-  TEST_DB_FILE = "db/tasks.db"
+  TEST_DB_FILE = "db/tasks_test.db"
 
   def setup
     File::delete(TEST_DB_FILE) if File::exist?(TEST_DB_FILE)
@@ -24,6 +24,4 @@ class TestDatabaseResolver < Minitest::Test
     DatabaseResolver.new.get_database.list
     assert(File::file?(TEST_DB_FILE))
   end
-
-  # TODO: Test that running 'list' without the test env variable does not fail
 end
