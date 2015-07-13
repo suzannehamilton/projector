@@ -9,7 +9,7 @@ class TestProjector < Minitest::Test
     File::delete(TEST_DB_FILE) if File::exist?(TEST_DB_FILE)
   end
 
-  def after_tests
+  Minitest::after_run do
     File::delete(TEST_DB_FILE)
   end
 

@@ -9,11 +9,6 @@ class TestDatabaseResolver < Minitest::Test
     File::delete(TEST_DB_FILE) if File::exist?(TEST_DB_FILE)
   end
 
-  # TODO: Determine how to get after_tests to run, since it looks like they aren't being hit
-  def after_tests
-    File::delete(TEST_DB_FILE)
-  end
-
   def test_returns_empty_database
     assert_empty(DatabaseResolver.new.get_database.list)
   end
