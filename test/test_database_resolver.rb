@@ -19,6 +19,11 @@ class TestDatabaseResolver < Minitest::Test
     assert(File::file?(TEST_DB_FILE))
   end
 
-  # TODO: Test that an existing DB file is picked up correctly
+  def uses_existing_database_file_without_error
+    DatabaseResolver.new.get_database.list
+    DatabaseResolver.new.get_database.list
+    assert(File::file?(TEST_DB_FILE))
+  end
+
   # TODO: Test that running 'list' without the test env variable does not fail
 end
