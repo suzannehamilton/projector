@@ -30,7 +30,7 @@ class TestProjector < Minitest::Test
       Projector::start(["add", "Shear the sheep"])
     end
 
-    assert_output("Shear the sheep\n") do
+    assert_output("1 Shear the sheep\n") do
       Projector::start(["list"])
     end
   end
@@ -41,8 +41,12 @@ class TestProjector < Minitest::Test
       Projector::start(["add", "Feed the capybara"])
     end
 
-    assert_output("Shear the sheep\nFeed the capybara\n") do
+    assert_output("1 Shear the sheep\n2 Feed the capybara\n") do
       Projector::start(["list"])
     end
   end
+
+  # TODO: Test that an appropriate message is shown when deleting a non-existent task
+  # TODO: Test that an existing task can be removed
+  # TODO: Test that removing a task does not affect other tasks
 end

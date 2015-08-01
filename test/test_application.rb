@@ -15,13 +15,15 @@ class TestApplication < Minitest::Test
 
   def test_lists_single_task
     @database.expect(:list, ["Some task"])
-    assert_equal("Some task", @application.list)
+    assert_equal("1 Some task", @application.list)
   end
 
   def test_lists_single_task
     @database.expect(:list, ["some task", "another task", "some other task"])
-    assert_equal("some task\nanother task\nsome other task", @application.list)
+    assert_equal("1 some task\n2 another task\n3 some other task", @application.list)
   end
+
+  # TODO: Format task numbers and names nicely, so that starts of tasks always line up
 
   def test_adding_a_task_to_list_adds_task_and_returns_task_name
     @database.expect(:add, nil, ["Some task"])

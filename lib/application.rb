@@ -10,7 +10,8 @@ class Application
     if tasks.empty?
       "Nothing left to do!"
     else
-      tasks.join("\n")
+      numbered_tasks = tasks.map.with_index { |t, i| "#{i + 1} #{t}" }
+      numbered_tasks.join("\n")
     end
   end
 
