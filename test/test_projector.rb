@@ -46,7 +46,25 @@ class TestProjector < Minitest::Test
     end
   end
 
-  # TODO: Test that an appropriate message is shown when deleting a non-existent task
+  def test_cannot_remove_task_from_empty_list
+    assert_output("No task with number 1\n") do
+      Projector::start(["complete", "1"])
+    end
+  end
+
+  def test_cannot_remove_non_existent_task
+    capture_io do
+      Projector::start(["add", "Shear the sheep"])
+    end
+
+    assert_output("No task with number 5\n") do
+      Projector::start(["complete", "5"])
+    end
+  end
+
   # TODO: Test that an existing task can be removed
   # TODO: Test that removing a task does not affect other tasks
+  # TODO: Test non-natural number args for "complete" action - probably in unit tests rather than int. tests
+  # TODO: Extract private method for "Projector::start to clean up tests"
+  # TODO: Split integration test into separate test classes for each command
 end

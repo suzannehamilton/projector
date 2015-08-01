@@ -19,4 +19,8 @@ class Application
     @database.add(task)
     "Added '#{task}'"
   end
+
+  def complete(task_number)
+    "No task with number #{task_number}"
+  end
 end

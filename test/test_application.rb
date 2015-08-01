@@ -30,4 +30,8 @@ class TestApplication < Minitest::Test
     assert_equal("Added 'Some task'", @application.add("Some task"))
     @database.verify
   end
+
+  def test_cannot_remove_non_existent_task
+    assert_equal("No task with number 4", @application.complete("4"))
+  end
 end
