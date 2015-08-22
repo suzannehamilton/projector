@@ -28,4 +28,8 @@ class Database
     # TODO: Validate that only one task is returned
     tasks.empty? ? nil : tasks[0][0]
   end
+
+  def delete(task_id)
+    @db.execute("delete from task where rowid = ( ? )", task_id)
+  end
 end

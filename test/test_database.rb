@@ -44,4 +44,11 @@ class TestDatabase < Minitest::Test
     @database.add("some task")
     assert_equal("some task", @database.get(1))
   end
+
+  def test_deleting_a_task_removes_it_from_the_db
+    @database.add("some task")
+    @database.delete(1)
+  end
+
+  # TODO: Handle deleting non-existent tasks
 end
