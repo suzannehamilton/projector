@@ -39,4 +39,9 @@ class TestDatabase < Minitest::Test
     @database.add("other task")
     assert_nil(@database.get(3))
   end
+
+  def test_getting_a_task_returns_task_name
+    @database.add("some task")
+    assert_equal("some task", @database.get(1))
+  end
 end
