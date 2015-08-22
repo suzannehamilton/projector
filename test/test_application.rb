@@ -32,6 +32,19 @@ class TestApplication < Minitest::Test
   end
 
   def test_cannot_remove_non_existent_task
+    @database.expect(:get, nil, [4])
     assert_equal("No task with number 4", @application.complete("4"))
+    @database.verify
   end
+
+  def test_can_remove_a_task
+    @database.expect(:get, "Shear the sheep", [6])
+    @database.expect(:delete, nil, [6])
+
+    assert_equal("Task 6 completed: \"Shear the sheep\"", @application.complete("6"))
+
+    @database.verify
+  end
+
+  # TODO: Return the DB ID of the task, not just an in-memory index
 end

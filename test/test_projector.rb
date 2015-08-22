@@ -62,9 +62,33 @@ class TestProjector < Minitest::Test
     end
   end
 
-  # TODO: Test that an existing task can be removed
-  # TODO: Test that removing a task does not affect other tasks
+  def test_can_remove_single_task
+    capture_io do
+      Projector::start(["add", "Shear the sheep"])
+    end
+
+    assert_output("Task 1 completed: \"Shear the sheep\"\n") do
+      Projector::start(["complete", "1"])
+    end
+
+    # TODO: Test that "list" behaves as an empty list
+  end
+
+  def test_can_remove_any_task
+    capture_io do
+      Projector::start(["add", "Shear the sheep"])
+      Projector::start(["add", "Feed the capybara"])
+      Projector::start(["add", "Shave the yak"])
+    end
+
+    assert_output("Task 2 completed: \"Feed the capybara\"\n") do
+      Projector::start(["complete", "2"])
+    end
+
+    # TODO: Test that "list" returns just tasks 1 and 3
+  end
+
   # TODO: Test non-natural number args for "complete" action - probably in unit tests rather than int. tests
-  # TODO: Extract private method for "Projector::start to clean up tests"
+  # TODO: Extract private method for "Projector::start to clean up tests"?
   # TODO: Split integration test into separate test classes for each command
 end

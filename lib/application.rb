@@ -20,7 +20,17 @@ class Application
     "Added '#{task}'"
   end
 
-  def complete(task_number)
-    "No task with number #{task_number}"
+  # TODO: Validate task number as integer
+  def complete(task_number_input)
+    task_number = task_number_input.to_i
+
+    task = @database.get(task_number)
+
+    if task.nil?
+      "No task with number #{task_number}"
+    else
+      @database.delete(task_number)
+      "Task #{task_number} completed: \"#{task}\""
+    end
   end
 end
