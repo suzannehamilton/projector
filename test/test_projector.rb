@@ -71,7 +71,9 @@ class TestProjector < Minitest::Test
       Projector::start(["complete", "1"])
     end
 
-    # TODO: Test that "list" behaves as an empty list
+    assert_output("Nothing left to do!\n") do
+      Projector::start(["list"])
+    end
   end
 
   def test_can_remove_any_task
