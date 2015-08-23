@@ -20,14 +20,14 @@ class TestDatabase < Minitest::Test
 
   def test_can_add_a_single_task
     @database.add("Some task")
-    assert_equal(["Some task"], @database.list)
+    assert_equal([Task.new("Some task")], @database.list)
   end
 
   def test_can_add_multiple_tasks
     @database.add("some task")
     @database.add("other task")
     @database.add("yet another task")
-    assert_equal(["some task", "other task", "yet another task"], @database.list)
+    assert_equal([Task.new("some task"), Task.new("other task"), Task.new("yet another task")], @database.list)
   end
 
   def test_getting_a_task_from_empty_db_returns_nil
