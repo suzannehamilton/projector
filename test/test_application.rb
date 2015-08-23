@@ -5,7 +5,8 @@ class TestApplication < Minitest::Test
 
   def setup
     @database = MiniTest::Mock.new
-    @application = Application.new(@database)
+    @renderer = MiniTest::Mock.new
+    @application = Application.new(@database, @renderer)
   end
 
   def test_listing_empty_task_list_identifies_that_no_tasks_are_available
@@ -14,13 +15,26 @@ class TestApplication < Minitest::Test
   end
 
   def test_lists_single_task
-    @database.expect(:list, [Task.new(5, "Some task")])
-    assert_equal([["5", "Some task", "0%"]], @application.list)
+    task = Task.new(5, "Some task")
+
+    @database.expect(:list, [task])
+    @renderer.expect(:render, "Rendered task", [task])
+
+    assert_equal(["Rendered task"], @application.list)
   end
 
   def test_lists_multiple_tasks
-    @database.expect(:list, [Task.new(3, "some task"), Task.new(7, "another task"), Task.new(8, "some other task")])
-    assert_equal([["3", "some task", "0%"],["7", "another task", "0%"],["8", "some other task", "0%"]], @application.list)
+    task1 = Task.new(3, "some task")
+    task2 = Task.new(7, "another task")
+    task3 = Task.new(8, "some other task")
+
+    @database.expect(:list, [task1, task2, task3])
+
+    @renderer.expect(:render, "Rendered task 1", [task1])
+    @renderer.expect(:render, "Rendered task 2", [task2])
+    @renderer.expect(:render, "Rendered task 3", [task3])
+
+    assert_equal(["Rendered task 1", "Rendered task 2", "Rendered task 3"], @application.list)
   end
 
   def test_adding_a_task_to_list_adds_task_and_returns_task_name

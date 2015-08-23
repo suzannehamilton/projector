@@ -2,6 +2,7 @@ require "thor"
 require_relative "application"
 require_relative "database"
 require_relative "database_resolver"
+require_relative "view/renderer"
 
 class Projector < Thor
 
@@ -9,7 +10,9 @@ class Projector < Thor
     super
 
     database = DatabaseResolver.new.get_database
-    @application = Application.new(database)
+    renderer = Renderer.new
+
+    @application = Application.new(database, renderer)
   end
 
   desc "list", "list unfinished tasks"

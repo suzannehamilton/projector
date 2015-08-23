@@ -1,10 +1,8 @@
-require_relative "view/renderer"
-
 class Application
 
-  def initialize(database)
+  def initialize(database, renderer)
     @database = database
-    @renderer = Renderer.new
+    @renderer = renderer
   end
 
   def list
