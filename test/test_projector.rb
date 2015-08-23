@@ -92,7 +92,6 @@ class TestProjector < Minitest::Test
     end
   end
 
-  # TODO: Test non-natural number args for "complete" action - probably in unit tests rather than int. tests
   # TODO: Extract private method for "Projector::start to clean up tests"?
   # TODO: Split integration test into separate test classes for each command
 end

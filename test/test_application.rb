@@ -45,4 +45,8 @@ class TestApplication < Minitest::Test
 
     @database.verify
   end
+
+  def test_completion_rejects_invalid_task_id
+    assert_equal("Invalid task ID 'not_an_integer'", @application.complete("not_an_integer"))
+  end
 end

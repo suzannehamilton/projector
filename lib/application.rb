@@ -6,7 +6,6 @@ class Application
 
   def list
     tasks = @database.list
-    # TODO: Extract to renderer class
     if tasks.empty?
       "Nothing left to do!"
     else
@@ -20,17 +19,21 @@ class Application
     "Added '#{task}'"
   end
 
-  # TODO: Validate task number as integer
   def complete(task_number_input)
-    task_number = task_number_input.to_i
+    task_number = Integer(task_number_input) rescue nil
 
-    task = @database.get(task_number)
+    if task_number
 
-    if task.nil?
-      "No task with number #{task_number}"
+      task = @database.get(task_number)
+
+      if task.nil?
+        "No task with number #{task_number}"
+      else
+        @database.delete(task_number)
+        "Task #{task_number} completed: \"#{task}\""
+      end
     else
-      @database.delete(task_number)
-      "Task #{task_number} completed: \"#{task}\""
+      "Invalid task ID 'not_an_integer'"
     end
   end
 end
