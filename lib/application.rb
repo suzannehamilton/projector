@@ -6,12 +6,7 @@ class Application
 
   def list
     tasks = @database.list
-    if tasks.empty?
-      "Nothing left to do!"
-    else
-      numbered_tasks = tasks.map { |t| "#{t.id} #{t.name}" }
-      numbered_tasks.join("\n")
-    end
+    tasks.map { |t| [t.id.to_s, t.name] }
   end
 
   def add(task)

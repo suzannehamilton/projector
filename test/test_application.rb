@@ -10,20 +10,18 @@ class TestApplication < Minitest::Test
 
   def test_listing_empty_task_list_identifies_that_no_tasks_are_available
     @database.expect(:list, [])
-    assert_equal("Nothing left to do!", @application.list)
+    assert_equal([], @application.list)
   end
 
   def test_lists_single_task
     @database.expect(:list, [Task.new(5, "Some task")])
-    assert_equal("5 Some task", @application.list)
+    assert_equal([["5", "Some task"]], @application.list)
   end
 
   def test_lists_multiple_tasks
     @database.expect(:list, [Task.new(3, "some task"), Task.new(7, "another task"), Task.new(8, "some other task")])
-    assert_equal("3 some task\n7 another task\n8 some other task", @application.list)
+    assert_equal([["3", "some task"],["7", "another task"],["8", "some other task"]], @application.list)
   end
-
-  # TODO: Format task numbers and names nicely, so that starts of tasks always line up
 
   def test_adding_a_task_to_list_adds_task_and_returns_task_name
     @database.expect(:add, nil, ["Some task"])

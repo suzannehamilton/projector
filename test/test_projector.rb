@@ -30,7 +30,7 @@ class TestProjector < Minitest::Test
       Projector::start(["add", "Shear the sheep"])
     end
 
-    assert_output("1 Shear the sheep\n") do
+    assert_output("1  Shear the sheep\n") do
       Projector::start(["list"])
     end
   end
@@ -41,7 +41,7 @@ class TestProjector < Minitest::Test
       Projector::start(["add", "Feed the capybara"])
     end
 
-    assert_output("1 Shear the sheep\n2 Feed the capybara\n") do
+    assert_output("1  Shear the sheep\n2  Feed the capybara\n") do
       Projector::start(["list"])
     end
   end
@@ -87,7 +87,7 @@ class TestProjector < Minitest::Test
       Projector::start(["complete", "2"])
     end
 
-    assert_output("1 Shear the sheep\n3 Shave the yak\n") do
+    assert_output("1  Shear the sheep\n3  Shave the yak\n") do
       Projector::start(["list"])
     end
   end
