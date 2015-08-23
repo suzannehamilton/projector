@@ -87,7 +87,9 @@ class TestProjector < Minitest::Test
       Projector::start(["complete", "2"])
     end
 
-    # TODO: Test that "list" returns just tasks 1 and 3
+    assert_output("1 Shear the sheep\n3 Shave the yak\n") do
+      Projector::start(["list"])
+    end
   end
 
   # TODO: Test non-natural number args for "complete" action - probably in unit tests rather than int. tests
