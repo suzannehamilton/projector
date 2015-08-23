@@ -15,12 +15,12 @@ class TestApplication < Minitest::Test
 
   def test_lists_single_task
     @database.expect(:list, [Task.new(5, "Some task")])
-    assert_equal([["5", "Some task"]], @application.list)
+    assert_equal([["5", "Some task", "0%"]], @application.list)
   end
 
   def test_lists_multiple_tasks
     @database.expect(:list, [Task.new(3, "some task"), Task.new(7, "another task"), Task.new(8, "some other task")])
-    assert_equal([["3", "some task"],["7", "another task"],["8", "some other task"]], @application.list)
+    assert_equal([["3", "some task", "0%"],["7", "another task", "0%"],["8", "some other task", "0%"]], @application.list)
   end
 
   def test_adding_a_task_to_list_adds_task_and_returns_task_name

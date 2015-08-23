@@ -6,7 +6,7 @@ class Application
 
   def list
     tasks = @database.list
-    tasks.map { |t| [t.id.to_s, t.name] }
+    tasks.map { |t| [t.id.to_s, t.name, "0%"] }
   end
 
   def add(task)
