@@ -25,7 +25,6 @@ class Database
 
   def get(task_id)
     tasks = @db.execute("select name from task where rowid = ( ? )", task_id)
-    # TODO: Validate that only one task is returned
     tasks.empty? ? nil : tasks[0][0]
   end
 
