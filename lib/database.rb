@@ -1,4 +1,5 @@
 require "sqlite3"
+require_relative "model/task"
 
 class Database
 
