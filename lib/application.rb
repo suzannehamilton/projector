@@ -1,12 +1,15 @@
+require_relative "view/renderer"
+
 class Application
 
   def initialize(database)
     @database = database
+    @renderer = Renderer.new
   end
 
   def list
     tasks = @database.list
-    tasks.map { |t| [t.id.to_s, t.name, "0%"] }
+    tasks.map { |t| @renderer.render(t) }
   end
 
   def add(task)
