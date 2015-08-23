@@ -15,12 +15,12 @@ class TestApplication < Minitest::Test
 
   def test_lists_single_task
     @database.expect(:list, [Task.new(5, "Some task")])
-    assert_equal("1 Some task", @application.list)
+    assert_equal("5 Some task", @application.list)
   end
 
   def test_lists_multiple_tasks
     @database.expect(:list, [Task.new(3, "some task"), Task.new(7, "another task"), Task.new(8, "some other task")])
-    assert_equal("1 some task\n2 another task\n3 some other task", @application.list)
+    assert_equal("3 some task\n7 another task\n8 some other task", @application.list)
   end
 
   # TODO: Format task numbers and names nicely, so that starts of tasks always line up
@@ -45,6 +45,4 @@ class TestApplication < Minitest::Test
 
     @database.verify
   end
-
-  # TODO: Return the DB ID of the task, not just an in-memory index
 end
