@@ -21,7 +21,6 @@ class Database
 
   def add(task)
     @db.execute("insert into task values ( ? )", task)
-    # TODO: Handle tasks with the same name
   end
 
   def get(task_id)
