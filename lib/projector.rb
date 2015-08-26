@@ -18,10 +18,11 @@ class Projector < Thor
   desc "list", "list unfinished tasks"
   def list
     # TODO: Add columns headers
-    if @application.list.empty?
+    tasks = @application.list
+    if tasks.empty?
       say "Nothing left to do!"
     else
-      print_table @application.list
+      print_table tasks
     end
   end
 
