@@ -26,7 +26,7 @@ class Application
         "No task with number #{task_number}"
       else
         @database.delete(task_number)
-        "Task #{task_number} completed: \"#{task}\""
+        "Task #{task_number} completed: \"#{task.name}\""
       end
     else
       "Invalid task ID 'not_an_integer'"
@@ -37,6 +37,10 @@ class Application
   def update(task_number_input, percent_complete_input)
     task_id = task_number_input.to_i
     task = @database.get(task_id)
-    "#{task_id} #{task} #{percent_complete_input}%"
+
+    percent_done = percent_complete_input.to_i
+    @database.update(task_id, percent_done)
+
+    "#{task_id} #{task.name} #{percent_complete_input}%"
   end
 end

@@ -101,7 +101,9 @@ class TestProjector < Minitest::Test
       Projector::start(["update", "1", "60"])
     end
 
-    # TODO: Display updated percentage when listing tests
+    assert_output("1  Comb the rabbit  60%\n") do
+      Projector::start(["list"])
+    end
   end
 
   # TODO: Extract private method for "Projector::start to clean up tests"?

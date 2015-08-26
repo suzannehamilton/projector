@@ -42,14 +42,26 @@ class TestDatabase < Minitest::Test
     assert_nil(@database.get(3))
   end
 
-  def test_getting_a_task_returns_task_name
+  def test_getting_a_task_by_id_returns_task
     @database.add("some task")
-    assert_equal("some task", @database.get(1))
+    assert_equal(Task.new(1, "some task", 0), @database.get(1))
   end
 
   def test_deleting_a_task_removes_it_from_the_db
     @database.add("some task")
     @database.delete(1)
+  end
+
+  def test_update_task_done_percentage
+    @database.add("some task")
+    @database.update(1, 46)
+    assert_equal(46, @database.get(1).percent_done)
+  end
+
+  def test_update_task_done_percentage_updates_value_in_list
+    @database.add("some task")
+    @database.update(1, 75)
+    assert_equal([Task.new(1, "some task", 75)], @database.list)
   end
 
   # TODO: Handle deleting non-existent tasks

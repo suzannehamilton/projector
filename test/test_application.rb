@@ -50,7 +50,7 @@ class TestApplication < Minitest::Test
   end
 
   def test_can_remove_a_task
-    @database.expect(:get, "Shear the sheep", [6])
+    @database.expect(:get, Task.new(6, "Shear the sheep", 55), [6])
     @database.expect(:delete, nil, [6])
 
     assert_equal("Task 6 completed: \"Shear the sheep\"", @application.complete("6"))
@@ -63,11 +63,13 @@ class TestApplication < Minitest::Test
   end
 
   def test_update_percentage
-    @database.expect(:get, "Some task name", [4])
+    @database.expect(:get, Task.new(4, "Some task name", 20), [4])
+    @database.expect(:update, nil, [4, 33])
     # TODO: Use renderer?
-    # TODO: Verify that update is called on DB
     assert_equal("4 Some task name 33%", @application.update("4", "33"))
 
     @database.verify
   end
+
+  # TODO: Test validation of task ID and percentage in update
 end
