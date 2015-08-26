@@ -15,7 +15,7 @@ class TestApplication < Minitest::Test
   end
 
   def test_lists_single_task
-    task = Task.new(5, "Some task")
+    task = Task.new(5, "Some task", 12)
 
     @database.expect(:list, [task])
     @renderer.expect(:render, "Rendered task", [task])
@@ -24,9 +24,9 @@ class TestApplication < Minitest::Test
   end
 
   def test_lists_multiple_tasks
-    task1 = Task.new(3, "some task")
-    task2 = Task.new(7, "another task")
-    task3 = Task.new(8, "some other task")
+    task1 = Task.new(3, "some task", 0)
+    task2 = Task.new(7, "another task", 98)
+    task3 = Task.new(8, "some other task", 34)
 
     @database.expect(:list, [task1, task2, task3])
 
@@ -60,5 +60,14 @@ class TestApplication < Minitest::Test
 
   def test_completion_rejects_invalid_task_id
     assert_equal("Invalid task ID 'not_an_integer'", @application.complete("not_an_integer"))
+  end
+
+  def test_update_percentage
+    @database.expect(:get, "Some task name", [4])
+    # TODO: Use renderer?
+    # TODO: Verify that update is called on DB
+    assert_equal("4 Some task name 33%", @application.update("4", "33"))
+
+    @database.verify
   end
 end

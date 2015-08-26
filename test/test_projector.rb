@@ -92,6 +92,18 @@ class TestProjector < Minitest::Test
     end
   end
 
+  def test_can_update_done_percentage
+    capture_io do
+      Projector::start(["add", "Comb the rabbit"])
+    end
+
+    assert_output("1 Comb the rabbit 60%\n") do
+      Projector::start(["update", "1", "60"])
+    end
+
+    # TODO: Display updated percentage when listing tests
+  end
+
   # TODO: Extract private method for "Projector::start to clean up tests"?
   # TODO: Split integration test into separate test classes for each command
 end

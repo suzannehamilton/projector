@@ -16,7 +16,7 @@ class Database
   end
 
   def list
-    return @db.execute("select rowid, name from task").map { |r| Task.new(r[0], r[1]) }
+    return @db.execute("select rowid, name from task").map { |r| Task.new(r[0], r[1], 0) }
   end
 
   def add(task)

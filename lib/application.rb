@@ -32,4 +32,11 @@ class Application
       "Invalid task ID 'not_an_integer'"
     end
   end
+
+  # TODO: Commonise input validation. Can this be done by Thor itself?
+  def update(task_number_input, percent_complete_input)
+    task_id = task_number_input.to_i
+    task = @database.get(task_id)
+    "#{task_id} #{task} #{percent_complete_input}%"
+  end
 end

@@ -8,6 +8,7 @@ class TestRenderer < Minitest::Test
   end
 
   def test_renders_task
-    assert_equal(["5", "Some task", "0%"], @renderer.render(Task.new(5, "Some task")))
+    # TODO: Render percentage correctly
+    assert_equal(["5", "Some task", "0%"], @renderer.render(Task.new(5, "Some task", 12)))
   end
 end

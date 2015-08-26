@@ -34,4 +34,9 @@ class Projector < Thor
   def complete(task_number)
     say @application.complete(task_number)
   end
+
+  desc "update TASK_NUMBER", "set task labelled TASK_NUMBER as PERCENTAGE complete"
+  def update(task_number, percentage)
+    say @application.update(task_number, percentage)
+  end
 end

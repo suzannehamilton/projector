@@ -1,11 +1,13 @@
 class Task
 
-  attr_reader :name
   attr_reader :id
+  attr_reader :name
+  attr_reader :percent_done
 
-  def initialize(id, name)
+  def initialize(id, name, percent_done)
     @id =  id
     @name = name
+    @percent_done = percent_done
   end
 
   def ==(o)
