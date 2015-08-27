@@ -29,7 +29,7 @@ class Application
         "Task #{task_number} completed: \"#{task.name}\""
       end
     else
-      "Invalid task ID 'not_an_integer'"
+      "Invalid task ID '#{task_number_input}'"
     end
   end
 
