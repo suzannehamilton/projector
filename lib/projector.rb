@@ -3,6 +3,7 @@ require_relative "application"
 require_relative "database"
 require_relative "database_resolver"
 require_relative "view/renderer"
+require_relative "projector_list"
 
 class Projector < Thor
 
@@ -14,6 +15,9 @@ class Projector < Thor
 
     @application = Application.new(database, renderer)
   end
+
+  # register(class_name, subcommand_alias, usage_list_string, description_string)
+  register(ProjectorList, "counter", "counter", "Prints some numbers in sequence")
 
   desc "list", "list unfinished tasks"
   def list
