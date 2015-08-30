@@ -1,5 +1,4 @@
-# TODO: If this works, move to a separate command directory
-class ProjectorList < Thor::Group
+class List < Thor::Group
 
   # TODO: Commonise with main Projector class. Use a module?
   def initialize(args = [], local_options = {}, config = {})
