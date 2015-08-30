@@ -46,13 +46,13 @@ class TestProjector < Minitest::Test
     end
   end
 
-  def test_cannot_remove_task_from_empty_list
+  def test_cannot_complete_task_from_empty_list
     assert_output("No task with number 1\n") do
       Projector::start(["complete", "1"])
     end
   end
 
-  def test_cannot_remove_non_existent_task
+  def test_cannot_complete_non_existent_task
     capture_io do
       Projector::start(["add", "Shear the sheep"])
     end
@@ -62,7 +62,7 @@ class TestProjector < Minitest::Test
     end
   end
 
-  def test_can_remove_single_task
+  def test_can_complete_single_task
     capture_io do
       Projector::start(["add", "Shear the sheep"])
     end
@@ -76,7 +76,7 @@ class TestProjector < Minitest::Test
     end
   end
 
-  def test_can_remove_any_task
+  def test_can_complete_any_task
     capture_io do
       Projector::start(["add", "Shear the sheep"])
       Projector::start(["add", "Feed the capybara"])
@@ -89,6 +89,12 @@ class TestProjector < Minitest::Test
 
     assert_output("1  Shear the sheep  0%\n3  Shave the yak    0%\n") do
       Projector::start(["list"])
+    end
+  end
+
+  def test_completion_rejects_invalid_task_id
+    assert_output("Invalid task ID 'invalid_task_id'\n") do
+      Projector::start(["complete", "invalid_task_id"])
     end
   end
 
