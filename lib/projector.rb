@@ -16,19 +16,7 @@ class Projector < Thor
     @application = Application.new(database, renderer)
   end
 
-  # register(class_name, subcommand_alias, usage_list_string, description_string)
-  register(ProjectorList, "counter", "counter", "Prints some numbers in sequence")
-
-  desc "list", "list unfinished tasks"
-  def list
-    # TODO: Add columns headers
-    tasks = @application.list
-    if tasks.empty?
-      say "Nothing left to do!"
-    else
-      print_table tasks
-    end
-  end
+  register(ProjectorList, "list", "list", "list unfinished tasks")
 
   desc "add TASK", "add a new task named TASK"
   def add(name)
