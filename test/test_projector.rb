@@ -112,6 +112,5 @@ class TestProjector < Minitest::Test
     end
   end
 
-  # TODO: Extract private method for "Projector::start to clean up tests"?
   # TODO: Split integration test into separate test classes for each command
 end

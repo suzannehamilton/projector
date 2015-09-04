@@ -3,6 +3,7 @@ require_relative "cli_initializer"
 require_relative "command/list"
 require_relative "command/add"
 require_relative "command/complete"
+require_relative "command/update"
 
 class Projector < Thor
 
@@ -15,9 +16,6 @@ class Projector < Thor
   register(List, "list", "list", "List unfinished tasks")
   register(Add, "add", "add TASK", "Add a new task named TASK")
   register(Complete, "complete", "complete TASK_ID", "Mark task labelled TASK_ID as complete")
+  register(Update, "update", "update TASK_ID", "Set task labelled TASK_ID as PERCENTAGE complete")
 
-  desc "update TASK_NUMBER", "Set task labelled TASK_NUMBER as PERCENTAGE complete"
-  def update(task_number, percentage)
-    say @application.update(task_number, percentage)
-  end
 end
