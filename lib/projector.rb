@@ -1,6 +1,7 @@
 require "thor"
 require_relative "cli_initializer"
 require_relative "command/list"
+require_relative "command/add"
 
 class Projector < Thor
 
@@ -12,10 +13,7 @@ class Projector < Thor
 
   register(List, "list", "list", "List unfinished tasks")
 
-  desc "add TASK", "Add a new task named TASK"
-  def add(name)
-    say @application.add(name)
-  end
+  register(Add, "add", "add TASK", "Add a new task named TASK")
 
   desc "complete TASK_NUMBER", "Mark task labelled TASK_NUMBER as complete"
   def complete(task_number)
