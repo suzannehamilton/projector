@@ -26,12 +26,14 @@ class Application
     end
   end
 
-  def update(task_id, percent_complete_input)
+  def update(task_id, percent_done)
+    # TODO: Validate presence of task
+    # TODO: Validate percentage range
+
     task = @database.get(task_id)
 
-    percent_done = percent_complete_input.to_i
     @database.update(task_id, percent_done)
 
-    "#{task_id} #{task.name} #{percent_complete_input}%"
+    "#{task_id} #{task.name} #{percent_done}%"
   end
 end

@@ -122,5 +122,15 @@ class TestProjector < Minitest::Test
     end
   end
 
+  def test_updating_rejects_invalid_percent_done
+    capture_io do
+      Projector.new.invoke(:add, ["Comb the rabbit"])
+    end
+
+    assert_raises Thor::MalformattedArgumentError do
+      Projector.new.invoke(:update, ["1", "not a percentage"])
+    end
+  end
+
   # TODO: Split integration test into separate test classes for each command
 end

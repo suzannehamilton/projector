@@ -7,7 +7,7 @@ class Update < Thor::Group
   end
 
   argument :id, :type => :numeric
-  argument :percent_done, :type => :string
+  argument :percent_done, :type => :numeric
   def update
     say @application.update(id, percent_done)
   end
