@@ -93,7 +93,7 @@ class TestProjector < Minitest::Test
   end
 
   def test_completion_rejects_invalid_task_id
-    assert_output("Invalid task ID 'invalid_task_id'\n") do
+    assert_raises Thor::MalformattedArgumentError do
       Projector.new.invoke(:complete, ["invalid_task_id"])
     end
   end

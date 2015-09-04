@@ -45,7 +45,7 @@ class TestApplication < Minitest::Test
 
   def test_cannot_remove_non_existent_task
     @database.expect(:get, nil, [4])
-    assert_equal("No task with number 4", @application.complete("4"))
+    assert_equal("No task with number 4", @application.complete(4))
     @database.verify
   end
 
@@ -53,13 +53,9 @@ class TestApplication < Minitest::Test
     @database.expect(:get, Task.new(6, "Shear the sheep", 55), [6])
     @database.expect(:delete, nil, [6])
 
-    assert_equal("Task 6 completed: \"Shear the sheep\"", @application.complete("6"))
+    assert_equal("Task 6 completed: \"Shear the sheep\"", @application.complete(6))
 
     @database.verify
-  end
-
-  def test_completion_rejects_invalid_task_id
-    assert_equal("Invalid task ID 'not_an_integer'", @application.complete("not_an_integer"))
   end
 
   def test_update_percentage
