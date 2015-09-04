@@ -1,8 +1,5 @@
 require "thor"
-require_relative "application"
-require_relative "database"
-require_relative "database_resolver"
-require_relative "view/renderer"
+require_relative "cli_initializer"
 require_relative "command/list"
 
 class Projector < Thor
@@ -10,10 +7,7 @@ class Projector < Thor
   def initialize(args = [], local_options = {}, config = {})
     super
 
-    database = DatabaseResolver.new.get_database
-    renderer = Renderer.new
-
-    @application = Application.new(database, renderer)
+    @application = CliInitializer::build_application
   end
 
   register(List, "list", "list", "List unfinished tasks")

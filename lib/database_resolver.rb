@@ -1,3 +1,5 @@
+require_relative "database"
+
 class DatabaseResolver
   def get_database
     db_environment = ENV["projector_db_environment"]

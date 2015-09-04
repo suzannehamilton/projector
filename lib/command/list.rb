@@ -1,13 +1,9 @@
 class List < Thor::Group
 
-  # TODO: Commonise with main Projector class. Use a module?
   def initialize(args = [], local_options = {}, config = {})
     super
 
-    database = DatabaseResolver.new.get_database
-    renderer = Renderer.new
-
-    @application = Application.new(database, renderer)
+    @application = CliInitializer::build_application
   end
 
   def list
