@@ -112,5 +112,15 @@ class TestProjector < Minitest::Test
     end
   end
 
+  def test_updating_rejects_invalid_task_id
+    capture_io do
+      Projector.new.invoke(:add, ["Comb the rabbit"])
+    end
+
+    assert_raises Thor::MalformattedArgumentError do
+      Projector.new.invoke(:update, ["invalid_id", "60"])
+    end
+  end
+
   # TODO: Split integration test into separate test classes for each command
 end

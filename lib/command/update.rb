@@ -6,7 +6,7 @@ class Update < Thor::Group
     @application = CliInitializer::build_application
   end
 
-  argument :id, :type => :string
+  argument :id, :type => :numeric
   argument :percent_done, :type => :string
   def update
     say @application.update(id, percent_done)

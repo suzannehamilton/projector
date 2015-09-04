@@ -62,7 +62,7 @@ class TestApplication < Minitest::Test
     @database.expect(:get, Task.new(4, "Some task name", 20), [4])
     @database.expect(:update, nil, [4, 33])
     # TODO: Use renderer?
-    assert_equal("4 Some task name 33%", @application.update("4", "33"))
+    assert_equal("4 Some task name 33%", @application.update(4, "33"))
 
     @database.verify
   end

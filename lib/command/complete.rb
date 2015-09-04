@@ -8,6 +8,6 @@ class Complete < Thor::Group
 
   argument :id, :type => :numeric
   def complete
-    say @application.complete(id.to_i)
+    say @application.complete(id)
   end
 end
