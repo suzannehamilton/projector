@@ -47,9 +47,11 @@ class TestProjector < Minitest::Test
   end
 
   def test_cannot_complete_task_from_empty_list
-    assert_output("No task with number 1\n") do
+    e = assert_raises Thor::MalformattedArgumentError do
       Projector.new.invoke(:complete, ["1"])
     end
+
+    assert_equal("No task with number 1", e.message)
   end
 
   def test_cannot_complete_non_existent_task
@@ -57,9 +59,11 @@ class TestProjector < Minitest::Test
       Projector.new.invoke(:add, ["Shear the sheep"])
     end
 
-    assert_output("No task with number 5\n") do
+    e = assert_raises Thor::MalformattedArgumentError do
       Projector.new.invoke(:complete, ["5"])
     end
+
+    assert_equal("No task with number 5", e.message)
   end
 
   def test_can_complete_single_task

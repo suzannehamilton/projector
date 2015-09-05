@@ -45,7 +45,13 @@ class TestApplication < Minitest::Test
 
   def test_cannot_remove_non_existent_task
     @database.expect(:get, nil, [4])
-    assert_equal("No task with number 4", @application.complete(4))
+
+    e = assert_raises Thor::MalformattedArgumentError do
+      @application.complete(4)
+    end
+
+    assert_equal("No task with number 4", e.message)
+
     @database.verify
   end
 
@@ -93,8 +99,14 @@ class TestApplication < Minitest::Test
 
   def test_cannot_update_non_existent_task
     @database.expect(:get, nil, [3])
-    assert_equal("No task with number 3", @application.update(3, 20))
+
+    e = assert_raises Thor::MalformattedArgumentError do
+      @application.update(3, 20)
+    end
+
+    assert_equal("No task with number 3", e.message)
     @database.verify
   end
+
   # TODO: Updating to 100% marks task as complete
 end

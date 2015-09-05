@@ -16,32 +16,34 @@ class Application
   end
 
   def complete(task_id)
-    task = @database.get(task_id)
+    task = get_task(task_id)
 
-    if task.nil?
-      "No task with number #{task_id}"
-    else
-      @database.delete(task_id)
-      "Task #{task_id} completed: \"#{task.name}\""
-    end
+    @database.delete(task_id)
+
+    "Task #{task_id} completed: \"#{task.name}\""
   end
 
-  # TODO: Commonise validation of task presence
   def update(task_id, percent_done)
     validate_percent_done(percent_done)
 
-    task = @database.get(task_id)
+    task = get_task(task_id)
 
-    if task.nil?
-      "No task with number #{task_id}"
-    else
-      @database.update(task_id, percent_done)
+    @database.update(task_id, percent_done)
 
-      "#{task_id} #{task.name} #{percent_done}%"
-    end
+    "#{task_id} #{task.name} #{percent_done}%"
   end
 
   private
+
+  def get_task(task_id)
+    task = @database.get(task_id)
+
+    if task.nil?
+      raise Thor::MalformattedArgumentError.new("No task with number #{task_id}")
+    else
+      task
+    end
+  end
 
   def validate_percent_done(percent_done)
     if percent_done < 0 || percent_done > 100
