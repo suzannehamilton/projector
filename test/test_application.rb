@@ -80,7 +80,7 @@ class TestApplication < Minitest::Test
       @application.update(4, -12)
     end
 
-    assert_equal("Cannot update task 4. Expected progress between 0 and 100, but got '-12'", e.message)
+    assert_equal("Cannot update task. Expected progress between 0 and 100, but got '-12'", e.message)
   end
 
   def test_percent_done_cannot_be_more_than_100_percent
@@ -88,7 +88,7 @@ class TestApplication < Minitest::Test
       @application.update(7, 101)
     end
 
-    assert_equal("Cannot update task 7. Expected progress between 0 and 100, but got '101'", e.message)
+    assert_equal("Cannot update task. Expected progress between 0 and 100, but got '101'", e.message)
   end
 
   def test_cannot_update_non_existent_task

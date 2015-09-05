@@ -28,19 +28,25 @@ class Application
 
   # TODO: Commonise validation of task presence
   def update(task_id, percent_done)
-    if percent_done >= 0 && percent_done <= 100
-      task = @database.get(task_id)
+    validate_percent_done(percent_done)
 
-      if task.nil?
-        "No task with number #{task_id}"
-      else
-        @database.update(task_id, percent_done)
+    task = @database.get(task_id)
 
-        "#{task_id} #{task.name} #{percent_done}%"
-      end
+    if task.nil?
+      "No task with number #{task_id}"
     else
+      @database.update(task_id, percent_done)
+
+      "#{task_id} #{task.name} #{percent_done}%"
+    end
+  end
+
+  private
+
+  def validate_percent_done(percent_done)
+    if percent_done < 0 || percent_done > 100
       raise Thor::MalformattedArgumentError.new(
-        "Cannot update task #{task_id}. Expected progress between 0 and 100, but got '#{percent_done}'")
+        "Cannot update task. Expected progress between 0 and 100, but got '#{percent_done}'")
     end
   end
 end
