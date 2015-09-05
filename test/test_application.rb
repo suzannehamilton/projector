@@ -83,5 +83,11 @@ class TestApplication < Minitest::Test
     assert_equal("Cannot update task 7. Expected progress between 0 and 100, but got '101'", @application.update(7, 101))
   end
 
+
+  def test_cannot_update_non_existent_task
+    @database.expect(:get, nil, [3])
+    assert_equal("No task with number 3", @application.update(3, 20))
+    @database.verify
+  end
   # TODO: Updating to 100% marks task as complete
 end

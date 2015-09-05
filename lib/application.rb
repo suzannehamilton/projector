@@ -26,15 +26,18 @@ class Application
     end
   end
 
+  # TODO: Commonise validation of task presence
   def update(task_id, percent_done)
-    # TODO: Validate presence of task
-
     if percent_done >= 0 && percent_done <= 100
       task = @database.get(task_id)
 
-      @database.update(task_id, percent_done)
+      if task.nil?
+        "No task with number #{task_id}"
+      else
+        @database.update(task_id, percent_done)
 
-      "#{task_id} #{task.name} #{percent_done}%"
+        "#{task_id} #{task.name} #{percent_done}%"
+      end
     else
       "Cannot update task #{task_id}. Expected progress between 0 and 100, but got '#{percent_done}'"
     end
