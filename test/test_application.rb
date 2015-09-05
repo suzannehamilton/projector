@@ -66,4 +66,12 @@ class TestApplication < Minitest::Test
 
     @database.verify
   end
+
+  # TODO: Test zero percent
+
+  def test_percent_done_cannot_be_negative
+    assert_equal("Cannot update task 4. Expected progress between 0 and 100, but got '-12'", @application.update(4, -12))
+  end
+
+  # TODO: Test > 100 %
 end

@@ -30,10 +30,14 @@ class Application
     # TODO: Validate presence of task
     # TODO: Validate percentage range
 
-    task = @database.get(task_id)
+    if percent_done > 0
+      task = @database.get(task_id)
 
-    @database.update(task_id, percent_done)
+      @database.update(task_id, percent_done)
 
-    "#{task_id} #{task.name} #{percent_done}%"
+      "#{task_id} #{task.name} #{percent_done}%"
+    else
+      "Cannot update task #{task_id}. Expected progress between 0 and 100, but got '#{percent_done}'"
+    end
   end
 end
