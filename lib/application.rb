@@ -30,7 +30,7 @@ class Application
     # TODO: Validate presence of task
     # TODO: Validate percentage range
 
-    if percent_done > 0
+    if percent_done >= 0
       task = @database.get(task_id)
 
       @database.update(task_id, percent_done)
