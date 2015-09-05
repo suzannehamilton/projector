@@ -33,4 +33,18 @@ class TestProjectorUpdate < TestProjector
       Projector.new.invoke(:update, ["1", "not a percentage"])
     end
   end
+
+  def test_updating_progress_to_100_percent_marks_task_as_complete
+    capture_io do
+      Projector.new.invoke(:add, ["Shear the sheep"])
+    end
+
+    assert_output("Task 1 completed: \"Shear the sheep\"\n") do
+      Projector.new.invoke(:update, ["1", "100"])
+    end
+
+    assert_output("Nothing left to do!\n") do
+      Projector.new.invoke(:list)
+    end
+  end
 end

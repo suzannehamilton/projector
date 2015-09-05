@@ -55,7 +55,7 @@ class TestApplication < Minitest::Test
     @database.verify
   end
 
-  def test_can_remove_a_task
+  def test_can_complete_a_task
     @database.expect(:get, Task.new(6, "Shear the sheep", 55), [6])
     @database.expect(:delete, nil, [6])
 
@@ -107,5 +107,12 @@ class TestApplication < Minitest::Test
     @database.verify
   end
 
-  # TODO: Updating to 100% marks task as complete
+  def test_updating_progress_to_100_percent_marks_task_as_complete
+    @database.expect(:get, Task.new(6, "Shear the sheep", 55), [6])
+    @database.expect(:delete, nil, [6])
+
+    assert_equal("Task 6 completed: \"Shear the sheep\"", @application.update(6, 100))
+
+    @database.verify
+  end
 end

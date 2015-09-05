@@ -19,9 +19,7 @@ class Application
   def complete(task_id)
     task = get_task(task_id)
 
-    @database.delete(task_id)
-
-    "Task #{task_id} completed: \"#{task.name}\""
+    complete_task(task)
   end
 
   def update(task_id, percent_done)
@@ -29,9 +27,13 @@ class Application
 
     task = get_task(task_id)
 
-    @database.update(task_id, percent_done)
+    if (percent_done == 100)
+      complete_task(task)
+    else
+      @database.update(task_id, percent_done)
 
-    "Updated task #{task_id}, '#{task.name}' to #{percent_done}%"
+      "Updated task #{task_id}, '#{task.name}' to #{percent_done}%"
+    end
   end
 
   private
@@ -51,5 +53,11 @@ class Application
       raise Thor::MalformattedArgumentError.new(
         "Cannot update task. Expected progress between 0 and 100, but got '#{percent_done}'")
     end
+  end
+
+  def complete_task(task)
+    @database.delete(task.id)
+
+    "Task #{task.id} completed: \"#{task.name}\""
   end
 end
