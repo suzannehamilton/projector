@@ -30,7 +30,7 @@ class Application
 
     @database.update(task_id, percent_done)
 
-    "#{task_id} #{task.name} #{percent_done}%"
+    "Updated task #{task_id}, '#{task.name}' to #{percent_done}%"
   end
 
   private

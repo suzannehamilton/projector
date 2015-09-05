@@ -107,7 +107,7 @@ class TestProjector < Minitest::Test
       Projector.new.invoke(:add, ["Comb the rabbit"])
     end
 
-    assert_output("1 Comb the rabbit 60%\n") do
+    assert_output("Updated task 1, 'Comb the rabbit' to 60%\n") do
       Projector.new.invoke(:update, ["1", "60"])
     end
 

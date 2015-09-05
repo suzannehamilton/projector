@@ -63,6 +63,4 @@ class TestDatabase < Minitest::Test
     @database.update(1, 75)
     assert_equal([Task.new(1, "some task", 75)], @database.list)
   end
-
-  # TODO: Handle deleting non-existent tasks
 end
