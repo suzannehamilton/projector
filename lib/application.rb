@@ -7,6 +7,7 @@ class Application
 
   def list
     tasks = @database.list
+
     tasks.map { |t| @renderer.render(t) }
   end
 

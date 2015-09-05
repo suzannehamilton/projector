@@ -7,12 +7,11 @@ class List < Thor::Group
   end
 
   def list
-    # TODO: Add columns headers
     tasks = @application.list
     if tasks.empty?
       say "Nothing left to do!"
     else
-      print_table tasks
+      print_table [["id", "name", "progress"]].concat(tasks)
     end
   end
 end

@@ -30,7 +30,7 @@ class TestProjector < Minitest::Test
       Projector.new.invoke(:add, ["Shear the sheep"])
     end
 
-    assert_output("1  Shear the sheep  0%\n") do
+    assert_output("id  name             progress\n1   Shear the sheep  0%\n") do
       Projector.new.invoke(:list)
     end
   end
@@ -41,7 +41,7 @@ class TestProjector < Minitest::Test
       Projector.new.invoke(:add, ["Feed the capybara"])
     end
 
-    assert_output("1  Shear the sheep    0%\n2  Feed the capybara  0%\n") do
+    assert_output("id  name               progress\n1   Shear the sheep    0%\n2   Feed the capybara  0%\n") do
       Projector.new.invoke(:list)
     end
   end
@@ -91,7 +91,8 @@ class TestProjector < Minitest::Test
       Projector.new.invoke(:complete, ["2"])
     end
 
-    assert_output("1  Shear the sheep  0%\n3  Shave the yak    0%\n") do
+    # TODO: Write custom assertion that doesn't need exact number of spaces?
+    assert_output("id  name             progress\n1   Shear the sheep  0%\n3   Shave the yak    0%\n") do
       Projector.new.invoke(:list)
     end
   end
@@ -111,7 +112,7 @@ class TestProjector < Minitest::Test
       Projector.new.invoke(:update, ["1", "60"])
     end
 
-    assert_output("1  Comb the rabbit  60%\n") do
+    assert_output("id  name             progress\n1   Comb the rabbit  60%\n") do
       Projector.new.invoke(:list)
     end
   end
