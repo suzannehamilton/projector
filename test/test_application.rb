@@ -79,5 +79,9 @@ class TestApplication < Minitest::Test
     assert_equal("Cannot update task 4. Expected progress between 0 and 100, but got '-12'", @application.update(4, -12))
   end
 
-  # TODO: Test > 100 %
+  def test_percent_done_cannot_be_more_than_100_percent
+    assert_equal("Cannot update task 7. Expected progress between 0 and 100, but got '101'", @application.update(7, 101))
+  end
+
+  # TODO: Updating to 100% marks task as complete
 end
