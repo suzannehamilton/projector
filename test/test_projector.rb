@@ -41,7 +41,7 @@ class TestProjector < Minitest::Test
       Projector.new.invoke(:add, ["Feed the capybara"])
     end
 
-    assert_output("id  name               progress\n1   Shear the sheep    0%\n2   Feed the capybara  0%\n") do
+    assert_task_list_output([Task.new(1, "Shear the sheep", 0), Task.new(2, "Feed the capybara", 0)]) do
       Projector.new.invoke(:list)
     end
   end
@@ -91,8 +91,7 @@ class TestProjector < Minitest::Test
       Projector.new.invoke(:complete, ["2"])
     end
 
-    # TODO: Write custom assertion that doesn't need exact number of spaces?
-    assert_output("id  name             progress\n1   Shear the sheep  0%\n3   Shave the yak    0%\n") do
+    assert_task_list_output([Task.new(1, "Shear the sheep", 0), Task.new(3, "Shave the yak", 0)]) do
       Projector.new.invoke(:list)
     end
   end
@@ -112,7 +111,7 @@ class TestProjector < Minitest::Test
       Projector.new.invoke(:update, ["1", "60"])
     end
 
-    assert_output("id  name             progress\n1   Comb the rabbit  60%\n") do
+    assert_task_list_output([Task.new(1, "Comb the rabbit", 60)]) do
       Projector.new.invoke(:list)
     end
   end
@@ -134,6 +133,15 @@ class TestProjector < Minitest::Test
 
     assert_raises Thor::MalformattedArgumentError do
       Projector.new.invoke(:update, ["1", "not a percentage"])
+    end
+  end
+
+  def assert_task_list_output(expected_tasks)
+    expected_pattern = "id\\s+name\\s+progress\\s+" +
+      expected_tasks.map { |t| "#{t.id}\\s+#{t.name}\\s+#{t.percent_done}\%" }.join("\\s")
+
+    assert_output(Regexp.new(expected_pattern)) do
+      yield
     end
   end
 
