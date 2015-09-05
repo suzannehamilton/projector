@@ -39,7 +39,8 @@ class Application
         "#{task_id} #{task.name} #{percent_done}%"
       end
     else
-      "Cannot update task #{task_id}. Expected progress between 0 and 100, but got '#{percent_done}'"
+      raise Thor::MalformattedArgumentError.new(
+        "Cannot update task #{task_id}. Expected progress between 0 and 100, but got '#{percent_done}'")
     end
   end
 end

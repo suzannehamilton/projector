@@ -76,13 +76,20 @@ class TestApplication < Minitest::Test
   end
 
   def test_percent_done_cannot_be_negative
-    assert_equal("Cannot update task 4. Expected progress between 0 and 100, but got '-12'", @application.update(4, -12))
+    e = assert_raises Thor::MalformattedArgumentError do
+      @application.update(4, -12)
+    end
+
+    assert_equal("Cannot update task 4. Expected progress between 0 and 100, but got '-12'", e.message)
   end
 
   def test_percent_done_cannot_be_more_than_100_percent
-    assert_equal("Cannot update task 7. Expected progress between 0 and 100, but got '101'", @application.update(7, 101))
-  end
+    e = assert_raises Thor::MalformattedArgumentError do
+      @application.update(7, 101)
+    end
 
+    assert_equal("Cannot update task 7. Expected progress between 0 and 100, but got '101'", e.message)
+  end
 
   def test_cannot_update_non_existent_task
     @database.expect(:get, nil, [3])
