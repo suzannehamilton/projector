@@ -36,6 +36,11 @@ class Application
     end
   end
 
+  def units(task_id, new_units)
+    task = get_task(task_id)
+    "Updated units of task #{task_id}, '#{task.name}' to '#{new_units}'. 0% complete (0/100 #{new_units})"
+  end
+
   private
 
   def get_task(task_id)
