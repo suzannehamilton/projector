@@ -12,7 +12,7 @@ class TestProjectorList < TestProjector
       Projector.new.invoke(:add, ["Feed the capybara"])
     end
 
-    assert_task_list_output([Task.new(1, "Shear the sheep", 0), Task.new(2, "Feed the capybara", 0)]) do
+    assert_task_list_output([TaskViewModel.new(1, "Shear the sheep", 0), TaskViewModel.new(2, "Feed the capybara", 0)]) do
       Projector.new.invoke(:list)
     end
   end

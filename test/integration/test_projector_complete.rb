@@ -45,7 +45,7 @@ class TestProjectorComplete < TestProjector
       Projector.new.invoke(:complete, ["2"])
     end
 
-    assert_task_list_output([Task.new(1, "Shear the sheep", 0), Task.new(3, "Shave the yak", 0)]) do
+    assert_task_list_output([TaskViewModel.new(1, "Shear the sheep", 0), TaskViewModel.new(3, "Shave the yak", 0)]) do
       Projector.new.invoke(:list)
     end
   end

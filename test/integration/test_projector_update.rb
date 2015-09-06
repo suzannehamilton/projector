@@ -9,7 +9,7 @@ class TestProjectorUpdate < TestProjector
       Projector.new.invoke(:update, ["1", "60"])
     end
 
-    assert_task_list_output([Task.new(1, "Comb the rabbit", 60)]) do
+    assert_task_list_output([TaskViewModel.new(1, "Comb the rabbit", 60)]) do
       Projector.new.invoke(:list)
     end
   end
