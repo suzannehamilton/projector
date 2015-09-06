@@ -9,10 +9,10 @@ class TestProjectorList < TestProjector
   def test_list_lists_multiple_added_tasks
     capture_io do
       Projector.new.invoke(:add, ["Shear the sheep"])
-      Projector.new.invoke(:add, ["Feed the capybara"])
+      Projector.new.invoke(:add, ["Feed the capybaras"], :units => "capybaras fed")
     end
 
-    assert_task_list_output([TaskViewModel.new(1, "Shear the sheep", 0), TaskViewModel.new(2, "Feed the capybara", 0)]) do
+    assert_task_list_output([TaskViewModel.new(1, "Shear the sheep", 0), TaskViewModel.new(2, "Feed the capybaras", 0, "capybaras fed")]) do
       Projector.new.invoke(:list)
     end
   end

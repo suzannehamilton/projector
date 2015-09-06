@@ -23,9 +23,19 @@ class TestDatabase < Minitest::Test
     assert_equal(Task.new(1, "Some task", 0), task)
   end
 
+  def test_can_add_a_single_task_with_units
+    task = @database.add("Some task", "some units")
+    assert_equal(Task.new(1, "Some task", 0, "some units"), task)
+  end
+
   def test_lists_single_task
     @database.add("Some task")
     assert_equal([Task.new(1, "Some task", 0)], @database.list)
+  end
+
+  def test_lists_task_with_units
+    @database.add("Some task", "some units")
+    assert_equal([Task.new(1, "Some task", 0, "some units")], @database.list)
   end
 
   def test_can_add_multiple_tasks

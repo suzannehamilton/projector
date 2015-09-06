@@ -39,8 +39,14 @@ class TestApplication < Minitest::Test
   end
 
   def test_adding_a_task_to_list_adds_task_and_returns_task_details
-    @database.expect(:add, Task.new(7, "Saved task name", 0), ["Some task"])
+    @database.expect(:add, Task.new(7, "Saved task name", 0), ["Some task", nil])
     assert_equal("Added task 7: 'Saved task name', 0% complete", @application.add("Some task"))
+    @database.verify
+  end
+
+  def test_can_add_task_with_units
+    @database.expect(:add, Task.new(7, "Saved task name", 0, "some units"), ["Some task", "some units"])
+    assert_equal("Added task 7: 'Saved task name', 0% complete (0/100 some units)", @application.add("Some task", "some units"))
     @database.verify
   end
 

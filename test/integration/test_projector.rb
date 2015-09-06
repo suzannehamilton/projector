@@ -15,7 +15,8 @@ class TestProjector < Minitest::Test
 
   def assert_task_list_output(expected_tasks)
     expected_pattern = "id\\s+name\\s+progress\\s+" +
-      expected_tasks.map { |t| "#{t.id}\\s+#{t.name}\\s+#{t.percent_done}\%" }.join("\\s")
+      expected_tasks.map { |t| "#{t.id}\\s+#{t.name}\\s+#{t.percent_done}\%" +
+        (t.units.nil? ? "" : "\\s+\\(#{t.percent_done}\\/100 #{t.units}\\)") }.join("\\s")
 
     assert_output(Regexp.new(expected_pattern)) do
       yield
@@ -26,11 +27,13 @@ class TestProjector < Minitest::Test
     attr_reader :id
     attr_reader :name
     attr_reader :percent_done
+    attr_reader :units
 
-    def initialize(id, name, percent_done)
+    def initialize(id, name, percent_done, units = nil)
       @id =  id
       @name = name
       @percent_done = percent_done
+      @units = units
     end
   end
 end

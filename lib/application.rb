@@ -12,7 +12,7 @@ class Application
   end
 
   def add(task_name, units = nil)
-    task = @database.add(task_name)
+    task = @database.add(task_name, units)
     "Added task #{task.id}: '#{task.name}', 0% complete" + (units.nil? ? "" : " (0/100 #{units})")
   end
 
