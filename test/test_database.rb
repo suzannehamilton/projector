@@ -21,7 +21,10 @@ class TestDatabase < Minitest::Test
   def test_can_add_a_single_task
     task = @database.add("Some task")
     assert_equal(Task.new(1, "Some task", 0), task)
-    # TODO: Split into separate test
+  end
+
+  def test_lists_single_task
+    @database.add("Some task")
     assert_equal([Task.new(1, "Some task", 0)], @database.list)
   end
 
