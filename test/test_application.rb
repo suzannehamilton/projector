@@ -1,4 +1,5 @@
 require "minitest/autorun"
+require "thor"
 require "application"
 
 class TestApplication < Minitest::Test
