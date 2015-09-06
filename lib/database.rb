@@ -22,6 +22,8 @@ class Database
 
   def add(task)
     @db.execute("insert into task values ( ?, ? )", task, 0)
+    new_task_id = @db.last_insert_row_id()
+    get(new_task_id)
   end
 
   def get(task_id)

@@ -11,9 +11,9 @@ class Application
     tasks.map { |t| @renderer.render(t) }
   end
 
-  def add(task)
-    @database.add(task)
-    "Added '#{task}'"
+  def add(task_name)
+    task = @database.add(task_name)
+    "Added task #{task.id}: '#{task.name}'"
   end
 
   def complete(task_id)

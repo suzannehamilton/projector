@@ -1,7 +1,7 @@
 class TestProjectorAdd < TestProjector
 
-  def test_adding_a_task_to_list_returns_task_name
-    assert_output("Added 'Shear the sheep'\n") do
+  def test_adding_a_task_to_list_returns_task_id_and_name
+    assert_output("Added task 1: 'Shear the sheep'\n") do
       Projector.new.invoke(:add, ["Shear the sheep"])
     end
   end

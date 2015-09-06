@@ -37,9 +37,9 @@ class TestApplication < Minitest::Test
     assert_equal(["Rendered task 1", "Rendered task 2", "Rendered task 3"], @application.list)
   end
 
-  def test_adding_a_task_to_list_adds_task_and_returns_task_name
-    @database.expect(:add, nil, ["Some task"])
-    assert_equal("Added 'Some task'", @application.add("Some task"))
+  def test_adding_a_task_to_list_adds_task_and_returns_task_id_and_name
+    @database.expect(:add, Task.new(7, "Saved task name", 0), ["Some task"])
+    assert_equal("Added task 7: 'Saved task name'", @application.add("Some task"))
     @database.verify
   end
 
