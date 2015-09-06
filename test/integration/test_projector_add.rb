@@ -1,7 +1,7 @@
 class TestProjectorAdd < TestProjector
 
   def test_adding_a_task_to_list_returns_task_id_and_name
-    assert_output("Added task 1: 'Shear the sheep'\n") do
+    assert_output("Added task 1: 'Shear the sheep', 0% complete\n") do
       Projector.new.invoke(:add, ["Shear the sheep"])
     end
   end
@@ -13,6 +13,12 @@ class TestProjectorAdd < TestProjector
 
     assert_task_list_output([Task.new(1, "Shear the sheep", 0)]) do
       Projector.new.invoke(:list)
+    end
+  end
+
+  def test_can_specify_progress_units
+    assert_output("Added task 1: 'Shear the sheep', 0% complete (0/100 sheep shorn)\n") do
+      Projector.new.invoke(:add, ["Shear the sheep"], :units => "sheep shorn")
     end
   end
 end

@@ -11,9 +11,9 @@ class Application
     tasks.map { |t| @renderer.render(t) }
   end
 
-  def add(task_name)
+  def add(task_name, units = nil)
     task = @database.add(task_name)
-    "Added task #{task.id}: '#{task.name}'"
+    "Added task #{task.id}: '#{task.name}', 0% complete" + (units.nil? ? "" : " (0/100 #{units})")
   end
 
   def complete(task_id)
