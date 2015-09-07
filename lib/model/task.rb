@@ -6,6 +6,10 @@ class Task
   attr_reader :units
 
   def initialize(id, name, percent_done, units = nil)
+    if (!id.nil? && id <= 0)
+      raise ArgumentError.new("Task ID must be nil or a positive integer, but was '#{id}'")
+    end
+
     @id =  id
     @name = name
     @percent_done = percent_done

@@ -94,6 +94,4 @@ class TestDatabase < Minitest::Test
       @database.save(new_task)
     end
   end
-
-  # TODO: Test task with negative ID?
 end
