@@ -78,4 +78,22 @@ class TestDatabase < Minitest::Test
     @database.update(1, 75)
     assert_equal([Task.new(1, "some task", 75)], @database.list)
   end
+
+  def test_save_task_updates_task
+    task = @database.add("some task name")
+    updated_task = Task.new(task.id, "new name", 42, "new units")
+    @database.save(updated_task)
+
+    assert_equal(updated_task, @database.get(task.id))
+  end
+
+  def test_save_task_rejects_task_with_no_id
+    new_task = Task.new(nil, "new name", 42, "new units")
+
+    assert_raises ArgumentError do
+      @database.save(new_task)
+    end
+  end
+
+  # TODO: Test task with negative ID?
 end

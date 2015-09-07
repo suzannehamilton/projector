@@ -125,7 +125,7 @@ class TestApplication < Minitest::Test
 
   def test_can_update_units_of_task_with_no_progress
     @database.expect(:get, Task.new(4, "Task name", 0), [4])
-    # TODO: Test that units update method is called
+    @database.expect(:save, nil, [Task.new(4, "Task name", 0, "updated units")])
 
     assert_equal(
       "Updated units of task 4, 'Task name' to 'updated units'. 0% complete (0/100 updated units)",

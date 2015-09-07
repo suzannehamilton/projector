@@ -37,6 +37,22 @@ class Database
     @db.execute("update task set percent_done = ( ? ) where rowid = ( ? )", percent_done, task_id)
   end
 
+  # Update an existing task
+  def save(task)
+    if (task.id.nil?)
+      raise ArgumentError.new("Cannot update task with id 'nil'")
+    end
+
+    @db.execute(
+      "update task set name = ?, percent_done = ?, units = ? where rowid = ?",
+      task.name,
+      task.percent_done,
+      task.units,
+      task.id)
+  end
+
+  # TODO: Merge update and save methods
+
   def delete(task_id)
     @db.execute("delete from task where rowid = ( ? )", task_id)
   end

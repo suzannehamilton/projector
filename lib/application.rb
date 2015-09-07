@@ -38,6 +38,10 @@ class Application
 
   def units(task_id, new_units)
     task = get_task(task_id)
+
+    updated_task = Task.new(task.id, task.name, task.percent_done, new_units)
+    @database.save(updated_task)
+
     "Updated units of task #{task_id}, '#{task.name}' to '#{new_units}'. 0% complete (0/100 #{new_units})"
   end
 
