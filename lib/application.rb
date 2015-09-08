@@ -30,7 +30,8 @@ class Application
     if (percent_done == 100)
       complete_task(task)
     else
-      @database.update(task_id, percent_done)
+      updated_task = Task.new(task.id, task.name, percent_done, task.units)
+      @database.save(updated_task)
 
       "Updated task #{task_id}, '#{task.name}' to #{percent_done}%"
     end

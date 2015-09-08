@@ -67,24 +67,20 @@ class TestDatabase < Minitest::Test
     @database.delete(1)
   end
 
-  def test_update_task_done_percentage
-    @database.add("some task")
-    @database.update(1, 46)
-    assert_equal(46, @database.get(1).percent_done)
-  end
-
-  def test_update_task_done_percentage_updates_value_in_list
-    @database.add("some task")
-    @database.update(1, 75)
-    assert_equal([Task.new(1, "some task", 75)], @database.list)
-  end
-
   def test_save_task_updates_task
     task = @database.add("some task name")
     updated_task = Task.new(task.id, "new name", 42, "new units")
     @database.save(updated_task)
 
     assert_equal(updated_task, @database.get(task.id))
+  end
+
+  def test_save_task_updates_value_in_list
+    task = @database.add("some task")
+    updated_task = Task.new(task.id, "new name", 75, "new units")
+    @database.save(updated_task)
+
+    assert_equal([updated_task], @database.list)
   end
 
   def test_save_task_rejects_task_with_no_id

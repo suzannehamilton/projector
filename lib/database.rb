@@ -33,10 +33,6 @@ class Database
     tasks.empty? ? nil : Task.new(task_id, task[0], task[1], task[2])
   end
 
-  def update(task_id, percent_done)
-    @db.execute("update task set percent_done = ( ? ) where rowid = ( ? )", percent_done, task_id)
-  end
-
   # Update an existing task
   def save(task)
     if (task.id.nil?)
@@ -50,8 +46,6 @@ class Database
       task.units,
       task.id)
   end
-
-  # TODO: Merge update and save methods
 
   def delete(task_id)
     @db.execute("delete from task where rowid = ( ? )", task_id)

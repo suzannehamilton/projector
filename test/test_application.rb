@@ -73,7 +73,7 @@ class TestApplication < Minitest::Test
 
   def test_update_percentage
     @database.expect(:get, Task.new(4, "Some task name", 20), [4])
-    @database.expect(:update, nil, [4, 33])
+    @database.expect(:save, nil, [Task.new(4, "Some task name", 33)])
     assert_equal("Updated task 4, 'Some task name' to 33%", @application.update(4, 33))
 
     @database.verify
@@ -81,7 +81,7 @@ class TestApplication < Minitest::Test
 
   def test_update_zero_percentage
     @database.expect(:get, Task.new(4, "Some task name", 20), [4])
-    @database.expect(:update, nil, [4, 0])
+    @database.expect(:save, nil, [Task.new(4, "Some task name", 0)])
     assert_equal("Updated task 4, 'Some task name' to 0%", @application.update(4, 0))
 
     @database.verify
