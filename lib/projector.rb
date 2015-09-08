@@ -15,8 +15,7 @@ class Projector < Thor
   end
 
   register(List, "list", "list", "List unfinished tasks")
-  # TODO: Document units option
-  register(Add, "add", "add TASK", "Add a new task named TASK")
+  register(Add, "add", "add TASK [-u UNITS]", "Add a new task named TASK with progress marked in UNITS")
   register(Complete, "complete", "complete TASK_ID", "Mark task labelled TASK_ID as complete")
   # TODO: Switch from "percent done" to "progress" in docs and variable names
   register(Update, "update", "update TASK_ID PERCENT_DONE", "Set task labelled TASK_ID as PRGR complete")
