@@ -34,8 +34,8 @@ class TestTask < Minitest::Test
     assert_equal("some name", task.name)
   end
 
-  def test_can_get_percentage_done
+  def test_can_get_progress
     task = Task.new(4, "some name", 57)
-    assert_equal(57, task.percent_done)
+    assert_equal(57, task.progress)
   end
 end

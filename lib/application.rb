@@ -22,25 +22,25 @@ class Application
     complete_task(task)
   end
 
-  def update(task_id, percent_done)
-    validate_percent_done(percent_done)
+  def update(task_id, progress)
+    validate_progress(progress)
 
     task = get_task(task_id)
 
-    if (percent_done == 100)
+    if (progress == 100)
       complete_task(task)
     else
-      updated_task = Task.new(task.id, task.name, percent_done, task.units)
+      updated_task = Task.new(task.id, task.name, progress, task.units)
       @database.save(updated_task)
 
-      "Updated task #{task_id}, '#{task.name}' to #{percent_done}%"
+      "Updated task #{task_id}, '#{task.name}' to #{progress}%"
     end
   end
 
   def units(task_id, new_units)
     task = get_task(task_id)
 
-    updated_task = Task.new(task.id, task.name, task.percent_done, new_units)
+    updated_task = Task.new(task.id, task.name, task.progress, new_units)
     @database.save(updated_task)
 
     "Updated units of task #{task_id}, '#{task.name}' to '#{new_units}'. 0% complete (0/100 #{new_units})"
@@ -58,10 +58,11 @@ class Application
     end
   end
 
-  def validate_percent_done(percent_done)
-    if percent_done < 0 || percent_done > 100
+  def validate_progress(progress)
+    # TODO: Handle progress which is not measured in percent
+    if progress < 0 || progress > 100
       raise Thor::MalformattedArgumentError.new(
-        "Cannot update task. Expected progress between 0 and 100, but got '#{percent_done}'")
+        "Cannot update task. Expected progress between 0 and 100, but got '#{progress}'")
     end
   end
 

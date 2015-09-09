@@ -11,14 +11,14 @@ class Database
     rows = @db.execute <<-SQL
       create table if not exists task (
         name VARCHAR,
-        percent_done INT,
+        progress INT,
         units VARCHAR
       );
     SQL
   end
 
   def list
-    return @db.execute("select rowid, name, percent_done, units from task").map { |r| Task.new(r[0], r[1], r[2], r[3]) }
+    return @db.execute("select rowid, name, progress, units from task").map { |r| Task.new(r[0], r[1], r[2], r[3]) }
   end
 
   def add(name, units = nil)
@@ -28,7 +28,7 @@ class Database
   end
 
   def get(task_id)
-    tasks = @db.execute("select name, percent_done, units from task where rowid = ( ? )", task_id)
+    tasks = @db.execute("select name, progress, units from task where rowid = ( ? )", task_id)
     task = tasks[0]
     tasks.empty? ? nil : Task.new(task_id, task[0], task[1], task[2])
   end
@@ -40,9 +40,9 @@ class Database
     end
 
     @db.execute(
-      "update task set name = ?, percent_done = ?, units = ? where rowid = ?",
+      "update task set name = ?, progress = ?, units = ? where rowid = ?",
       task.name,
-      task.percent_done,
+      task.progress,
       task.units,
       task.id)
   end

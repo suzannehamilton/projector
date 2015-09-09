@@ -1,6 +1,6 @@
 class TestProjectorUpdate < TestProjector
 
-  def test_can_update_done_percentage
+  def test_can_update_progress
     capture_io do
       Projector.new.invoke(:add, ["Comb the rabbit"])
     end

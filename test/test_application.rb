@@ -87,7 +87,7 @@ class TestApplication < Minitest::Test
     @database.verify
   end
 
-  def test_percent_done_cannot_be_negative
+  def test_progress_cannot_be_negative
     e = assert_raises Thor::MalformattedArgumentError do
       @application.update(4, -12)
     end
