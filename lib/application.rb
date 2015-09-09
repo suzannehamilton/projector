@@ -1,8 +1,12 @@
+require_relative "view/task_view_model_factory"
+
 class Application
 
   def initialize(database, renderer)
     @database = database
     @renderer = renderer
+    # TODO: Inject
+    @view_model_factory = TaskViewModelFactory.new
   end
 
   def list
@@ -13,7 +17,8 @@ class Application
 
   def add(task_name, units = nil)
     task = @database.add(task_name, units)
-    "Added task #{task.id}: '#{task.name}', 0% complete" + (units.nil? ? "" : " (0/100 #{units})")
+    view_model = @view_model_factory.create_view_model(task)
+    "Added task #{task.id}: '#{task.name}', #{view_model.progress}"
   end
 
   def complete(task_id)
@@ -33,6 +38,7 @@ class Application
       updated_task = Task.new(task.id, task.name, progress, task.units)
       @database.save(updated_task)
 
+      # TODO: Use view model
       "Updated task #{task_id}, '#{task.name}' to #{progress}%"
     end
   end
@@ -43,7 +49,8 @@ class Application
     updated_task = Task.new(task.id, task.name, task.progress, new_units)
     @database.save(updated_task)
 
-    "Updated units of task #{task_id}, '#{task.name}' to '#{new_units}'. 0% complete (0/100 #{new_units})"
+    view_model = @view_model_factory.create_view_model(updated_task)
+    "Updated units of task #{task_id}, '#{task.name}' to '#{new_units}'. #{view_model.progress}"
   end
 
   private
