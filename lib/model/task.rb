@@ -20,13 +20,13 @@ class Task
     o.class == self.class &&
       o.name == @name &&
       o.id == @id &&
-      o.units == @units
-      # TODO: Add progress
+      o.units == @units &&
+      o.progress == @progress
   end
 
   alias_method :eql?, :==
 
   def hash
-    [@id, @name, @units].hash
+    [@id, @name, @units, @progress].hash
   end
 end
