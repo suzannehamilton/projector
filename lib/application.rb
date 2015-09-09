@@ -2,11 +2,10 @@ require_relative "view/task_view_model_factory"
 
 class Application
 
-  def initialize(database, renderer)
+  def initialize(database, renderer, view_model_factory)
     @database = database
     @renderer = renderer
-    # TODO: Inject
-    @view_model_factory = TaskViewModelFactory.new
+    @view_model_factory = view_model_factory
   end
 
   def list

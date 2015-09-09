@@ -7,7 +7,8 @@ class TestApplication < Minitest::Test
   def setup
     @database = MiniTest::Mock.new
     @renderer = MiniTest::Mock.new
-    @application = Application.new(@database, @renderer)
+    @view_model_factory = MiniTest::Mock.new
+    @application = Application.new(@database, @renderer, @view_model_factory)
   end
 
   def test_listing_empty_task_list_identifies_that_no_tasks_are_available
@@ -39,14 +40,26 @@ class TestApplication < Minitest::Test
   end
 
   def test_adding_a_task_to_list_adds_task_and_returns_task_details
-    @database.expect(:add, Task.new(7, "Saved task name", 0), ["Some task", nil])
-    assert_equal("Added task 7: 'Saved task name', 0% complete", @application.add("Some task"))
+    task = Task.new(7, "Saved task name", 0)
+    @database.expect(:add, task, ["Some task", nil])
+
+    view_model = MiniTest::Mock.new
+    view_model.expect(:progress, "task progress")
+    @view_model_factory.expect(:create_view_model, view_model, [task])
+
+    assert_equal("Added task 7: 'Saved task name', task progress", @application.add("Some task"))
     @database.verify
   end
 
   def test_can_add_task_with_units
-    @database.expect(:add, Task.new(7, "Saved task name", 0, "some units"), ["Some task", "some units"])
-    assert_equal("Added task 7: 'Saved task name', 0% complete (0/100 some units)", @application.add("Some task", "some units"))
+    task = Task.new(7, "Saved task name", 0, "some units")
+    @database.expect(:add, task, ["Some task", "some units"])
+
+    view_model = MiniTest::Mock.new
+    view_model.expect(:progress, "task progress")
+    @view_model_factory.expect(:create_view_model, view_model, [task])
+
+    assert_equal("Added task 7: 'Saved task name', task progress", @application.add("Some task", "some units"))
     @database.verify
   end
 
@@ -125,10 +138,15 @@ class TestApplication < Minitest::Test
 
   def test_can_update_units_of_task_with_no_progress
     @database.expect(:get, Task.new(4, "Task name", 0), [4])
-    @database.expect(:save, nil, [Task.new(4, "Task name", 0, "updated units")])
+    updated_task = Task.new(4, "Task name", 0, "updated units")
+    @database.expect(:save, nil, [updated_task])
+
+    view_model = MiniTest::Mock.new
+    view_model.expect(:progress, "updated task progress")
+    @view_model_factory.expect(:create_view_model, view_model, [updated_task])
 
     assert_equal(
-      "Updated units of task 4, 'Task name' to 'updated units'. 0% complete (0/100 updated units)",
+      "Updated units of task 4, 'Task name' to 'updated units'. updated task progress",
       @application.units(4, "updated units"))
 
     @database.verify
