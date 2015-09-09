@@ -37,8 +37,9 @@ class Application
       updated_task = Task.new(task.id, task.name, progress, task.units)
       @database.save(updated_task)
 
-      # TODO: Use view model
-      "Updated task #{task_id}, '#{task.name}' to #{progress}%"
+      view_model = @view_model_factory.create_view_model(updated_task)
+
+      "Updated task #{task_id}, '#{task.name}' to #{view_model.progress}"
     end
   end
 

@@ -5,7 +5,7 @@ class TestProjectorUpdate < TestProjector
       Projector.new.invoke(:add, ["Comb the rabbit"])
     end
 
-    assert_output("Updated task 1, 'Comb the rabbit' to 60%\n") do
+    assert_output("Updated task 1, 'Comb the rabbit' to 60% complete\n") do
       Projector.new.invoke(:update, ["1", "60"])
     end
 
