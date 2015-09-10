@@ -164,6 +164,16 @@ class TestApplication < Minitest::Test
     @database.verify
   end
 
-  # TODO: Test changing units of non-existent task
+  def test_cannot_update_units_of_non_existent_task
+    @database.expect(:get, nil, [4])
+
+    e = assert_raises Thor::MalformattedArgumentError do
+      @application.units(4, "updated units")
+    end
+
+    assert_equal("No task with number 4", e.message)
+    @database.verify
+  end
+
   # TODO: Test task with progress
 end
