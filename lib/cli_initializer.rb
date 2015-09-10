@@ -11,8 +11,8 @@ class CliInitializer
 
   def self.build_application
     database = DatabaseResolver.new.get_database
-    renderer = Renderer.new
     task_view_model_factory = TaskViewModelFactory.new
+    renderer = Renderer.new(task_view_model_factory)
 
     return Application.new(database, renderer, task_view_model_factory)
   end

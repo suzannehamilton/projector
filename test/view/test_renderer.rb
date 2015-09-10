@@ -4,16 +4,17 @@ require "view/renderer"
 class TestRenderer < Minitest::Test
 
   def setup
-    @renderer = Renderer.new
+    @view_model_factory = MiniTest::Mock.new
+    @renderer = Renderer.new(@view_model_factory)
   end
 
   def test_renders_task
-    assert_equal([5, "Some task", "12% complete"], @renderer.render(Task.new(5, "Some task", 12)))
-  end
+    task = Task.new(5, "Some task", 12)
 
-  def test_renders_non_default_task_units
-    assert_equal(
-      [5, "Some task", "20% complete (20/100 some units)"],
-      @renderer.render(Task.new(5, "Some task", 20, "some units")))
+    view_model = MiniTest::Mock.new
+    view_model.expect(:progress, "task progress")
+    @view_model_factory.expect(:create_view_model, view_model, [task])
+
+    assert_equal([5, "Some task", "task progress"], @renderer.render(task))
   end
 end

@@ -1,8 +1,7 @@
 class Renderer
 
-  def initialize
-    # TODO: Inject
-    @task_view_model_factory = TaskViewModelFactory.new
+  def initialize(task_view_model_factory)
+    @task_view_model_factory = task_view_model_factory
   end
 
   def render task
