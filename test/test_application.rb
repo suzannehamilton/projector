@@ -164,6 +164,22 @@ class TestApplication < Minitest::Test
     @database.verify
   end
 
+  def test_can_update_units_of_task_in_progress
+    @database.expect(:get, Task.new(4, "Task name", 80), [4])
+    updated_task = Task.new(4, "Task name", 80, "updated units")
+    @database.expect(:save, nil, [updated_task])
+
+    view_model = MiniTest::Mock.new
+    view_model.expect(:progress, "updated task progress")
+    @view_model_factory.expect(:create_view_model, view_model, [updated_task])
+
+    assert_equal(
+      "Updated units of task 4, 'Task name' to 'updated units'. updated task progress",
+      @application.units(4, "updated units"))
+
+    @database.verify
+  end
+
   def test_cannot_update_units_of_non_existent_task
     @database.expect(:get, nil, [4])
 
@@ -174,6 +190,4 @@ class TestApplication < Minitest::Test
     assert_equal("No task with number 4", e.message)
     @database.verify
   end
-
-  # TODO: Test task with progress
 end
