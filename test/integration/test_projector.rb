@@ -15,7 +15,7 @@ class TestProjector < Minitest::Test
 
   def assert_task_list_output(expected_tasks)
     expected_pattern = "id\\s+name\\s+progress\\s+" +
-      expected_tasks.map { |t| "#{t.id}\\s+#{t.name}\\s+#{t.percent_done}\%" +
+      expected_tasks.map { |t| "#{t.id}\\s+#{t.name}\\s+#{t.percent_done}\% complete" +
         (t.units.nil? ? "" : "\\s+\\(#{t.percent_done}\\/100 #{t.units}\\)") }.join("\\s+")
 
     assert_output(Regexp.new(expected_pattern)) do
