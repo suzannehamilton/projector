@@ -50,7 +50,11 @@ class Application
     @database.save(updated_task)
 
     view_model = @view_model_factory.create_view_model(updated_task)
-    "Updated units of task #{task_id}, '#{task.name}' to '#{new_units}'. #{view_model.progress}"
+
+    # TODO: Extract logic to view model
+    display_units = new_units.nil? ? "percent" : "'#{new_units}'"
+
+    "Updated units of task #{task_id}, '#{task.name}' to #{display_units}. #{view_model.progress}"
   end
 
   private

@@ -7,7 +7,7 @@ class Units < Thor::Group
   end
 
   argument :id, :type => :numeric
-  argument :units_name, :type => :string
+  argument :units_name, :type => :string, :required => false
   def units
     say @application.units(id, units_name)
   end

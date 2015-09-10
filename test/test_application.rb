@@ -180,6 +180,22 @@ class TestApplication < Minitest::Test
     @database.verify
   end
 
+  def test_no_units_converts_units_to_percent
+    @database.expect(:get, Task.new(4, "Task name", 0, "original units"), [4])
+    updated_task = Task.new(4, "Task name", 0, nil)
+    @database.expect(:save, nil, [updated_task])
+
+    view_model = MiniTest::Mock.new
+    view_model.expect(:progress, "updated task progress")
+    @view_model_factory.expect(:create_view_model, view_model, [updated_task])
+
+    assert_equal(
+      "Updated units of task 4, 'Task name' to percent. updated task progress",
+      @application.units(4, nil))
+
+    @database.verify
+  end
+
   def test_cannot_update_units_of_non_existent_task
     @database.expect(:get, nil, [4])
 
