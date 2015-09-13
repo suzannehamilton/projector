@@ -13,7 +13,8 @@ class Database
       create table if not exists task (
         name VARCHAR,
         progress INT,
-        units VARCHAR
+        units VARCHAR,
+        size INT
       );
     SQL
   end
@@ -22,16 +23,16 @@ class Database
     return @db.execute("select rowid, name, progress, units from task").map { |r| Task.new(r[0], r[1], r[2], r[3]) }
   end
 
-  def add(name, units = nil)
-    @db.execute("insert into task values ( ?, ?, ? )", name, 0, units)
+  def add(name, units = nil, size = nil)
+    @db.execute("insert into task values ( ?, ?, ?, ? )", name, 0, units, size)
     new_task_id = @db.last_insert_row_id()
     get(new_task_id)
   end
 
   def get(task_id)
-    tasks = @db.execute("select name, progress, units from task where rowid = ( ? )", task_id)
+    tasks = @db.execute("select name, progress, units, size from task where rowid = ( ? )", task_id)
     task = tasks[0]
-    tasks.empty? ? nil : Task.new(task_id, task[0], task[1], task[2])
+    tasks.empty? ? nil : Task.new(task_id, task[0], task[1], task[2], task[3])
   end
 
   # Update an existing task

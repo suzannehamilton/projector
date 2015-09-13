@@ -41,7 +41,7 @@ class TestApplication < Minitest::Test
 
   def test_adding_a_task_to_list_adds_task_and_returns_task_details
     task = Task.new(7, "Saved task name", 0)
-    @database.expect(:add, task, ["Some task", nil])
+    @database.expect(:add, task, ["Some task", nil, nil])
 
     view_model = MiniTest::Mock.new
     view_model.expect(:progress, "task progress")
@@ -53,13 +53,30 @@ class TestApplication < Minitest::Test
 
   def test_can_add_task_with_units
     task = Task.new(7, "Saved task name", 0, "some units")
-    @database.expect(:add, task, ["Some task", "some units"])
+    @database.expect(:add, task, ["Some task", "some units", nil])
 
     view_model = MiniTest::Mock.new
     view_model.expect(:progress, "task progress")
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
     assert_equal("Added task 7: 'Saved task name', task progress", @application.add("Some task", "some units"))
+    @database.verify
+  end
+
+  # TODO: Test that size cannot be specified when creating a task without units
+
+  def test_can_add_task_with_units_and_size
+    task = Task.new(4, "Saved task name", 0, "some units", 42)
+    # TODO: Should :add just take a Task?
+    @database.expect(:add, task, ["Some task", "some units", 42])
+
+    view_model = MiniTest::Mock.new
+    view_model.expect(:progress, "task progress")
+    @view_model_factory.expect(:create_view_model, view_model, [task])
+
+    assert_equal(
+      "Added task 4: 'Saved task name', task progress",
+      @application.add("Some task", "some units", 42))
     @database.verify
   end
 
@@ -209,4 +226,6 @@ class TestApplication < Minitest::Test
     assert_equal("No task with number 4", e.message)
     @database.verify
   end
+
+  # TODO: Test that size cannot be updated when units are not percent
 end

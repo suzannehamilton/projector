@@ -47,4 +47,6 @@ class TestProjectorUpdate < TestProjector
       Projector.new.invoke(:list)
     end
   end
+
+  # TODO: Progress can be decimal
 end

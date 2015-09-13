@@ -39,6 +39,18 @@ class TestTaskViewModel < Minitest::Test
     assert_equal("89% complete (89/100 some units)", view_model.progress)
   end
 
+  def test_new_task_with_custom_units_calculated_percent
+    task = Task.new(7, "Saved task name", 0, "some units", 59)
+
+    view_model = @view_model_factory.create_view_model(task)
+
+    assert_equal("0% complete (0/59 some units)", view_model.progress)
+  end
+
+  # TODO: Test task with finite progress and custom size
+  # TODO: Test task with non-integer progress
+  # TODO: Parameterise tests of progress?
+
   def test_default_units_are_percent
     task = Task.new(7, "Saved task name", 89)
 

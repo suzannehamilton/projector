@@ -14,8 +14,8 @@ class Application
     tasks.map { |t| @renderer.render(t) }
   end
 
-  def add(task_name, units = nil)
-    task = @database.add(task_name, units)
+  def add(task_name, units = nil, size = nil)
+    task = @database.add(task_name, units, size)
     view_model = @view_model_factory.create_view_model(task)
     "Added task #{task.id}: '#{task.name}', #{view_model.progress}"
   end
@@ -67,6 +67,7 @@ class Application
     end
   end
 
+  # TODO: Move lots of validation to Task.new and just convert exceptions to Thor exceptions?
   def validate_progress(progress)
     # TODO: Handle progress which is not measured in percent
     if progress < 0 || progress > 100

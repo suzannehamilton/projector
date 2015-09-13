@@ -8,7 +8,8 @@ class Add < Thor::Group
 
   argument :name, :type => :string
   class_option :units, :type => :string, :required => false, :aliases => "-u"
+  class_option :size, :type => :numeric, :required => false, :aliases => "-s"
   def add
-    say @application.add(name, options[:units])
+    say @application.add(name, options[:units], options[:size])
   end
 end

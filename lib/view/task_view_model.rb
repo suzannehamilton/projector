@@ -12,7 +12,9 @@ class TaskViewModel
   end
 
   def progress
-    "#{@task.progress}% complete" + (@task.units.nil? ? "" : " (#{@task.progress}/100 #{@task.units})")
+    size = @task.size.nil? ? 100 : @task.size
+    progress = @task.units.nil? ? "" : " (#{@task.progress}/#{size} #{@task.units})"
+    "#{@task.progress}% complete" + progress
   end
 
   def units

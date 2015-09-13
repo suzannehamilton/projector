@@ -28,6 +28,11 @@ class TestDatabase < Minitest::Test
     assert_equal(Task.new(1, "Some task", 0, "some units"), task)
   end
 
+  def test_can_add_a_single_task_with_units_and_size
+    task = @database.add("Some task", "some units", 55)
+    assert_equal(Task.new(1, "Some task", 0, "some units", 55), task)
+  end
+
   def test_lists_single_task
     @database.add("Some task")
     assert_equal([Task.new(1, "Some task", 0)], @database.list)
@@ -61,6 +66,8 @@ class TestDatabase < Minitest::Test
     @database.add("some task")
     assert_equal(Task.new(1, "some task", 0), @database.get(1))
   end
+
+  # TODO: Test getting a task with all properties
 
   def test_deleting_a_task_removes_it_from_the_db
     @database.add("some task")
