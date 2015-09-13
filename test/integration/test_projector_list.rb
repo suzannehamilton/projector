@@ -16,4 +16,6 @@ class TestProjectorList < TestProjector
       Projector.new.invoke(:list)
     end
   end
+
+  # TODO: Test list on tasks with progress
 end

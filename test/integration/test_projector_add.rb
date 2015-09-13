@@ -21,7 +21,9 @@ class TestProjectorAdd < TestProjector
       Projector.new.invoke(:add, ["Shear the sheep"], :units => "sheep shorn")
     end
 
-    # TODO: Test list
+    assert_task_list_output([TaskViewModel.new(1, "Shear the sheep", 0, "sheep shorn")]) do
+      Projector.new.invoke(:list)
+    end
   end
 
   def test_can_specify_task_size
@@ -29,7 +31,9 @@ class TestProjectorAdd < TestProjector
       Projector.new.invoke(:add, ["Pet the capybaras"], :units => "capybaras petted", :size => 5)
     end
 
-    # TODO: Test list
+    assert_task_list_output([TaskViewModel.new(1, "Pet the capybaras", 0, "capybaras petted", 5)]) do
+      Projector.new.invoke(:list)
+    end
   end
 
   # TODO: Allow task size to be updated later

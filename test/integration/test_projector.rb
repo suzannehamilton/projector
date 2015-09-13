@@ -14,9 +14,13 @@ class TestProjector < Minitest::Test
   end
 
   def assert_task_list_output(expected_tasks)
-    expected_pattern = "id\\s+name\\s+progress\\s+" +
-      expected_tasks.map { |t| "#{t.id}\\s+#{t.name}\\s+#{t.percent_done}\% complete" +
-        (t.units.nil? ? "" : "\\s+\\(#{t.percent_done}\\/100 #{t.units}\\)") }.join("\\s+")
+    expected_pattern = "^id\\s+name\\s+progress\\s+" +
+      expected_tasks.map { |t|
+        size = t.size.nil? ? 100 : t.size
+
+        "#{t.id}\\s+#{t.name}\\s+#{t.percent_done}\% complete" +
+        (t.units.nil? ? "" : "\\s+\\(#{t.percent_done}\\/#{size} #{t.units}\\)")
+      }.join("\\s+") + "$"
 
     assert_output(Regexp.new(expected_pattern)) do
       yield
@@ -28,12 +32,14 @@ class TestProjector < Minitest::Test
     attr_reader :name
     attr_reader :percent_done
     attr_reader :units
+    attr_reader :size
 
-    def initialize(id, name, percent_done, units = nil)
+    def initialize(id, name, percent_done, units = nil, size = nil)
       @id =  id
       @name = name
       @percent_done = percent_done
       @units = units
+      @size = size
     end
   end
 end
