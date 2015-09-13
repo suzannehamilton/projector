@@ -42,6 +42,7 @@ class Database
       raise ArgumentError.new("Cannot update task with id 'nil'")
     end
 
+    # TODO: Save task size
     @db.execute(
       "update task set name = ?, progress = ?, units = ? where rowid = ?",
       task.name,

@@ -34,7 +34,7 @@ class Application
     if (progress == 100)
       complete_task(task)
     else
-      updated_task = Task.new(task.id, task.name, progress, task.units)
+      updated_task = Task.new(task.id, task.name, progress, task.units, task.size)
       @database.save(updated_task)
 
       view_model = @view_model_factory.create_view_model(updated_task)
@@ -46,6 +46,7 @@ class Application
   def units(task_id, new_units)
     task = get_task(task_id)
 
+    # TODO: Ensure size is copied
     updated_task = Task.new(task.id, task.name, task.progress, new_units)
     @database.save(updated_task)
 

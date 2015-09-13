@@ -115,6 +115,20 @@ class TestApplication < Minitest::Test
     @database.verify
   end
 
+  def test_updating_progress_of_task_with_custom_size_preserves_size
+    @database.expect(:get, Task.new(4, "Some task name", 20, "some units", 60), [4])
+    updated_task = Task.new(4, "Some task name", 33, "some units", 60)
+    @database.expect(:save, nil, [updated_task])
+
+    view_model = MiniTest::Mock.new
+    view_model.expect(:progress, "updated task progress")
+    @view_model_factory.expect(:create_view_model, view_model, [updated_task])
+
+    assert_equal("Updated task 4, 'Some task name' to updated task progress", @application.update(4, 33))
+
+    @database.verify
+  end
+
   def test_update_zero_percentage
     @database.expect(:get, Task.new(4, "Some task name", 20), [4])
     updated_task = Task.new(4, "Some task name", 0)

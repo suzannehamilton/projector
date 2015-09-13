@@ -14,6 +14,20 @@ class TestProjectorUpdate < TestProjector
     end
   end
 
+  def test_can_update_progress_of_task_with_custom_size
+    capture_io do
+      Projector.new.invoke(:add, ["Walk the guinea pigs"], :units => "guinea pigs", :size => 10)
+    end
+
+    assert_output("Updated task 1, 'Walk the guinea pigs' to 40% complete (4/10 guinea pigs)\n") do
+      Projector.new.invoke(:update, ["1", "4"])
+    end
+
+    assert_task_list_output([TaskViewModel.new(1, "Walk the guinea pigs", 4, "guinea pigs", 10, 40)]) do
+      Projector.new.invoke(:list)
+    end
+  end
+
   def test_updating_rejects_invalid_task_id
     capture_io do
       Projector.new.invoke(:add, ["Comb the rabbit"])

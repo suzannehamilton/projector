@@ -1,4 +1,4 @@
-class TestProjectorUpdate < TestProjector
+class TestProjectorUnits < TestProjector
 
   def test_can_update_units_of_new_task
     capture_io do
@@ -29,4 +29,5 @@ class TestProjectorUpdate < TestProjector
   end
 
   # TODO: Test switching back to percent when max in new units is not 100
+  # TODO: Test updating units when size is not 100
 end
