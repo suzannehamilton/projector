@@ -1,5 +1,3 @@
-# TODO: Should this file be named after the view model?
-
 class TaskViewModelFactory
 
   def create_view_model(task)

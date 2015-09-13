@@ -1,7 +1,7 @@
 require "minitest/autorun"
-require "view/task_view_model_factory"
+require "view/task_view_model"
 
-class TestTaskViewModelFactory < Minitest::Test
+class TestTaskViewModel < Minitest::Test
 
   def setup
     @view_model_factory = TaskViewModelFactory.new

@@ -1,4 +1,4 @@
-require_relative "view/task_view_model_factory"
+require_relative "view/task_view_model"
 
 class Application
 
@@ -60,6 +60,7 @@ class Application
     task = @database.get(task_id)
 
     if task.nil?
+      # TODO: Is there a more appropriate Thor argument error?
       raise Thor::MalformattedArgumentError.new("No task with number #{task_id}")
     else
       task

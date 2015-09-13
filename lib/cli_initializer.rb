@@ -1,7 +1,7 @@
 require_relative "application"
 require_relative "database_resolver"
 require_relative "view/renderer"
-require_relative "view/task_view_model_factory"
+require_relative "view/task_view_model"
 
 # Helper which commonises building the dependency-injected Application object.
 # This is a bit of a hack which is needed because Thor constructs the main Projector
