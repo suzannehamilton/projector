@@ -39,5 +39,21 @@ class TestTaskViewModelFactory < Minitest::Test
     assert_equal("89% complete (89/100 some units)", view_model.progress)
   end
 
+  def test_default_units_are_percent
+    task = Task.new(7, "Saved task name", 89)
+
+    view_model = @view_model_factory.create_view_model(task)
+
+    assert_equal("percent", view_model.units)
+  end
+
+  def test_custom_units_are_rendered_as_given
+    task = Task.new(7, "Saved task name", 89, "some units")
+
+    view_model = @view_model_factory.create_view_model(task)
+
+    assert_equal("some units", view_model.units)
+  end
+
   # TODO: Test progress which is not out of 100
 end

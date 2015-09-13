@@ -19,7 +19,7 @@ class TestProjectorUpdate < TestProjector
       Projector.new.invoke(:add, ["Shear the sheep"], :units => "sheep shorn")
     end
 
-    assert_output("Updated units of task 1, 'Shear the sheep' to percent. 0% complete\n") do
+    assert_output("Updated units of task 1, 'Shear the sheep' to 'percent'. 0% complete\n") do
       Projector.new.invoke(:units, ["1"])
     end
 
@@ -28,6 +28,5 @@ class TestProjectorUpdate < TestProjector
     end
   end
 
-  # TODO: Test updating of task in progress
   # TODO: Test switching back to percent when max in new units is not 100
 end
