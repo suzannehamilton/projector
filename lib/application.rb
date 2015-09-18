@@ -62,8 +62,7 @@ class Application
     task = @database.get(task_id)
 
     if task.nil?
-      # TODO: Is there a more appropriate Thor argument error?
-      raise Thor::MalformattedArgumentError.new("No task with number #{task_id}")
+      raise Thor::InvocationError.new("No task with number #{task_id}")
     else
       task
     end

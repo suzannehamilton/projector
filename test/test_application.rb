@@ -83,7 +83,7 @@ class TestApplication < Minitest::Test
   def test_cannot_remove_non_existent_task
     @database.expect(:get, nil, [4])
 
-    e = assert_raises Thor::MalformattedArgumentError do
+    e = assert_raises Thor::InvocationError do
       @application.complete(4)
     end
 
@@ -162,7 +162,7 @@ class TestApplication < Minitest::Test
   def test_cannot_update_non_existent_task
     @database.expect(:get, nil, [3])
 
-    e = assert_raises Thor::MalformattedArgumentError do
+    e = assert_raises Thor::InvocationError do
       @application.update(3, 20)
     end
 
@@ -267,7 +267,7 @@ class TestApplication < Minitest::Test
   def test_cannot_update_units_of_non_existent_task
     @database.expect(:get, nil, [4])
 
-    e = assert_raises Thor::MalformattedArgumentError do
+    e = assert_raises Thor::InvocationError do
       @application.units(4, "updated units")
     end
 

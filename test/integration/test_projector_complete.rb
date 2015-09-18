@@ -1,7 +1,7 @@
 class TestProjectorComplete < TestProjector
 
   def test_cannot_complete_task_from_empty_list
-    e = assert_raises Thor::MalformattedArgumentError do
+    e = assert_raises Thor::InvocationError do
       Projector.new.invoke(:complete, ["1"])
     end
 
@@ -13,7 +13,7 @@ class TestProjectorComplete < TestProjector
       Projector.new.invoke(:add, ["Shear the sheep"])
     end
 
-    e = assert_raises Thor::MalformattedArgumentError do
+    e = assert_raises Thor::InvocationError do
       Projector.new.invoke(:complete, ["5"])
     end
 
