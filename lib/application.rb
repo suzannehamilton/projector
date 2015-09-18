@@ -46,8 +46,9 @@ class Application
   def units(task_id, new_units)
     task = get_task(task_id)
 
-    # TODO: Ensure size is copied
-    updated_task = Task.new(task.id, task.name, task.progress, new_units)
+    updated_task_size = new_units.nil? ? nil : task.size
+
+    updated_task = Task.new(task.id, task.name, task.progress, new_units, updated_task_size)
     @database.save(updated_task)
 
     view_model = @view_model_factory.create_view_model(updated_task)

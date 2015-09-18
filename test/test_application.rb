@@ -213,9 +213,43 @@ class TestApplication < Minitest::Test
     @database.verify
   end
 
+  def test_can_update_units_of_task_with_custom_size
+    @database.expect(:get, Task.new(4, "Task name", 80, "original units", 152), [4])
+    updated_task = Task.new(4, "Task name", 80, "updated units", 152)
+    @database.expect(:save, nil, [updated_task])
+
+    view_model = MiniTest::Mock.new
+    view_model.expect(:progress, "updated task progress")
+    view_model.expect(:units, "rendered units")
+    @view_model_factory.expect(:create_view_model, view_model, [updated_task])
+
+    assert_equal(
+      "Updated units of task 4, 'Task name' to 'rendered units'. updated task progress",
+      @application.units(4, "updated units"))
+
+    @database.verify
+  end
+
   def test_no_units_converts_units_to_percent
     @database.expect(:get, Task.new(4, "Task name", 0, "original units"), [4])
-    updated_task = Task.new(4, "Task name", 0, nil)
+    updated_task = Task.new(4, "Task name", 0)
+    @database.expect(:save, nil, [updated_task])
+
+    view_model = MiniTest::Mock.new
+    view_model.expect(:progress, "updated task progress")
+    view_model.expect(:units, "rendered units")
+    @view_model_factory.expect(:create_view_model, view_model, [updated_task])
+
+    assert_equal(
+      "Updated units of task 4, 'Task name' to 'rendered units'. updated task progress",
+      @application.units(4, nil))
+
+    @database.verify
+  end
+
+  def test_no_units_and_custom_size_converts_units_to_100_percent
+    @database.expect(:get, Task.new(4, "Task name", 0, "original units", 30), [4])
+    updated_task = Task.new(4, "Task name", 0)
     @database.expect(:save, nil, [updated_task])
 
     view_model = MiniTest::Mock.new
