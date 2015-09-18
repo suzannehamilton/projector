@@ -27,10 +27,11 @@ class Application
   end
 
   def update(task_id, progress)
-    validate_progress(progress)
-
     task = get_task(task_id)
 
+    validate_progress(progress, task.size)
+
+    # TODO: Handle completed progress for tasks with custom size
     if (progress == 100)
       complete_task(task)
     else
@@ -69,11 +70,12 @@ class Application
   end
 
   # TODO: Move lots of validation to Task.new and just convert exceptions to Thor exceptions?
-  def validate_progress(progress)
-    # TODO: Handle progress which is not measured in percent
-    if progress < 0 || progress > 100
+  def validate_progress(progress, task_size)
+    task_max_progress = task_size.nil? ? 100 : task_size
+
+    if progress < 0 || progress > task_max_progress
       raise Thor::MalformattedArgumentError.new(
-        "Cannot update task. Expected progress between 0 and 100, but got '#{progress}'")
+        "Cannot update task. Expected progress between 0 and #{task_max_progress}, but got '#{progress}'")
     end
   end
 
