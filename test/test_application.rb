@@ -56,15 +56,12 @@ class TestApplication < Minitest::Test
     task = Task.new(7, "Saved task name", 0)
     @database.expect(:add, task, ["Some task", nil, nil])
 
-    view = MiniTest::Mock.new
-    @view_selector.expect(:add, view)
+    @view_selector.expect(:add, "some view")
 
     view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
-    view.expect(:render, "Rendered task", [view_model])
-
-    assert_equal("Rendered task", @application.add("Some task"))
+    assert_equal(ModelAndView.new(view_model, "some view"), @application.add("Some task"))
     @database.verify
   end
 
@@ -72,15 +69,12 @@ class TestApplication < Minitest::Test
     task = Task.new(7, "Saved task name", 0, "some units")
     @database.expect(:add, task, ["Some task", "some units", nil])
 
-    view = MiniTest::Mock.new
-    @view_selector.expect(:add, view)
+    @view_selector.expect(:add, "some view")
 
     view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
-    view.expect(:render, "Rendered task", [view_model])
-
-    assert_equal("Rendered task", @application.add("Some task", "some units"))
+    assert_equal(ModelAndView.new(view_model, "some view"), @application.add("Some task", "some units"))
     @database.verify
   end
 
@@ -91,15 +85,12 @@ class TestApplication < Minitest::Test
     # TODO: Should :add just take a Task?
     @database.expect(:add, task, ["Some task", "some units", 42])
 
-    view = MiniTest::Mock.new
-    @view_selector.expect(:add, view)
+    @view_selector.expect(:add, "some view")
 
     view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
-    view.expect(:render, "Rendered task", [view_model])
-
-    assert_equal("Rendered task", @application.add("Some task", "some units", 42))
+    assert_equal(ModelAndView.new(view_model, "some view"), @application.add("Some task", "some units", 42) )
     @database.verify
   end
 

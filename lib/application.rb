@@ -20,10 +20,10 @@ class Application
 
   def add(task_name, units = nil, size = nil)
     task = @database.add(task_name, units, size)
+
     view_model = @view_model_factory.create_view_model(task)
-    view = @view_selector.add
-    # TODO: Move actual rendering onto Thor class
-    view.render(view_model)
+
+    ModelAndView.new(view_model, @view_selector.add)
   end
 
   def complete(task_id)
