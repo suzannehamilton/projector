@@ -34,6 +34,14 @@ class TestTask < Minitest::Test
     assert_equal("some name", task.name)
   end
 
+  def test_name_must_be_present
+    e = assert_raises ArgumentError do
+      Task.new(5, nil)
+    end
+
+    assert(e.message.include?("name"))
+  end
+
   def test_can_get_progress
     task = Task.new(4, "some name", 57)
     assert_equal(57, task.progress)

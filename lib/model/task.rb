@@ -7,9 +7,8 @@ class Task
   attr_reader :size
 
   def initialize(id, name, progress = 0, units = nil, size = nil)
-    if (!id.nil? && id <= 0)
-      raise ArgumentError.new("Task ID must be nil or a positive integer, but was '#{id}'")
-    end
+    validate_id(id)
+    validate_name(name)
 
     @id =  id
     @name = name
@@ -35,5 +34,19 @@ class Task
 
   def hash
     [@id, @name, @units, @progress, @size].hash
+  end
+
+  private
+
+  def validate_id(id)
+    if (!id.nil? && id <= 0)
+      raise ArgumentError.new("Task ID must be nil or a positive integer, but was '#{id}'")
+    end
+  end
+
+  def validate_name(name)
+    if (name.nil?)
+      raise ArgumentError.new("Task name must not be nil")
+    end
   end
 end
