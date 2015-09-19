@@ -72,7 +72,10 @@ class TestDatabase < Minitest::Test
     assert_equal(Task.new(1, "some task", 0), @database.get(1))
   end
 
-  # TODO: Test getting a task with all properties
+  def test_getting_a_task_by_id_returns_task_with_all_optional_properties
+    @database.add("some task", "some units", 45)
+    assert_equal(Task.new(1, "some task", 0, "some units", 45), @database.get(1))
+  end
 
   def test_deleting_a_task_removes_it_from_the_db
     @database.add("some task")
