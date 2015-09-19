@@ -44,7 +44,8 @@ class Application
 
       view_model = @view_model_factory.create_view_model(updated_task)
 
-      "Updated task #{task_id}, '#{task.name}' to #{view_model.progress}"
+      view = @view_selector.update
+      view.render(view_model)
     end
   end
 

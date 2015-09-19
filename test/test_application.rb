@@ -113,16 +113,19 @@ class TestApplication < Minitest::Test
     @database.verify
   end
 
-  def test_update_percentage
+  def test_update_progress
     @database.expect(:get, Task.new(4, "Some task name", 20), [4])
     updated_task = Task.new(4, "Some task name", 33)
     @database.expect(:save, nil, [updated_task])
 
     view_model = MiniTest::Mock.new
-    view_model.expect(:progress, "updated task progress")
     @view_model_factory.expect(:create_view_model, view_model, [updated_task])
 
-    assert_equal("Updated task 4, 'Some task name' to updated task progress", @application.update(4, 33))
+    view = MiniTest::Mock.new
+    @view_selector.expect(:update, view)
+    view.expect(:render, "Rendered task", [view_model])
+
+    assert_equal("Rendered task", @application.update(4, 33))
 
     @database.verify
   end
@@ -133,10 +136,13 @@ class TestApplication < Minitest::Test
     @database.expect(:save, nil, [updated_task])
 
     view_model = MiniTest::Mock.new
-    view_model.expect(:progress, "updated task progress")
     @view_model_factory.expect(:create_view_model, view_model, [updated_task])
 
-    assert_equal("Updated task 4, 'Some task name' to updated task progress", @application.update(4, 33))
+    view = MiniTest::Mock.new
+    @view_selector.expect(:update, view)
+    view.expect(:render, "Rendered task", [view_model])
+
+    assert_equal("Rendered task", @application.update(4, 33))
 
     @database.verify
   end
@@ -147,10 +153,13 @@ class TestApplication < Minitest::Test
     @database.expect(:save, nil, [updated_task])
 
     view_model = MiniTest::Mock.new
-    view_model.expect(:progress, "updated task progress")
     @view_model_factory.expect(:create_view_model, view_model, [updated_task])
 
-    assert_equal("Updated task 4, 'Some task name' to updated task progress", @application.update(4, 0))
+    view = MiniTest::Mock.new
+    @view_selector.expect(:update, view)
+    view.expect(:render, "Rendered task", [view_model])
+
+    assert_equal("Rendered task", @application.update(4, 0))
 
     @database.verify
   end
