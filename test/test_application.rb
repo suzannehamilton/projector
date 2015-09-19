@@ -6,9 +6,11 @@ class TestApplication < Minitest::Test
 
   def setup
     @database = MiniTest::Mock.new
+    # TODO: Combine renderer and view selector?
     @renderer = MiniTest::Mock.new
+    @view_selector = MiniTest::Mock.new
     @view_model_factory = MiniTest::Mock.new
-    @application = Application.new(@database, @renderer, @view_model_factory)
+    @application = Application.new(@database, @view_selector, @renderer, @view_model_factory)
   end
 
   def test_listing_empty_task_list_identifies_that_no_tasks_are_available
@@ -43,13 +45,15 @@ class TestApplication < Minitest::Test
     task = Task.new(7, "Saved task name", 0)
     @database.expect(:add, task, ["Some task", nil, nil])
 
+    view = MiniTest::Mock.new
+    @view_selector.expect(:add, view)
+
     view_model = MiniTest::Mock.new
-    view_model.expect(:progress, "task progress")
-    view_model.expect(:id, 7)
-    view_model.expect(:name, "Saved task name")
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
-    assert_equal("Added task 7: 'Saved task name', task progress", @application.add("Some task"))
+    view.expect(:render, "Rendered task", [view_model])
+
+    assert_equal("Rendered task", @application.add("Some task"))
     @database.verify
   end
 
@@ -57,13 +61,15 @@ class TestApplication < Minitest::Test
     task = Task.new(7, "Saved task name", 0, "some units")
     @database.expect(:add, task, ["Some task", "some units", nil])
 
+    view = MiniTest::Mock.new
+    @view_selector.expect(:add, view)
+
     view_model = MiniTest::Mock.new
-    view_model.expect(:progress, "task progress")
-    view_model.expect(:id, 7)
-    view_model.expect(:name, "Saved task name")
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
-    assert_equal("Added task 7: 'Saved task name', task progress", @application.add("Some task", "some units"))
+    view.expect(:render, "Rendered task", [view_model])
+
+    assert_equal("Rendered task", @application.add("Some task", "some units"))
     @database.verify
   end
 
@@ -74,15 +80,15 @@ class TestApplication < Minitest::Test
     # TODO: Should :add just take a Task?
     @database.expect(:add, task, ["Some task", "some units", 42])
 
+    view = MiniTest::Mock.new
+    @view_selector.expect(:add, view)
+
     view_model = MiniTest::Mock.new
-    view_model.expect(:progress, "task progress")
-    view_model.expect(:id, 4)
-    view_model.expect(:name, "Saved task name")
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
-    assert_equal(
-      "Added task 4: 'Saved task name', task progress",
-      @application.add("Some task", "some units", 42))
+    view.expect(:render, "Rendered task", [view_model])
+
+    assert_equal("Rendered task", @application.add("Some task", "some units", 42))
     @database.verify
   end
 

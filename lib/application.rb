@@ -3,9 +3,10 @@ require_relative "view/view_selector"
 
 class Application
 
-  def initialize(database, renderer, view_model_factory)
+  def initialize(database, view_selector, renderer, view_model_factory)
     @database = database
     @renderer = renderer
+    @view_selector = view_selector
     @view_model_factory = view_model_factory
   end
 
@@ -18,8 +19,7 @@ class Application
   def add(task_name, units = nil, size = nil)
     task = @database.add(task_name, units, size)
     view_model = @view_model_factory.create_view_model(task)
-    # TODO: Extract to instance variable
-    view = ViewSelector.new.add
+    view = @view_selector.add
     # TODO: Move actual rendering onto Thor class
     view.render(view_model)
   end
