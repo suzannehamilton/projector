@@ -7,6 +7,24 @@ class TestTaskViewModel < Minitest::Test
     @view_model_factory = TaskViewModelFactory.new
   end
 
+  def test_id_is_nil_if_task_has_no_id
+    task = Task.new(nil, "some name", 0)
+    view_model = @view_model_factory.create_view_model(task)
+    assert_nil(view_model.id)
+  end
+
+  def test_id_is_task_id
+    task = Task.new(4, "some name", 0)
+    view_model = @view_model_factory.create_view_model(task)
+    assert_equal(4, view_model.id)
+  end
+
+  def test_name_is_task_name
+    task = Task.new(4, "some name", 0)
+    view_model = @view_model_factory.create_view_model(task)
+    assert_equal("some name", view_model.name)
+  end
+
   def test_task_with_no_units_renders_zero_percent_complete
     task = Task.new(7, "Saved task name", 0)
 

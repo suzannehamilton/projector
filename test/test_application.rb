@@ -45,6 +45,8 @@ class TestApplication < Minitest::Test
 
     view_model = MiniTest::Mock.new
     view_model.expect(:progress, "task progress")
+    view_model.expect(:id, 7)
+    view_model.expect(:name, "Saved task name")
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
     assert_equal("Added task 7: 'Saved task name', task progress", @application.add("Some task"))
@@ -57,6 +59,8 @@ class TestApplication < Minitest::Test
 
     view_model = MiniTest::Mock.new
     view_model.expect(:progress, "task progress")
+    view_model.expect(:id, 7)
+    view_model.expect(:name, "Saved task name")
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
     assert_equal("Added task 7: 'Saved task name', task progress", @application.add("Some task", "some units"))
@@ -72,6 +76,8 @@ class TestApplication < Minitest::Test
 
     view_model = MiniTest::Mock.new
     view_model.expect(:progress, "task progress")
+    view_model.expect(:id, 4)
+    view_model.expect(:name, "Saved task name")
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
     assert_equal(

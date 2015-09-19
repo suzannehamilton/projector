@@ -1,4 +1,5 @@
 require_relative "view/task_view_model"
+require_relative "view/view_selector"
 
 class Application
 
@@ -17,7 +18,10 @@ class Application
   def add(task_name, units = nil, size = nil)
     task = @database.add(task_name, units, size)
     view_model = @view_model_factory.create_view_model(task)
-    "Added task #{task.id}: '#{task.name}', #{view_model.progress}"
+    # TODO: Extract to instance variable
+    view = ViewSelector.new.add
+    # TODO: Move actual rendering onto Thor class
+    view.render(view_model)
   end
 
   def complete(task_id)

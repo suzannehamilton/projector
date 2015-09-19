@@ -11,6 +11,14 @@ class TaskViewModel
     @task = task
   end
 
+  def id
+    @task.id
+  end
+
+  def name
+    @task.name
+  end
+
   def progress
     size = @task.size.nil? ? 100 : @task.size
     # TODO: Push onto Task? Or Progress class within Task?
