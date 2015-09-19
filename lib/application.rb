@@ -40,8 +40,6 @@ class Application
   def update(task_id, progress)
     task = get_task(task_id)
 
-    validate_progress(progress, task.size)
-
     updated_task = Task.new(task.id, task.name, progress, task.units, task.size)
 
     if updated_task.complete?
@@ -78,16 +76,6 @@ class Application
       raise Thor::InvocationError.new("No task with number #{task_id}")
     else
       task
-    end
-  end
-
-  # TODO: Move lots of validation to Task.new and just convert exceptions to Thor exceptions?
-  def validate_progress(progress, task_size)
-    task_max_progress = task_size.nil? ? 100 : task_size
-
-    if progress < 0 || progress > task_max_progress
-      raise Thor::MalformattedArgumentError.new(
-        "Cannot update task. Expected progress between 0 and #{task_max_progress}, but got '#{progress}'")
     end
   end
 

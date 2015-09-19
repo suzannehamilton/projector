@@ -9,6 +9,7 @@ class Task
   def initialize(id, name, progress = 0, units = nil, size = nil)
     validate_id(id)
     validate_name(name)
+    validate_progress(progress, size)
 
     @id =  id
     @name = name
@@ -47,6 +48,15 @@ class Task
   def validate_name(name)
     if (name.nil?)
       raise ArgumentError.new("Task name must not be nil")
+    end
+  end
+
+  def validate_progress(progress, task_size)
+    task_max_progress = task_size.nil? ? 100 : task_size
+
+    if progress < 0 || progress > task_max_progress
+      raise Thor::MalformattedArgumentError.new(
+        "Cannot update task. Expected progress between 0 and #{task_max_progress}, but got '#{progress}'")
     end
   end
 end

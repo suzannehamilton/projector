@@ -47,9 +47,52 @@ class TestTask < Minitest::Test
     assert_equal(57, task.progress)
   end
 
+  def test_zero_progress_is_valid
+    task = Task.new(4, "some name", 0)
+    assert_equal(0, task.progress)
+  end
+
   def test_default_progress_is_zero
     task = Task.new(4, "some name")
     assert_equal(0, task.progress)
+  end
+
+  def test_negative_progress_is_invalid
+    e = assert_raises Thor::MalformattedArgumentError do
+      Task.new(1, "some name", -2)
+    end
+
+    assert(e.message.include?("-2"))
+  end
+
+  def test_negative_progress_of_task_with_custom_size_is_invalid
+    e = assert_raises Thor::MalformattedArgumentError do
+      Task.new(1, "some name", -2, "some units", 10)
+    end
+
+    assert(e.message.include?("-2"))
+  end
+
+  def test_progress_greater_than_100_percent_is_invalid
+    e = assert_raises Thor::MalformattedArgumentError do
+      Task.new(1, "some name", 101)
+    end
+
+    assert(e.message.include?("101"))
+  end
+
+  def test_progress_greater_than_100_is_valid_if_task_is_larger_than_100_units
+    task = Task.new(4, "some name", 120, "some units", 130)
+    assert_equal(120, task.progress)
+  end
+
+  def test_progress_greater_than_custom_task_size_is_invalid
+    e = assert_raises Thor::MalformattedArgumentError do
+      Task.new(1, "some name", 41, "some units", 40)
+    end
+
+    assert(e.message.include?("41"))
+    assert(e.message.include?("40"))
   end
 
   def test_can_get_units
@@ -58,7 +101,7 @@ class TestTask < Minitest::Test
   end
 
   def test_can_get_size
-    task = Task.new(1, "some name", 80, "some units", 4)
+    task = Task.new(1, "some name", 2, "some units", 4)
     assert_equal(4, task.size)
   end
 
