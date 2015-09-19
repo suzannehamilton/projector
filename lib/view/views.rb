@@ -1,26 +1,3 @@
-class ViewSelector
-  def add
-    # TODO: Keep static versions of these
-    AddView.new
-  end
-
-  def update
-    UpdateView.new
-  end
-
-  def complete
-    CompleteView.new
-  end
-
-  def units
-    UnitsView.new
-  end
-
-  def list
-    ListView.new
-  end
-end
-
 class AddView
   def render(task)
     "Added task #{task.id}: '#{task.name}', #{task.progress}"
@@ -55,4 +32,12 @@ class ListView
       [["id", "name", "progress"]].concat(rendered_tasks)
     end
   end
+end
+
+class Views
+  ADD = AddView.new
+  LIST = ListView.new
+  COMPLETE = CompleteView.new
+  UPDATE = UpdateView.new
+  UNITS = UnitsView.new
 end

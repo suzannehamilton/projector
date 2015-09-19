@@ -7,17 +7,14 @@ class TestApplication < Minitest::Test
 
   def setup
     @database = MiniTest::Mock.new
-    @view_selector = MiniTest::Mock.new
     @view_model_factory = MiniTest::Mock.new
-    @application = Application.new(@database, @view_selector, @view_model_factory)
+    @application = Application.new(@database, @view_model_factory)
   end
 
   def test_lists_no_tasks
     @database.expect(:list, [])
 
-    @view_selector.expect(:list, "some view")
-
-    assert_equal(ModelAndView.new([], "some view"), @application.list)
+    assert_equal(ModelAndView.new([], Views::LIST), @application.list)
   end
 
   def test_lists_single_task
@@ -28,10 +25,7 @@ class TestApplication < Minitest::Test
     view_model = "task view model"
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
-    # Constant, rather than mocking methods?
-    @view_selector.expect(:list, "some view")
-
-    assert_equal(ModelAndView.new([view_model], "some view"), @application.list)
+    assert_equal(ModelAndView.new([view_model], Views::LIST), @application.list)
   end
 
   def test_lists_multiple_tasks
@@ -48,21 +42,17 @@ class TestApplication < Minitest::Test
     @view_model_factory.expect(:create_view_model, view_model_2, [task2])
     @view_model_factory.expect(:create_view_model, view_model_3, [task3])
 
-    @view_selector.expect(:list, "some view")
-
-    assert_equal(ModelAndView.new([view_model_1, view_model_2, view_model_3], "some view"), @application.list)
+    assert_equal(ModelAndView.new([view_model_1, view_model_2, view_model_3], Views::LIST), @application.list)
   end
 
   def test_adding_a_task_to_list_adds_task_and_returns_task_details
     task = Task.new(7, "Saved task name", 0)
     @database.expect(:add, task, ["Some task", nil, nil])
 
-    @view_selector.expect(:add, "some view")
-
     view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
-    assert_equal(ModelAndView.new(view_model, "some view"), @application.add("Some task"))
+    assert_equal(ModelAndView.new(view_model, Views::ADD), @application.add("Some task"))
     @database.verify
   end
 
@@ -70,12 +60,10 @@ class TestApplication < Minitest::Test
     task = Task.new(7, "Saved task name", 0, "some units")
     @database.expect(:add, task, ["Some task", "some units", nil])
 
-    @view_selector.expect(:add, "some view")
-
     view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
-    assert_equal(ModelAndView.new(view_model, "some view"), @application.add("Some task", "some units"))
+    assert_equal(ModelAndView.new(view_model, Views::ADD), @application.add("Some task", "some units"))
     @database.verify
   end
 
@@ -86,12 +74,10 @@ class TestApplication < Minitest::Test
     # TODO: Should :add just take a Task?
     @database.expect(:add, task, ["Some task", "some units", 42])
 
-    @view_selector.expect(:add, "some view")
-
     view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
-    assert_equal(ModelAndView.new(view_model, "some view"), @application.add("Some task", "some units", 42))
+    assert_equal(ModelAndView.new(view_model, Views::ADD), @application.add("Some task", "some units", 42))
     @database.verify
   end
 
@@ -113,9 +99,8 @@ class TestApplication < Minitest::Test
     @database.expect(:delete, nil, [6])
 
     @view_model_factory.expect(:create_view_model, "some view model", [task])
-    @view_selector.expect(:complete, "some view")
 
-    assert_equal(ModelAndView.new("some view model", "some view"), @application.complete(6))
+    assert_equal(ModelAndView.new("some view model", Views::COMPLETE), @application.complete(6))
 
     @database.verify
   end
@@ -126,9 +111,8 @@ class TestApplication < Minitest::Test
     @database.expect(:save, nil, [updated_task])
 
     @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
-    @view_selector.expect(:update, "some view")
 
-    assert_equal(ModelAndView.new("some view model", "some view"), @application.update(4, 33))
+    assert_equal(ModelAndView.new("some view model", Views::UPDATE), @application.update(4, 33))
 
     @database.verify
   end
@@ -139,9 +123,8 @@ class TestApplication < Minitest::Test
     @database.expect(:save, nil, [updated_task])
 
     @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
-    @view_selector.expect(:update, "some view")
 
-    assert_equal(ModelAndView.new("some view model", "some view"), @application.update(4, 33))
+    assert_equal(ModelAndView.new("some view model", Views::UPDATE), @application.update(4, 33))
 
     @database.verify
   end
@@ -152,9 +135,8 @@ class TestApplication < Minitest::Test
     @database.expect(:save, nil, [updated_task])
 
     @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
-    @view_selector.expect(:update, "some view")
 
-    assert_equal(ModelAndView.new("some view model", "some view"), @application.update(4, 0))
+    assert_equal(ModelAndView.new("some view model", Views::UPDATE), @application.update(4, 0))
 
     @database.verify
   end
@@ -216,9 +198,8 @@ class TestApplication < Minitest::Test
     @database.expect(:delete, nil, [6])
 
     @view_model_factory.expect(:create_view_model, "some view model", [task])
-    @view_selector.expect(:complete, "some view")
 
-    assert_equal(ModelAndView.new("some view model", "some view"), @application.update(6, 100))
+    assert_equal(ModelAndView.new("some view model", Views::COMPLETE), @application.update(6, 100))
 
     @database.verify
   end
@@ -229,9 +210,8 @@ class TestApplication < Minitest::Test
     @database.expect(:save, nil, [updated_task])
 
     @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
-    @view_selector.expect(:units, "some view")
 
-    assert_equal(ModelAndView.new("some view model", "some view"), @application.units(4, "updated units"))
+    assert_equal(ModelAndView.new("some view model", Views::UNITS), @application.units(4, "updated units"))
 
     @database.verify
   end
@@ -242,9 +222,8 @@ class TestApplication < Minitest::Test
     @database.expect(:save, nil, [updated_task])
 
     @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
-    @view_selector.expect(:units, "some view")
 
-    assert_equal(ModelAndView.new("some view model", "some view"), @application.units(4, "updated units"))
+    assert_equal(ModelAndView.new("some view model", Views::UNITS), @application.units(4, "updated units"))
 
     @database.verify
   end
@@ -255,9 +234,8 @@ class TestApplication < Minitest::Test
     @database.expect(:save, nil, [updated_task])
 
     @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
-    @view_selector.expect(:units, "some view")
 
-    assert_equal(ModelAndView.new("some view model", "some view"), @application.units(4, "updated units"))
+    assert_equal(ModelAndView.new("some view model", Views::UNITS), @application.units(4, "updated units"))
 
     @database.verify
   end
@@ -268,9 +246,8 @@ class TestApplication < Minitest::Test
     @database.expect(:save, nil, [updated_task])
 
     @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
-    @view_selector.expect(:units, "some view")
 
-    assert_equal(ModelAndView.new("some view model", "some view"), @application.units(4, nil))
+    assert_equal(ModelAndView.new("some view model", Views::UNITS), @application.units(4, nil))
 
     @database.verify
   end
@@ -281,9 +258,8 @@ class TestApplication < Minitest::Test
     @database.expect(:save, nil, [updated_task])
 
     @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
-    @view_selector.expect(:units, "some view")
 
-    assert_equal(ModelAndView.new("some view model", "some view"), @application.units(4, nil))
+    assert_equal(ModelAndView.new("some view model", Views::UNITS), @application.units(4, nil))
 
     @database.verify
   end

@@ -1,11 +1,7 @@
 require "minitest/autorun"
-require "view/view_selector"
+require "view/views"
 
 class TestView < Minitest::Test
-
-  def setup
-    @view_selector = ViewSelector.new
-  end
 
   def test_renders_added_task
     task = MiniTest::Mock.new
@@ -13,7 +9,7 @@ class TestView < Minitest::Test
     task.expect(:name, "some name")
     task.expect(:progress, "some progress")
 
-    view = @view_selector.add
+    view = Views::ADD
 
     assert_equal("Added task 4: 'some name', some progress", view.render(task))
   end
@@ -24,7 +20,7 @@ class TestView < Minitest::Test
     task.expect(:name, "some name")
     task.expect(:progress, "some progress")
 
-    view = @view_selector.update
+    view = Views::UPDATE
 
     assert_equal("Updated task 4, 'some name' to some progress", view.render(task))
   end
@@ -34,7 +30,7 @@ class TestView < Minitest::Test
     task.expect(:id, 6)
     task.expect(:name, "some name")
 
-    view = @view_selector.complete
+    view = Views::COMPLETE
 
     assert_equal("Task 6 completed: \"some name\"", view.render(task))
   end
@@ -46,7 +42,7 @@ class TestView < Minitest::Test
     task.expect(:units, "some units")
     task.expect(:progress, "some progress")
 
-    view = @view_selector.units
+    view = Views::UNITS
 
     assert_equal(
       "Updated units of task 3, 'some name' to 'some units'. some progress",
@@ -54,7 +50,7 @@ class TestView < Minitest::Test
   end
 
   def test_renders_empty_task_list
-    view = @view_selector.list
+    view = Views::LIST
 
     assert_equal([["Nothing left to do!"]], view.render([]))
   end
@@ -65,7 +61,7 @@ class TestView < Minitest::Test
     task.expect(:name, "Some task")
     task.expect(:progress, "task progress")
 
-    view = @view_selector.list
+    view = Views::LIST
 
     assert_equal([
       ["id", "name", "progress"], [5, "Some task", "task progress"]],
@@ -83,7 +79,7 @@ class TestView < Minitest::Test
     task_2.expect(:name, "task 2")
     task_2.expect(:progress, "task 2 progress")
 
-    view = @view_selector.list
+    view = Views::LIST
 
     assert_equal(
       [["id", "name", "progress"], [1, "task 1", "task 1 progress"], [2, "task 2", "task 2 progress"]],

@@ -1,12 +1,11 @@
 require_relative "view/task_view_model"
-require_relative "view/view_selector"
+require_relative "view/views"
 require_relative "view/model_and_view"
 
 class Application
 
-  def initialize(database, view_selector, view_model_factory)
+  def initialize(database, view_model_factory)
     @database = database
-    @view_selector = view_selector
     @view_model_factory = view_model_factory
   end
 
@@ -15,7 +14,7 @@ class Application
 
     view_models = tasks.map { |t| @view_model_factory.create_view_model(t) }
 
-    ModelAndView.new(view_models, @view_selector.list)
+    ModelAndView.new(view_models, Views::LIST)
   end
 
   def add(task_name, units = nil, size = nil)
@@ -23,7 +22,7 @@ class Application
 
     view_model = @view_model_factory.create_view_model(task)
 
-    ModelAndView.new(view_model, @view_selector.add)
+    ModelAndView.new(view_model, Views::ADD)
   end
 
   def complete(task_id)
@@ -33,7 +32,7 @@ class Application
 
     view_model = @view_model_factory.create_view_model(task)
 
-    ModelAndView.new(view_model, @view_selector.complete)
+    ModelAndView.new(view_model, Views::COMPLETE)
   end
 
   def update(task_id, progress)
@@ -46,13 +45,13 @@ class Application
       @database.delete(task.id)
 
       view_model = @view_model_factory.create_view_model(task)
-      view = @view_selector.complete
+      view = Views::COMPLETE
     else
       updated_task = Task.new(task.id, task.name, progress, task.units, task.size)
       @database.save(updated_task)
 
       view_model = @view_model_factory.create_view_model(updated_task)
-      view = @view_selector.update
+      view = Views::UPDATE
     end
 
     ModelAndView.new(view_model, view)
@@ -68,9 +67,7 @@ class Application
 
     view_model = @view_model_factory.create_view_model(updated_task)
 
-    view = @view_selector.units
-
-    ModelAndView.new(view_model, view)
+    ModelAndView.new(view_model, Views::UNITS)
   end
 
   private
