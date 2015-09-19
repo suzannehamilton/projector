@@ -224,10 +224,18 @@ class TestApplication < Minitest::Test
   end
 
   def test_updating_progress_to_100_percent_marks_task_as_complete
-    @database.expect(:get, Task.new(6, "Shear the sheep", 55), [6])
+    task = Task.new(6, "Shear the sheep", 55)
+    @database.expect(:get, task, [6])
     @database.expect(:delete, nil, [6])
 
-    assert_equal("Task 6 completed: \"Shear the sheep\"", @application.update(6, 100))
+    view_model = MiniTest::Mock.new
+    @view_model_factory.expect(:create_view_model, view_model, [task])
+
+    view = MiniTest::Mock.new
+    @view_selector.expect(:complete, view)
+    view.expect(:render, "Rendered task", [view_model])
+
+    assert_equal("Rendered task", @application.update(6, 100))
 
     @database.verify
   end

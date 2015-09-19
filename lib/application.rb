@@ -44,16 +44,17 @@ class Application
     if (progress == 100)
       @database.delete(task.id)
 
-      "Task #{task.id} completed: \"#{task.name}\""
+      view_model = @view_model_factory.create_view_model(task)
+      view = @view_selector.complete
     else
       updated_task = Task.new(task.id, task.name, progress, task.units, task.size)
       @database.save(updated_task)
 
       view_model = @view_model_factory.create_view_model(updated_task)
-
       view = @view_selector.update
-      view.render(view_model)
     end
+
+    view.render(view_model)
   end
 
   def units(task_id, new_units)
