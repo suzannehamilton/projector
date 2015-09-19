@@ -18,7 +18,8 @@ class Application
   end
 
   def add(task_name, units = nil, size = nil)
-    # TODO: Validate size cannot be zero or negative
+    validate_task_size(size)
+
     task = @database.add(task_name, units, size)
 
     view_model = @view_model_factory.create_view_model(task)
@@ -91,6 +92,13 @@ class Application
     if progress < 0 || progress > task_max_progress
       raise Thor::MalformattedArgumentError.new(
         "Cannot update task. Expected progress between 0 and #{task_max_progress}, but got '#{progress}'")
+    end
+  end
+
+  def validate_task_size(task_size)
+    if !task_size.nil? && task_size <= 0
+      raise Thor::MalformattedArgumentError.new(
+        "Cannot create task. Task size must be a postive value, but got '#{task_size}'")
     end
   end
 end
