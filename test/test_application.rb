@@ -48,7 +48,7 @@ class TestApplication < Minitest::Test
     view = MiniTest::Mock.new
     @view_selector.expect(:add, view)
 
-    view_model = MiniTest::Mock.new
+    view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
     view.expect(:render, "Rendered task", [view_model])
@@ -64,7 +64,7 @@ class TestApplication < Minitest::Test
     view = MiniTest::Mock.new
     @view_selector.expect(:add, view)
 
-    view_model = MiniTest::Mock.new
+    view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
     view.expect(:render, "Rendered task", [view_model])
@@ -83,7 +83,7 @@ class TestApplication < Minitest::Test
     view = MiniTest::Mock.new
     @view_selector.expect(:add, view)
 
-    view_model = MiniTest::Mock.new
+    view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
     view.expect(:render, "Rendered task", [view_model])
@@ -109,7 +109,7 @@ class TestApplication < Minitest::Test
     @database.expect(:get, task, [6])
     @database.expect(:delete, nil, [6])
 
-    view_model = MiniTest::Mock.new
+    view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
     view = MiniTest::Mock.new
@@ -126,7 +126,7 @@ class TestApplication < Minitest::Test
     updated_task = Task.new(4, "Some task name", 33)
     @database.expect(:save, nil, [updated_task])
 
-    view_model = MiniTest::Mock.new
+    view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [updated_task])
 
     view = MiniTest::Mock.new
@@ -143,7 +143,7 @@ class TestApplication < Minitest::Test
     updated_task = Task.new(4, "Some task name", 33, "some units", 60)
     @database.expect(:save, nil, [updated_task])
 
-    view_model = MiniTest::Mock.new
+    view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [updated_task])
 
     view = MiniTest::Mock.new
@@ -160,7 +160,7 @@ class TestApplication < Minitest::Test
     updated_task = Task.new(4, "Some task name", 0)
     @database.expect(:save, nil, [updated_task])
 
-    view_model = MiniTest::Mock.new
+    view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [updated_task])
 
     view = MiniTest::Mock.new
@@ -228,7 +228,7 @@ class TestApplication < Minitest::Test
     @database.expect(:get, task, [6])
     @database.expect(:delete, nil, [6])
 
-    view_model = MiniTest::Mock.new
+    view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
     view = MiniTest::Mock.new
@@ -245,7 +245,7 @@ class TestApplication < Minitest::Test
     updated_task = Task.new(4, "Task name", 0, "updated units")
     @database.expect(:save, nil, [updated_task])
 
-    view_model = MiniTest::Mock.new
+    view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [updated_task])
 
     view = MiniTest::Mock.new
@@ -262,7 +262,7 @@ class TestApplication < Minitest::Test
     updated_task = Task.new(4, "Task name", 80, "updated units")
     @database.expect(:save, nil, [updated_task])
 
-    view_model = MiniTest::Mock.new
+    view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [updated_task])
 
     view = MiniTest::Mock.new
@@ -279,7 +279,7 @@ class TestApplication < Minitest::Test
     updated_task = Task.new(4, "Task name", 80, "updated units", 152)
     @database.expect(:save, nil, [updated_task])
 
-    view_model = MiniTest::Mock.new
+    view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [updated_task])
 
     view = MiniTest::Mock.new
@@ -296,7 +296,7 @@ class TestApplication < Minitest::Test
     updated_task = Task.new(4, "Task name", 0)
     @database.expect(:save, nil, [updated_task])
 
-    view_model = MiniTest::Mock.new
+    view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [updated_task])
 
     view = MiniTest::Mock.new
@@ -313,7 +313,7 @@ class TestApplication < Minitest::Test
     updated_task = Task.new(4, "Task name", 0)
     @database.expect(:save, nil, [updated_task])
 
-    view_model = MiniTest::Mock.new
+    view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [updated_task])
 
     view = MiniTest::Mock.new
