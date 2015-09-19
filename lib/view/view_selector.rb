@@ -15,6 +15,10 @@ class ViewSelector
   def units
     UnitsView.new
   end
+
+  def list
+    ListView.new
+  end
 end
 
 class AddView
@@ -38,5 +42,11 @@ end
 class UnitsView
   def render(task)
     "Updated units of task #{task.id}, '#{task.name}' to '#{task.units}'. #{task.progress}"
+  end
+end
+
+class ListView
+  def render(tasks)
+    tasks.map { |t| [t.id, t.name, t.progress] }
   end
 end

@@ -1,6 +1,5 @@
 require_relative "application"
 require_relative "database_resolver"
-require_relative "view/renderer"
 require_relative "view/view_selector"
 require_relative "view/task_view_model"
 
@@ -14,8 +13,7 @@ class CliInitializer
     database = DatabaseResolver.new.get_database
     view_selector = ViewSelector.new
     task_view_model_factory = TaskViewModelFactory.new
-    renderer = Renderer.new(task_view_model_factory)
 
-    return Application.new(database, view_selector, renderer, task_view_model_factory)
+    return Application.new(database, view_selector, task_view_model_factory)
   end
 end

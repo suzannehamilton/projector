@@ -52,4 +52,37 @@ class TestView < Minitest::Test
       "Updated units of task 3, 'some name' to 'some units'. some progress",
       view.render(task))
   end
+
+  def test_renders_empty_task_list
+    view = @view_selector.list
+
+    assert_equal([], view.render([]))
+  end
+
+  def test_renders_single_task
+    task = MiniTest::Mock.new
+    task.expect(:id, 5)
+    task.expect(:name, "Some task")
+    task.expect(:progress, "task progress")
+
+    view = @view_selector.list
+
+    assert_equal([[5, "Some task", "task progress"]], view.render([task]))
+  end
+
+  def test_renders_multiple_tasks
+    task_1 = MiniTest::Mock.new
+    task_1.expect(:id, 1)
+    task_1.expect(:name, "task 1")
+    task_1.expect(:progress, "task 1 progress")
+
+    task_2 = MiniTest::Mock.new
+    task_2.expect(:id, 2)
+    task_2.expect(:name, "task 2")
+    task_2.expect(:progress, "task 2 progress")
+
+    view = @view_selector.list
+
+    assert_equal([[1, "task 1", "task 1 progress"], [2, "task 2", "task 2 progress"]], view.render([task_1, task_2]))
+  end
 end

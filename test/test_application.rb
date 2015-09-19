@@ -6,25 +6,35 @@ class TestApplication < Minitest::Test
 
   def setup
     @database = MiniTest::Mock.new
-    # TODO: Combine renderer and view selector?
-    @renderer = MiniTest::Mock.new
     @view_selector = MiniTest::Mock.new
     @view_model_factory = MiniTest::Mock.new
-    @application = Application.new(@database, @view_selector, @renderer, @view_model_factory)
+    @application = Application.new(@database, @view_selector, @view_model_factory)
   end
 
-  def test_listing_empty_task_list_identifies_that_no_tasks_are_available
+  def test_lists_no_tasks
     @database.expect(:list, [])
-    assert_equal([], @application.list)
+
+    view = MiniTest::Mock.new
+    @view_selector.expect(:list, view)
+
+    view.expect(:render, "rendered task list", [[]])
+
+    assert_equal("rendered task list", @application.list)
   end
 
   def test_lists_single_task
     task = Task.new(5, "Some task", 12)
 
     @database.expect(:list, [task])
-    @renderer.expect(:render, "Rendered task", [task])
 
-    assert_equal(["Rendered task"], @application.list)
+    view_model = "task view model"
+    @view_model_factory.expect(:create_view_model, view_model, [task])
+
+    view = MiniTest::Mock.new
+    @view_selector.expect(:list, view)
+    view.expect(:render, "rendered task list", [["task view model"]])
+
+    assert_equal("rendered task list", @application.list)
   end
 
   def test_lists_multiple_tasks
@@ -34,11 +44,18 @@ class TestApplication < Minitest::Test
 
     @database.expect(:list, [task1, task2, task3])
 
-    @renderer.expect(:render, "Rendered task 1", [task1])
-    @renderer.expect(:render, "Rendered task 2", [task2])
-    @renderer.expect(:render, "Rendered task 3", [task3])
+    view_model_1 = "task view model 1"
+    view_model_2 = "task view model 1"
+    view_model_3 = "task view model 1"
+    @view_model_factory.expect(:create_view_model, view_model_1, [task1])
+    @view_model_factory.expect(:create_view_model, view_model_2, [task2])
+    @view_model_factory.expect(:create_view_model, view_model_3, [task3])
 
-    assert_equal(["Rendered task 1", "Rendered task 2", "Rendered task 3"], @application.list)
+    view = MiniTest::Mock.new
+    @view_selector.expect(:list, view)
+    view.expect(:render, "rendered task list", [[view_model_1, view_model_2, view_model_3]])
+
+    assert_equal("rendered task list", @application.list)
   end
 
   def test_adding_a_task_to_list_adds_task_and_returns_task_details
