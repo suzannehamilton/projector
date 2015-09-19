@@ -69,7 +69,8 @@ class Application
     view_model = @view_model_factory.create_view_model(updated_task)
 
     view = @view_selector.units
-    view.render(view_model)
+
+    ModelAndView.new(view_model, view)
   end
 
   private

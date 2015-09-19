@@ -28,6 +28,7 @@ class TestApplication < Minitest::Test
     view_model = "task view model"
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
+    # Constant, rather than mocking methods?
     @view_selector.expect(:list, "some view")
 
     assert_equal(ModelAndView.new([view_model], "some view"), @application.list)
@@ -227,14 +228,10 @@ class TestApplication < Minitest::Test
     updated_task = Task.new(4, "Task name", 0, "updated units")
     @database.expect(:save, nil, [updated_task])
 
-    view_model = "some view model"
-    @view_model_factory.expect(:create_view_model, view_model, [updated_task])
+    @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
+    @view_selector.expect(:units, "some view")
 
-    view = MiniTest::Mock.new
-    @view_selector.expect(:units, view)
-    view.expect(:render, "Rendered task", [view_model])
-
-    assert_equal("Rendered task", @application.units(4, "updated units"))
+    assert_equal(ModelAndView.new("some view model", "some view"), @application.units(4, "updated units"))
 
     @database.verify
   end
@@ -244,14 +241,10 @@ class TestApplication < Minitest::Test
     updated_task = Task.new(4, "Task name", 80, "updated units")
     @database.expect(:save, nil, [updated_task])
 
-    view_model = "some view model"
-    @view_model_factory.expect(:create_view_model, view_model, [updated_task])
+    @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
+    @view_selector.expect(:units, "some view")
 
-    view = MiniTest::Mock.new
-    @view_selector.expect(:units, view)
-    view.expect(:render, "Rendered task", [view_model])
-
-    assert_equal("Rendered task", @application.units(4, "updated units"))
+    assert_equal(ModelAndView.new("some view model", "some view"), @application.units(4, "updated units"))
 
     @database.verify
   end
@@ -261,14 +254,10 @@ class TestApplication < Minitest::Test
     updated_task = Task.new(4, "Task name", 80, "updated units", 152)
     @database.expect(:save, nil, [updated_task])
 
-    view_model = "some view model"
-    @view_model_factory.expect(:create_view_model, view_model, [updated_task])
+    @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
+    @view_selector.expect(:units, "some view")
 
-    view = MiniTest::Mock.new
-    @view_selector.expect(:units, view)
-    view.expect(:render, "Rendered task", [view_model])
-
-    assert_equal("Rendered task", @application.units(4, "updated units"))
+    assert_equal(ModelAndView.new("some view model", "some view"), @application.units(4, "updated units"))
 
     @database.verify
   end
@@ -278,14 +267,10 @@ class TestApplication < Minitest::Test
     updated_task = Task.new(4, "Task name", 0)
     @database.expect(:save, nil, [updated_task])
 
-    view_model = "some view model"
-    @view_model_factory.expect(:create_view_model, view_model, [updated_task])
+    @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
+    @view_selector.expect(:units, "some view")
 
-    view = MiniTest::Mock.new
-    @view_selector.expect(:units, view)
-    view.expect(:render, "Rendered task", [view_model])
-
-    assert_equal("Rendered task", @application.units(4, nil))
+    assert_equal(ModelAndView.new("some view model", "some view"), @application.units(4, nil))
 
     @database.verify
   end
@@ -295,14 +280,10 @@ class TestApplication < Minitest::Test
     updated_task = Task.new(4, "Task name", 0)
     @database.expect(:save, nil, [updated_task])
 
-    view_model = "some view model"
-    @view_model_factory.expect(:create_view_model, view_model, [updated_task])
+    @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
+    @view_selector.expect(:units, "some view")
 
-    view = MiniTest::Mock.new
-    @view_selector.expect(:units, view)
-    view.expect(:render, "Rendered task", [view_model])
-
-    assert_equal("Rendered task", @application.units(4, nil))
+    assert_equal(ModelAndView.new("some view model", "some view"), @application.units(4, nil))
 
     @database.verify
   end
