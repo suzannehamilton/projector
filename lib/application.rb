@@ -27,7 +27,12 @@ class Application
   def complete(task_id)
     task = get_task(task_id)
 
-    complete_task(task)
+    @database.delete(task.id)
+
+    view_model = @view_model_factory.create_view_model(task)
+
+    view = @view_selector.complete
+    view.render(view_model)
   end
 
   def update(task_id, progress)
@@ -37,7 +42,9 @@ class Application
 
     # TODO: Handle completed progress for tasks with custom size
     if (progress == 100)
-      complete_task(task)
+      @database.delete(task.id)
+
+      "Task #{task.id} completed: \"#{task.name}\""
     else
       updated_task = Task.new(task.id, task.name, progress, task.units, task.size)
       @database.save(updated_task)
@@ -82,11 +89,5 @@ class Application
       raise Thor::MalformattedArgumentError.new(
         "Cannot update task. Expected progress between 0 and #{task_max_progress}, but got '#{progress}'")
     end
-  end
-
-  def complete_task(task)
-    @database.delete(task.id)
-
-    "Task #{task.id} completed: \"#{task.name}\""
   end
 end

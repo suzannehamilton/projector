@@ -7,6 +7,10 @@ class ViewSelector
   def update
     UpdateView.new
   end
+
+  def complete
+    CompleteView.new
+  end
 end
 
 class AddView
@@ -18,5 +22,11 @@ end
 class UpdateView
   def render(task)
     "Updated task #{task.id}, '#{task.name}' to #{task.progress}"
+  end
+end
+
+class CompleteView
+  def render(task)
+    "Task #{task.id} completed: \"#{task.name}\""
   end
 end

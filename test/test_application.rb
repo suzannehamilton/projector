@@ -105,10 +105,18 @@ class TestApplication < Minitest::Test
   end
 
   def test_can_complete_a_task
-    @database.expect(:get, Task.new(6, "Shear the sheep", 55), [6])
+    task = Task.new(6, "Shear the sheep", 55)
+    @database.expect(:get, task, [6])
     @database.expect(:delete, nil, [6])
 
-    assert_equal("Task 6 completed: \"Shear the sheep\"", @application.complete(6))
+    view_model = MiniTest::Mock.new
+    @view_model_factory.expect(:create_view_model, view_model, [task])
+
+    view = MiniTest::Mock.new
+    @view_selector.expect(:complete, view)
+    view.expect(:render, "Rendered task", [view_model])
+
+    assert_equal("Rendered task", @application.complete(6))
 
     @database.verify
   end
