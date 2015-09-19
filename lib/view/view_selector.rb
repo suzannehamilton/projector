@@ -11,6 +11,10 @@ class ViewSelector
   def complete
     CompleteView.new
   end
+
+  def units
+    UnitsView.new
+  end
 end
 
 class AddView
@@ -28,5 +32,11 @@ end
 class CompleteView
   def render(task)
     "Task #{task.id} completed: \"#{task.name}\""
+  end
+end
+
+class UnitsView
+  def render(task)
+    "Updated units of task #{task.id}, '#{task.name}' to '#{task.units}'. #{task.progress}"
   end
 end

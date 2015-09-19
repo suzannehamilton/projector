@@ -67,7 +67,8 @@ class Application
 
     view_model = @view_model_factory.create_view_model(updated_task)
 
-    "Updated units of task #{task_id}, '#{task.name}' to '#{view_model.units}'. #{view_model.progress}"
+    view = @view_selector.units
+    view.render(view_model)
   end
 
   private

@@ -246,13 +246,13 @@ class TestApplication < Minitest::Test
     @database.expect(:save, nil, [updated_task])
 
     view_model = MiniTest::Mock.new
-    view_model.expect(:progress, "updated task progress")
-    view_model.expect(:units, "rendered units")
     @view_model_factory.expect(:create_view_model, view_model, [updated_task])
 
-    assert_equal(
-      "Updated units of task 4, 'Task name' to 'rendered units'. updated task progress",
-      @application.units(4, "updated units"))
+    view = MiniTest::Mock.new
+    @view_selector.expect(:units, view)
+    view.expect(:render, "Rendered task", [view_model])
+
+    assert_equal("Rendered task", @application.units(4, "updated units"))
 
     @database.verify
   end
@@ -263,13 +263,13 @@ class TestApplication < Minitest::Test
     @database.expect(:save, nil, [updated_task])
 
     view_model = MiniTest::Mock.new
-    view_model.expect(:progress, "updated task progress")
-    view_model.expect(:units, "rendered units")
     @view_model_factory.expect(:create_view_model, view_model, [updated_task])
 
-    assert_equal(
-      "Updated units of task 4, 'Task name' to 'rendered units'. updated task progress",
-      @application.units(4, "updated units"))
+    view = MiniTest::Mock.new
+    @view_selector.expect(:units, view)
+    view.expect(:render, "Rendered task", [view_model])
+
+    assert_equal("Rendered task", @application.units(4, "updated units"))
 
     @database.verify
   end
@@ -280,13 +280,13 @@ class TestApplication < Minitest::Test
     @database.expect(:save, nil, [updated_task])
 
     view_model = MiniTest::Mock.new
-    view_model.expect(:progress, "updated task progress")
-    view_model.expect(:units, "rendered units")
     @view_model_factory.expect(:create_view_model, view_model, [updated_task])
 
-    assert_equal(
-      "Updated units of task 4, 'Task name' to 'rendered units'. updated task progress",
-      @application.units(4, "updated units"))
+    view = MiniTest::Mock.new
+    @view_selector.expect(:units, view)
+    view.expect(:render, "Rendered task", [view_model])
+
+    assert_equal("Rendered task", @application.units(4, "updated units"))
 
     @database.verify
   end
@@ -297,13 +297,13 @@ class TestApplication < Minitest::Test
     @database.expect(:save, nil, [updated_task])
 
     view_model = MiniTest::Mock.new
-    view_model.expect(:progress, "updated task progress")
-    view_model.expect(:units, "rendered units")
     @view_model_factory.expect(:create_view_model, view_model, [updated_task])
 
-    assert_equal(
-      "Updated units of task 4, 'Task name' to 'rendered units'. updated task progress",
-      @application.units(4, nil))
+    view = MiniTest::Mock.new
+    @view_selector.expect(:units, view)
+    view.expect(:render, "Rendered task", [view_model])
+
+    assert_equal("Rendered task", @application.units(4, nil))
 
     @database.verify
   end
@@ -314,13 +314,13 @@ class TestApplication < Minitest::Test
     @database.expect(:save, nil, [updated_task])
 
     view_model = MiniTest::Mock.new
-    view_model.expect(:progress, "updated task progress")
-    view_model.expect(:units, "rendered units")
     @view_model_factory.expect(:create_view_model, view_model, [updated_task])
 
-    assert_equal(
-      "Updated units of task 4, 'Task name' to 'rendered units'. updated task progress",
-      @application.units(4, nil))
+    view = MiniTest::Mock.new
+    @view_selector.expect(:units, view)
+    view.expect(:render, "Rendered task", [view_model])
+
+    assert_equal("Rendered task", @application.units(4, nil))
 
     @database.verify
   end

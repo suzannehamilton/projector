@@ -38,4 +38,18 @@ class TestView < Minitest::Test
 
     assert_equal("Task 6 completed: \"some name\"", view.render(task))
   end
+
+  def test_renders_units_update
+    task = MiniTest::Mock.new
+    task.expect(:id, 3)
+    task.expect(:name, "some name")
+    task.expect(:units, "some units")
+    task.expect(:progress, "some progress")
+
+    view = @view_selector.units
+
+    assert_equal(
+      "Updated units of task 3, 'some name' to 'some units'. some progress",
+      view.render(task))
+  end
 end
