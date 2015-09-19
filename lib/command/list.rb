@@ -7,11 +7,6 @@ class List < Thor::Group
   end
 
   def list
-    tasks = @application.list
-    if tasks.empty?
-      say "Nothing left to do!"
-    else
-      print_table [["id", "name", "progress"]].concat(tasks)
-    end
+    print_table @application.list.render
   end
 end

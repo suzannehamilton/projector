@@ -1,5 +1,6 @@
 require_relative "view/task_view_model"
 require_relative "view/view_selector"
+require_relative "view/model_and_view"
 
 class Application
 
@@ -14,8 +15,7 @@ class Application
 
     view_models = tasks.map { |t| @view_model_factory.create_view_model(t) }
 
-    view = @view_selector.list
-    view.render(view_models)
+    ModelAndView.new(view_models, @view_selector.list)
   end
 
   def add(task_name, units = nil, size = nil)

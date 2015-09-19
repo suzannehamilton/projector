@@ -56,7 +56,7 @@ class TestView < Minitest::Test
   def test_renders_empty_task_list
     view = @view_selector.list
 
-    assert_equal([], view.render([]))
+    assert_equal([["Nothing left to do!"]], view.render([]))
   end
 
   def test_renders_single_task
@@ -67,7 +67,9 @@ class TestView < Minitest::Test
 
     view = @view_selector.list
 
-    assert_equal([[5, "Some task", "task progress"]], view.render([task]))
+    assert_equal([
+      ["id", "name", "progress"], [5, "Some task", "task progress"]],
+      view.render([task]))
   end
 
   def test_renders_multiple_tasks
@@ -83,6 +85,8 @@ class TestView < Minitest::Test
 
     view = @view_selector.list
 
-    assert_equal([[1, "task 1", "task 1 progress"], [2, "task 2", "task 2 progress"]], view.render([task_1, task_2]))
+    assert_equal(
+      [["id", "name", "progress"], [1, "task 1", "task 1 progress"], [2, "task 2", "task 2 progress"]],
+      view.render([task_1, task_2]))
   end
 end

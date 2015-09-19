@@ -47,6 +47,12 @@ end
 
 class ListView
   def render(tasks)
-    tasks.map { |t| [t.id, t.name, t.progress] }
+    if tasks.empty?
+      # TODO: Find a better way of rendering a message vs a table
+      [["Nothing left to do!"]]
+    else
+      rendered_tasks = tasks.map { |t| [t.id, t.name, t.progress] }
+      [["id", "name", "progress"]].concat(rendered_tasks)
+    end
   end
 end

@@ -1,6 +1,7 @@
 require "minitest/autorun"
 require "thor"
 require "application"
+require "view/model_and_view"
 
 class TestApplication < Minitest::Test
 
@@ -14,12 +15,9 @@ class TestApplication < Minitest::Test
   def test_lists_no_tasks
     @database.expect(:list, [])
 
-    view = MiniTest::Mock.new
-    @view_selector.expect(:list, view)
+    @view_selector.expect(:list, "some view")
 
-    view.expect(:render, "rendered task list", [[]])
-
-    assert_equal("rendered task list", @application.list)
+    assert_equal(ModelAndView.new([], "some view"), @application.list)
   end
 
   def test_lists_single_task
@@ -30,11 +28,9 @@ class TestApplication < Minitest::Test
     view_model = "task view model"
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
-    view = MiniTest::Mock.new
-    @view_selector.expect(:list, view)
-    view.expect(:render, "rendered task list", [["task view model"]])
+    @view_selector.expect(:list, "some view")
 
-    assert_equal("rendered task list", @application.list)
+    assert_equal(ModelAndView.new([view_model], "some view"), @application.list)
   end
 
   def test_lists_multiple_tasks
@@ -51,11 +47,9 @@ class TestApplication < Minitest::Test
     @view_model_factory.expect(:create_view_model, view_model_2, [task2])
     @view_model_factory.expect(:create_view_model, view_model_3, [task3])
 
-    view = MiniTest::Mock.new
-    @view_selector.expect(:list, view)
-    view.expect(:render, "rendered task list", [[view_model_1, view_model_2, view_model_3]])
+    @view_selector.expect(:list, "some view")
 
-    assert_equal("rendered task list", @application.list)
+    assert_equal(ModelAndView.new([view_model_1, view_model_2, view_model_3], "some view"), @application.list)
   end
 
   def test_adding_a_task_to_list_adds_task_and_returns_task_details
