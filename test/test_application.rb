@@ -204,6 +204,18 @@ class TestApplication < Minitest::Test
     @database.verify
   end
 
+  def test_updating_progress_to_size_of_task_marks_task_as_complete
+    task = Task.new(6, "Some task name", 0, "some units", 14)
+    @database.expect(:get, task, [6])
+    @database.expect(:delete, nil, [6])
+
+    @view_model_factory.expect(:create_view_model, "some view model", [task])
+
+    assert_equal(ModelAndView.new("some view model", Views::COMPLETE), @application.update(6, 14))
+
+    @database.verify
+  end
+
   def test_can_update_units_of_task_with_no_progress
     @database.expect(:get, Task.new(4, "Task name", 0), [4])
     updated_task = Task.new(4, "Task name", 0, "updated units")

@@ -18,6 +18,7 @@ class Application
   end
 
   def add(task_name, units = nil, size = nil)
+    # TODO: Validate size cannot be zero or negative
     task = @database.add(task_name, units, size)
 
     view_model = @view_model_factory.create_view_model(task)
@@ -40,14 +41,15 @@ class Application
 
     validate_progress(progress, task.size)
 
-    # TODO: Handle completed progress for tasks with custom size
-    if (progress == 100)
+    updated_task = Task.new(task.id, task.name, progress, task.units, task.size)
+
+    if updated_task.complete?
       @database.delete(task.id)
 
+      # TODO: Use updated_task rather than task for consistency
       view_model = @view_model_factory.create_view_model(task)
       view = Views::COMPLETE
     else
-      updated_task = Task.new(task.id, task.name, progress, task.units, task.size)
       @database.save(updated_task)
 
       view_model = @view_model_factory.create_view_model(updated_task)

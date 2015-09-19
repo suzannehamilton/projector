@@ -18,6 +18,10 @@ class Task
     @size = size
   end
 
+  def complete?
+    @progress == (@size.nil? ? 100 : @size)
+  end
+
   def ==(o)
     o.class == self.class &&
       o.name == @name &&

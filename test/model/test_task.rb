@@ -45,4 +45,34 @@ class TestTask < Minitest::Test
     task = Task.new(1, "some name", 80, "some units", 4)
     assert_equal(4, task.size)
   end
+
+  def test_task_with_zero_percent_progress_is_not_complete
+    task = Task.new(1, "some name", 0)
+    refute task.complete?
+  end
+
+  def test_task_with_zero_progress_is_not_complete
+    task = Task.new(1, "some name", 0, "some units", 20)
+    refute task.complete?
+  end
+
+  def test_task_with_less_than_100_percent_progress_is_not_complete
+    task = Task.new(1, "some name", 99)
+    refute task.complete?
+  end
+
+  def test_task_with_less_than_full_progress_is_not_complete
+    task = Task.new(1, "some name", 19, "some units", 20)
+    refute task.complete?
+  end
+
+  def test_task_with_100_percent_progress_is_complete
+    task = Task.new(1, "some name", 100)
+    assert task.complete?
+  end
+
+  def test_task_with_full_progress_is_complete
+    task = Task.new(1, "some name", 67, "some units", 67)
+    assert task.complete?
+  end
 end
