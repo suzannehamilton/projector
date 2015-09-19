@@ -90,11 +90,11 @@ class TestApplication < Minitest::Test
     view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [task])
 
-    assert_equal(ModelAndView.new(view_model, "some view"), @application.add("Some task", "some units", 42) )
+    assert_equal(ModelAndView.new(view_model, "some view"), @application.add("Some task", "some units", 42))
     @database.verify
   end
 
-  def test_cannot_remove_non_existent_task
+  def test_cannot_complete_non_existent_task
     @database.expect(:get, nil, [4])
 
     e = assert_raises Thor::InvocationError do
@@ -111,14 +111,10 @@ class TestApplication < Minitest::Test
     @database.expect(:get, task, [6])
     @database.expect(:delete, nil, [6])
 
-    view_model = "some view model"
-    @view_model_factory.expect(:create_view_model, view_model, [task])
+    @view_model_factory.expect(:create_view_model, "some view model", [task])
+    @view_selector.expect(:complete, "some view")
 
-    view = MiniTest::Mock.new
-    @view_selector.expect(:complete, view)
-    view.expect(:render, "Rendered task", [view_model])
-
-    assert_equal("Rendered task", @application.complete(6))
+    assert_equal(ModelAndView.new("some view model", "some view"), @application.complete(6))
 
     @database.verify
   end

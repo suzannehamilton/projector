@@ -33,8 +33,7 @@ class Application
 
     view_model = @view_model_factory.create_view_model(task)
 
-    view = @view_selector.complete
-    view.render(view_model)
+    ModelAndView.new(view_model, @view_selector.complete)
   end
 
   def update(task_id, progress)
