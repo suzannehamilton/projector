@@ -47,7 +47,8 @@ class TestApplication < Minitest::Test
 
   def test_adding_a_task_to_list_adds_task_and_returns_task_details
     task = Task.new(7, "Saved task name", 0)
-    @database.expect(:add, task, ["Some task", nil, nil])
+    # TODO: Create builder for task
+    @database.expect(:add, task, [Task.new(nil, "Some task", 0)])
 
     view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [task])
@@ -58,7 +59,7 @@ class TestApplication < Minitest::Test
 
   def test_can_add_task_with_units
     task = Task.new(7, "Saved task name", 0, "some units")
-    @database.expect(:add, task, ["Some task", "some units", nil])
+    @database.expect(:add, task, [Task.new(nil, "Some task", 0, "some units", nil)])
 
     view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [task])
@@ -71,8 +72,7 @@ class TestApplication < Minitest::Test
 
   def test_can_add_task_with_units_and_size
     task = Task.new(4, "Saved task name", 0, "some units", 42)
-    # TODO: Should :add just take a Task?
-    @database.expect(:add, task, ["Some task", "some units", 42])
+    @database.expect(:add, task, [Task.new(nil, "Some task", 0, "some units", 42)])
 
     view_model = "some view model"
     @view_model_factory.expect(:create_view_model, view_model, [task])

@@ -24,8 +24,8 @@ class Database
       .map { |r| Task.new(r[0], r[1], r[2], r[3], r[4]) }
   end
 
-  def add(name, units = nil, size = nil)
-    @db.execute("insert into task values ( ?, ?, ?, ? )", name, 0, units, size)
+  def add(task)
+    @db.execute("insert into task values ( ?, ?, ?, ? )", task.name, 0, task.units, task.size)
     new_task_id = @db.last_insert_row_id()
     get(new_task_id)
   end

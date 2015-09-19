@@ -6,7 +6,7 @@ class Task
   attr_reader :units
   attr_reader :size
 
-  def initialize(id, name, progress, units = nil, size = nil)
+  def initialize(id, name, progress = 0, units = nil, size = nil)
     if (!id.nil? && id <= 0)
       raise ArgumentError.new("Task ID must be nil or a positive integer, but was '#{id}'")
     end

@@ -20,7 +20,7 @@ class Application
   def add(task_name, units = nil, size = nil)
     validate_task_size(size)
 
-    task = @database.add(task_name, units, size)
+    task = @database.add(Task.new(nil, task_name, 0, units, size))
 
     view_model = @view_model_factory.create_view_model(task)
 

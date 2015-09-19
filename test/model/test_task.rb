@@ -39,6 +39,11 @@ class TestTask < Minitest::Test
     assert_equal(57, task.progress)
   end
 
+  def test_default_progress_is_zero
+    task = Task.new(4, "some name")
+    assert_equal(0, task.progress)
+  end
+
   def test_can_get_units
     task = Task.new(7, "some name", 33, "some units")
     assert_equal("some units", task.units)

@@ -19,39 +19,41 @@ class TestDatabase < Minitest::Test
   end
 
   def test_can_add_a_single_task
-    task = @database.add("Some task")
-    assert_equal(Task.new(1, "Some task", 0), task)
+    task = @database.add(Task.new(nil, "Some task"))
+    assert_equal(Task.new(1, "Some task"), task)
   end
 
   def test_can_add_a_single_task_with_units
-    task = @database.add("Some task", "some units")
+    task = @database.add(Task.new(nil, "Some task", 0, "some units"))
     assert_equal(Task.new(1, "Some task", 0, "some units"), task)
   end
 
   def test_can_add_a_single_task_with_units_and_size
-    task = @database.add("Some task", "some units", 55)
+    task = @database.add(Task.new(nil, "Some task", 0, "some units", 55))
     assert_equal(Task.new(1, "Some task", 0, "some units", 55), task)
   end
 
+  # TODO: Test that adding a task with an existing ID is rejected
+
   def test_lists_single_task
-    @database.add("Some task")
-    assert_equal([Task.new(1, "Some task", 0)], @database.list)
+    @database.add(Task.new(nil, "Some task"))
+    assert_equal([Task.new(1, "Some task")], @database.list)
   end
 
   def test_lists_task_with_units
-    @database.add("Some task", "some units")
+    @database.add(Task.new(nil, "Some task", 0, "some units"))
     assert_equal([Task.new(1, "Some task", 0, "some units")], @database.list)
   end
 
   def test_lists_task_with_units_and_size
-    @database.add("Some task", "some units", 14)
+    @database.add(Task.new(nil, "Some task", 0, "some units", 14))
     assert_equal([Task.new(1, "Some task", 0, "some units", 14)], @database.list)
   end
 
   def test_can_add_multiple_tasks
-    @database.add("some task")
-    @database.add("other task")
-    @database.add("yet another task")
+    @database.add(Task.new(nil, "some task"))
+    @database.add(Task.new(nil, "other task"))
+    @database.add(Task.new(nil, "yet another task"))
     assert_equal(
       [Task.new(1, "some task", 0), Task.new(2, "other task", 0), Task.new(3, "yet another task", 0)],
       @database.list)
@@ -62,28 +64,28 @@ class TestDatabase < Minitest::Test
   end
 
   def test_getting_a_non_existent_task_returns_nil
-    @database.add("some task")
-    @database.add("other task")
+    @database.add(Task.new(nil, "some task"))
+    @database.add(Task.new(nil, "other task"))
     assert_nil(@database.get(3))
   end
 
   def test_getting_a_task_by_id_returns_task
-    @database.add("some task")
-    assert_equal(Task.new(1, "some task", 0), @database.get(1))
+    @database.add(Task.new(nil, "some task"))
+    assert_equal(Task.new(1, "some task"), @database.get(1))
   end
 
   def test_getting_a_task_by_id_returns_task_with_all_optional_properties
-    @database.add("some task", "some units", 45)
+    @database.add(Task.new(nil, "some task", 0, "some units", 45))
     assert_equal(Task.new(1, "some task", 0, "some units", 45), @database.get(1))
   end
 
   def test_deleting_a_task_removes_it_from_the_db
-    @database.add("some task")
+    @database.add(Task.new(nil, "some task"))
     @database.delete(1)
   end
 
   def test_save_task_updates_task
-    task = @database.add("some task name")
+    task = @database.add(Task.new(nil, "some task name"))
     updated_task = Task.new(task.id, "new name", 42, "new units")
     @database.save(updated_task)
 
@@ -91,7 +93,7 @@ class TestDatabase < Minitest::Test
   end
 
   def test_save_task_updates_value_in_list
-    task = @database.add("some task")
+    task = @database.add(Task.new(nil, "some task"))
     updated_task = Task.new(task.id, "new name", 75, "new units")
     @database.save(updated_task)
 
