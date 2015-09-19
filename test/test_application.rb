@@ -124,14 +124,10 @@ class TestApplication < Minitest::Test
     updated_task = Task.new(4, "Some task name", 33)
     @database.expect(:save, nil, [updated_task])
 
-    view_model = "some view model"
-    @view_model_factory.expect(:create_view_model, view_model, [updated_task])
+    @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
+    @view_selector.expect(:update, "some view")
 
-    view = MiniTest::Mock.new
-    @view_selector.expect(:update, view)
-    view.expect(:render, "Rendered task", [view_model])
-
-    assert_equal("Rendered task", @application.update(4, 33))
+    assert_equal(ModelAndView.new("some view model", "some view"), @application.update(4, 33))
 
     @database.verify
   end
@@ -141,14 +137,10 @@ class TestApplication < Minitest::Test
     updated_task = Task.new(4, "Some task name", 33, "some units", 60)
     @database.expect(:save, nil, [updated_task])
 
-    view_model = "some view model"
-    @view_model_factory.expect(:create_view_model, view_model, [updated_task])
+    @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
+    @view_selector.expect(:update, "some view")
 
-    view = MiniTest::Mock.new
-    @view_selector.expect(:update, view)
-    view.expect(:render, "Rendered task", [view_model])
-
-    assert_equal("Rendered task", @application.update(4, 33))
+    assert_equal(ModelAndView.new("some view model", "some view"), @application.update(4, 33))
 
     @database.verify
   end
@@ -158,14 +150,10 @@ class TestApplication < Minitest::Test
     updated_task = Task.new(4, "Some task name", 0)
     @database.expect(:save, nil, [updated_task])
 
-    view_model = "some view model"
-    @view_model_factory.expect(:create_view_model, view_model, [updated_task])
+    @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
+    @view_selector.expect(:update, "some view")
 
-    view = MiniTest::Mock.new
-    @view_selector.expect(:update, view)
-    view.expect(:render, "Rendered task", [view_model])
-
-    assert_equal("Rendered task", @application.update(4, 0))
+    assert_equal(ModelAndView.new("some view model", "some view"), @application.update(4, 0))
 
     @database.verify
   end
@@ -226,14 +214,10 @@ class TestApplication < Minitest::Test
     @database.expect(:get, task, [6])
     @database.expect(:delete, nil, [6])
 
-    view_model = "some view model"
-    @view_model_factory.expect(:create_view_model, view_model, [task])
+    @view_model_factory.expect(:create_view_model, "some view model", [task])
+    @view_selector.expect(:complete, "some view")
 
-    view = MiniTest::Mock.new
-    @view_selector.expect(:complete, view)
-    view.expect(:render, "Rendered task", [view_model])
-
-    assert_equal("Rendered task", @application.update(6, 100))
+    assert_equal(ModelAndView.new("some view model", "some view"), @application.update(6, 100))
 
     @database.verify
   end

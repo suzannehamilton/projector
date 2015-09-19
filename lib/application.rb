@@ -55,7 +55,7 @@ class Application
       view = @view_selector.update
     end
 
-    view.render(view_model)
+    ModelAndView.new(view_model, view)
   end
 
   def units(task_id, new_units)
