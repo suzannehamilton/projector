@@ -209,11 +209,10 @@ class TestApplication < Minitest::Test
   end
 
   def test_updating_progress_to_100_percent_marks_task_as_complete
-    task = Task.new(6, "Shear the sheep", 55)
-    @database.expect(:get, task, [6])
+    @database.expect(:get, Task.new(6, "Shear the sheep", 55), [6])
     @database.expect(:delete, nil, [6])
 
-    @view_model_factory.expect(:create_view_model, "some view model", [task])
+    @view_model_factory.expect(:create_view_model, "some view model", [Task.new(6, "Shear the sheep", 100)])
 
     assert_equal(ModelAndView.new("some view model", Views::COMPLETE), @application.update(6, 100))
 
@@ -221,11 +220,13 @@ class TestApplication < Minitest::Test
   end
 
   def test_updating_progress_to_size_of_task_marks_task_as_complete
-    task = Task.new(6, "Some task name", 0, "some units", 14)
-    @database.expect(:get, task, [6])
+    @database.expect(:get, Task.new(6, "Some task name", 0, "some units", 14), [6])
     @database.expect(:delete, nil, [6])
 
-    @view_model_factory.expect(:create_view_model, "some view model", [task])
+    @view_model_factory.expect(
+      :create_view_model,
+      "some view model",
+      [Task.new(6, "Some task name", 14, "some units", 14)])
 
     assert_equal(ModelAndView.new("some view model", Views::COMPLETE), @application.update(6, 14))
 

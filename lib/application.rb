@@ -46,17 +46,13 @@ class Application
 
     if updated_task.complete?
       @database.delete(task.id)
-
-      # TODO: Use updated_task rather than task for consistency
-      view_model = @view_model_factory.create_view_model(task)
       view = Views::COMPLETE
     else
       @database.save(updated_task)
-
-      view_model = @view_model_factory.create_view_model(updated_task)
       view = Views::UPDATE
     end
 
+    view_model = @view_model_factory.create_view_model(updated_task)
     ModelAndView.new(view_model, view)
   end
 
