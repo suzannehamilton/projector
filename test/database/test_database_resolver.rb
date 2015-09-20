@@ -1,4 +1,4 @@
-require 'database_resolver'
+require 'database/database_resolver'
 require "minitest/autorun"
 
 class TestDatabaseResolver < Minitest::Test

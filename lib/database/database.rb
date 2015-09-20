@@ -1,7 +1,6 @@
 require "sqlite3"
-require_relative "model/task"
+require_relative "../model/task"
 
-# TODO: Move this and the resolver to their own package?
 class Database
 
   def initialize(db_file)

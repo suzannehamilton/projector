@@ -1,4 +1,4 @@
-require 'database'
+require 'database/database'
 require "minitest/autorun"
 
 class TestDatabase < Minitest::Test

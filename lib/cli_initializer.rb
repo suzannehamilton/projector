@@ -1,5 +1,5 @@
 require_relative "application"
-require_relative "database_resolver"
+require_relative "database/database_resolver"
 require_relative "view/task_view_model"
 
 # Helper which commonises building the dependency-injected Application object.
