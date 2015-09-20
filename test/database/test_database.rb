@@ -86,7 +86,15 @@ class TestDatabase < Minitest::Test
 
   def test_save_task_updates_task
     task = @database.add(Task.new(nil, "some task name"))
-    updated_task = Task.new(task.id, "new name", 42, "new units")
+    updated_task = Task.new(task.id, "new name", 42, "new units", 77)
+    @database.save(updated_task)
+
+    assert_equal(updated_task, @database.get(task.id))
+  end
+
+  def test_save_task_can_make_optional_fields_nil
+    task = @database.add(Task.new(nil, "some task name", 60, "original units", 80))
+    updated_task = Task.new(task.id, "new name", 60)
     @database.save(updated_task)
 
     assert_equal(updated_task, @database.get(task.id))
