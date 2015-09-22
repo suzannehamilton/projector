@@ -212,4 +212,61 @@ class TestTask < Minitest::Test
 
     assert updated_task.complete?
   end
+
+  def test_updating_custom_units_preserves_other_fields
+    task = Task.new(4, "some name", 30, "some units", 90)
+    updated_task = task.update_units("other units")
+
+    assert_equal(4, updated_task.id)
+    assert_equal("some name", updated_task.name)
+    assert_equal(30, updated_task.progress)
+    assert_equal(90, updated_task.size)
+  end
+
+  def test_can_add_units_to_a_task_with_no_progress
+    task = Task.new(4, "Task name", 0)
+    updated_task = task.update_units("some units")
+
+    assert_equal("some units", updated_task.units)
+    assert_nil(updated_task.size)
+    assert_equal(0, updated_task.progress)
+  end
+
+  def test_can_update_units_of_task_in_progress
+    task = Task.new(4, "Task name", 80)
+    updated_task = task.update_units("some units")
+
+    assert_equal("some units", updated_task.units)
+    assert_nil(updated_task.size)
+    assert_equal(80, updated_task.progress)
+  end
+
+  def test_can_update_units_of_task_with_custom_size
+    task = Task.new(4, "Task name", 80, "original units", 152)
+    updated_task = task.update_units("some units")
+
+    assert_equal("some units", updated_task.units)
+    assert_equal(152, updated_task.size)
+    assert_equal(80, updated_task.progress)
+  end
+
+  def test_removing_units_converts_units_to_percent
+    task = Task.new(4, "Task name", 80, "original units")
+    updated_task = task.update_units(nil)
+
+    assert_nil(updated_task.units)
+    assert_nil(updated_task.size)
+    assert_equal(80, updated_task.progress)
+  end
+
+  def test_removing_units_from_task_with_custom_size_converts_units_to_default
+    task = Task.new(4, "Task name", 20, "original units", 30)
+    updated_task = task.update_units(nil)
+
+    assert_nil(updated_task.units)
+    assert_nil(updated_task.size)
+  end
+
+  # TODO: Test that size cannot be updated when units are percent
+  # TODO: Test that updating units to percent when there is a custom size converts the progress
 end
