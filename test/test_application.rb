@@ -122,8 +122,13 @@ class TestApplication < Minitest::Test
   end
 
   def test_update_progress
-    @database.expect(:get, Task.new(4, "Some task name", 20), [4])
-    updated_task = Task.new(4, "Some task name", 33)
+    task = MiniTest::Mock.new
+    updated_task = MiniTest::Mock.new
+
+    @database.expect(:get, task, [4])
+    task.expect(:nil?, false)
+    task.expect(:update_progress, updated_task, [33])
+    updated_task.expect(:complete?, false)
     @database.expect(:save, nil, [updated_task])
 
     @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
@@ -131,70 +136,6 @@ class TestApplication < Minitest::Test
     assert_equal(ModelAndView.new("some view model", Views::UPDATE), @application.update(4, 33))
 
     @database.verify
-  end
-
-  def test_updating_progress_of_task_with_custom_size_preserves_size
-    @database.expect(:get, Task.new(4, "Some task name", 20, "some units", 60), [4])
-    updated_task = Task.new(4, "Some task name", 33, "some units", 60)
-    @database.expect(:save, nil, [updated_task])
-
-    @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
-
-    assert_equal(ModelAndView.new("some view model", Views::UPDATE), @application.update(4, 33))
-
-    @database.verify
-  end
-
-  def test_update_zero_percentage
-    @database.expect(:get, Task.new(4, "Some task name", 20), [4])
-    updated_task = Task.new(4, "Some task name", 0)
-    @database.expect(:save, nil, [updated_task])
-
-    @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
-
-    assert_equal(ModelAndView.new("some view model", Views::UPDATE), @application.update(4, 0))
-
-    @database.verify
-  end
-
-  def test_progress_cannot_be_negative
-    @database.expect(:get, Task.new(4, "some name", 0), [4])
-
-    e = assert_raises Thor::MalformattedArgumentError do
-      @application.update(4, -12)
-    end
-
-    assert_equal("Cannot update task. Expected progress between 0 and 100, but got '-12'", e.message)
-  end
-
-  def test_percent_done_cannot_be_more_than_100_percent
-    @database.expect(:get, Task.new(7, "some name", 0), [7])
-
-    e = assert_raises Thor::MalformattedArgumentError do
-      @application.update(7, 101)
-    end
-
-    assert_equal("Cannot update task. Expected progress between 0 and 100, but got '101'", e.message)
-  end
-
-  def test_progress_of_custom_size_task_cannot_be_negative
-    @database.expect(:get, Task.new(3, "some name", 20, "some units", 50), [3])
-
-    e = assert_raises Thor::MalformattedArgumentError do
-      @application.update(3, -2)
-    end
-
-    assert_equal("Cannot update task. Expected progress between 0 and 50, but got '-2'", e.message)
-  end
-
-  def test_progress_of_custom_size_task_cannot_be_more_than_task_size
-    @database.expect(:get, Task.new(3, "some name", 0, "some units", 50), [3])
-
-    e = assert_raises Thor::MalformattedArgumentError do
-      @application.update(3, 51)
-    end
-
-    assert_equal("Cannot update task. Expected progress between 0 and 50, but got '51'", e.message)
   end
 
   def test_cannot_update_non_existent_task
@@ -208,27 +149,19 @@ class TestApplication < Minitest::Test
     @database.verify
   end
 
-  def test_updating_progress_to_100_percent_marks_task_as_complete
-    @database.expect(:get, Task.new(6, "Shear the sheep", 55), [6])
+  def test_updating_progress_to_task_size_marks_task_as_complete
+    task = MiniTest::Mock.new
+    updated_task = MiniTest::Mock.new
+
+    @database.expect(:get, task, [6])
+    task.expect(:nil?, false)
+    task.expect(:update_progress, updated_task, [100])
+    updated_task.expect(:complete?, true)
     @database.expect(:delete, nil, [6])
 
-    @view_model_factory.expect(:create_view_model, "some view model", [Task.new(6, "Shear the sheep", 100)])
+    @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
 
     assert_equal(ModelAndView.new("some view model", Views::COMPLETE), @application.update(6, 100))
-
-    @database.verify
-  end
-
-  def test_updating_progress_to_size_of_task_marks_task_as_complete
-    @database.expect(:get, Task.new(6, "Some task name", 0, "some units", 14), [6])
-    @database.expect(:delete, nil, [6])
-
-    @view_model_factory.expect(
-      :create_view_model,
-      "some view model",
-      [Task.new(6, "Some task name", 14, "some units", 14)])
-
-    assert_equal(ModelAndView.new("some view model", Views::COMPLETE), @application.update(6, 14))
 
     @database.verify
   end

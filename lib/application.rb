@@ -40,10 +40,10 @@ class Application
   def update(task_id, progress)
     task = get_task(task_id)
 
-    updated_task = Task.new(task.id, task.name, progress, task.units, task.size)
+    updated_task = task.update_progress(progress)
 
     if updated_task.complete?
-      @database.delete(task.id)
+      @database.delete(task_id)
       view = Views::COMPLETE
     else
       @database.save(updated_task)

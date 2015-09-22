@@ -22,6 +22,10 @@ class Task
     @progress == (@size.nil? ? 100 : @size)
   end
 
+  def update_progress(progress)
+    Task.new(@id, @name, progress, @units, @size)
+  end
+
   def ==(o)
     o.class == self.class &&
       o.name == @name &&

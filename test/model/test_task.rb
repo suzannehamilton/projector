@@ -134,4 +134,82 @@ class TestTask < Minitest::Test
     task = Task.new(1, "some name", 67, "some units", 67)
     assert task.complete?
   end
+
+  def test_updating_progress_preserves_other_fields
+    task = Task.new(4, "some name", 30, "some units", 90)
+    updated_task = task.update_progress(82)
+
+    assert_equal(4, updated_task.id)
+    assert_equal("some name", updated_task.name)
+    assert_equal("some units", updated_task.units)
+    assert_equal(90, updated_task.size)
+  end
+
+  def test_can_update_progress_of_task_with_default_units
+    task = Task.new(5, "some name", 54)
+    updated_task = task.update_progress(80)
+
+    assert_equal(80, updated_task.progress)
+  end
+
+  def test_can_update_percentage_to_zero
+    task = Task.new(4, "Some task name", 20)
+    updated_task = task.update_progress(0)
+
+    assert_equal(0, updated_task.progress)
+  end
+
+  def test_progress_cannot_be_negative
+    task = Task.new(4, "some name", 0)
+
+    e = assert_raises Thor::MalformattedArgumentError do
+      task.update_progress(-12)
+    end
+
+    assert_equal("Cannot update task. Expected progress between 0 and 100, but got '-12'", e.message)
+  end
+
+  def test_percent_done_cannot_be_more_than_100_percent
+    task = Task.new(4, "some name", 0)
+
+    e = assert_raises Thor::MalformattedArgumentError do
+      task.update_progress(101)
+    end
+
+    assert_equal("Cannot update task. Expected progress between 0 and 100, but got '101'", e.message)
+  end
+
+  def test_progress_of_custom_size_task_cannot_be_negative
+    task = Task.new(4, "some name", 0, "some units", 50)
+
+    e = assert_raises Thor::MalformattedArgumentError do
+      task.update_progress(-1)
+    end
+
+    assert_equal("Cannot update task. Expected progress between 0 and 50, but got '-1'", e.message)
+  end
+
+  def test_progress_of_custom_size_task_cannot_be_more_than_task_size
+    task = Task.new(4, "some name", 0, "some units", 50)
+
+    e = assert_raises Thor::MalformattedArgumentError do
+      task.update_progress(51)
+    end
+
+    assert_equal("Cannot update task. Expected progress between 0 and 50, but got '51'", e.message)
+  end
+
+  def test_updating_progress_to_100_percent_marks_task_as_complete
+    task = Task.new(4, "Some task name", 20)
+    updated_task = task.update_progress(100)
+
+    assert updated_task.complete?
+  end
+
+  def test_updating_progress_to_size_of_task_marks_task_as_complete
+    task = Task.new(6, "Some task name", 0, "some units", 14)
+    updated_task = task.update_progress(14)
+
+    assert updated_task.complete?
+  end
 end
