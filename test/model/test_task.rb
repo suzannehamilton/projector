@@ -267,6 +267,7 @@ class TestTask < Minitest::Test
     assert_nil(updated_task.size)
   end
 
+  # TODO: Test that units must be specified if the task has a size
   # TODO: Test that size cannot be updated when units are percent
   # TODO: Test that updating units to percent when there is a custom size converts the progress
 end
