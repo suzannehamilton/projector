@@ -25,87 +25,67 @@ class TestTaskViewModel < Minitest::Test
     assert_equal("some name", view_model.name)
   end
 
-  def test_task_with_no_units_renders_zero_percent_complete
-    task = Task.new(7, "Saved task name", 0)
+  class Progress
+    attr_reader :value, :size, :percent
 
-    view_model = @view_model_factory.create_view_model(task)
-
-    assert_equal("0% complete", view_model.progress)
+    def initialize(value, size, percent)
+      @value = value
+      @size = size
+      @percent = percent
+    end
   end
 
-  def test_task_with_no_units_renders_percent_complete
-    task = Task.new(4, "Saved task name", 32)
+  percent_combinations = [
+    Progress.new(0, 100, 0),
+    Progress.new(42, 100, 42),
+    Progress.new(100, 100, 100),
+    Progress.new(23.467, 100, 23),
+    Progress.new(23.5, 100, 24),
+    Progress.new(23.84457, 100, 24)
+  ]
 
-    view_model = @view_model_factory.create_view_model(task)
+  percent_combinations.each do |p|
+    define_method("test_task_in_percent_and_progress_#{p.value}_is_#{p.percent}_percent_complete") do
+      task = Task.new(1, "some name", p.value)
 
-    assert_equal("32% complete", view_model.progress)
+      view_model = @view_model_factory.create_view_model(task)
+
+      assert_equal("#{p.percent}% complete", view_model.progress)
+    end
+
+    define_method("test_task_with_default_size_and_progress_#{p.value}_is_#{p.percent}_percent_complete") do
+      task = Task.new(1, "some name", p.value, "some units")
+
+      view_model = @view_model_factory.create_view_model(task)
+
+      assert_equal("#{p.percent}% complete (#{p.value}/100 some units)", view_model.progress)
+    end
   end
 
-  def test_task_with_units_renders_zero_percent_and_progress
-    task = Task.new(7, "Saved task name", 0, "some units")
+  progress_combinations = [
+    Progress.new(0, 100, 0),
+    Progress.new(1, 100, 1),
+    Progress.new(13, 100, 13),
+    Progress.new(100, 100, 100),
+    Progress.new(0, 12, 0),
+    Progress.new(3, 12, 25),
+    Progress.new(12, 12, 100),
+    Progress.new(58.346, 100, 58),
+    Progress.new(58.5, 100, 59),
+    Progress.new(3, 9, 33),
+    Progress.new(6, 9, 67),
+    Progress.new(13.578, 16.467, 82)
+  ]
 
-    view_model = @view_model_factory.create_view_model(task)
+  progress_combinations.each do |p|
+    define_method("test_task_with_size_#{p.size}_and_progress_#{p.value}_is_#{p.percent}_percent_complete") do
+      task = Task.new(1, "some name", p.value, "some units", p.size)
 
-    assert_equal("0% complete (0/100 some units)", view_model.progress)
+      view_model = @view_model_factory.create_view_model(task)
+
+      assert_equal("#{p.percent}% complete (#{p.value}/#{p.size} some units)", view_model.progress)
+    end
   end
-
-  def test_task_with_units_renders_percent_and_progress
-    task = Task.new(7, "some name", 89, "some units")
-
-    view_model = @view_model_factory.create_view_model(task)
-
-    assert_equal("89% complete (89/100 some units)", view_model.progress)
-  end
-
-  def test_new_task_with_custom_units_displays_zero_progress_as_zero_percent
-    task = Task.new(7, "some name", 0, "some units", 59)
-
-    view_model = @view_model_factory.create_view_model(task)
-
-    assert_equal("0% complete (0/59 some units)", view_model.progress)
-  end
-
-  def test_task_with_custom_units_calculated_percent
-    task = Task.new(7, "some name", 2, "some units", 4)
-
-    view_model = @view_model_factory.create_view_model(task)
-
-    assert_equal("50% complete (2/4 some units)", view_model.progress)
-  end
-
-  def test_fractional_percent_complete_is_rounded_down_to_nearest_integer
-    task = Task.new(1, "some name", 42.2)
-
-    view_model = @view_model_factory.create_view_model(task)
-
-    assert_equal("42% complete", view_model.progress)
-  end
-
-  def test_fractional_percent_complete_is_rounded_up_to_nearest_integer
-    task = Task.new(1, "some name", 42.5)
-
-    view_model = @view_model_factory.create_view_model(task)
-
-    assert_equal("43% complete", view_model.progress)
-  end
-
-  def test_fractional_percent_complete_of_task_with_custom_size_is_rounded_down_to_nearest_integer
-    task = Task.new(1, "some name", 2, "some units", 6)
-
-    view_model = @view_model_factory.create_view_model(task)
-
-    assert_equal("33% complete (2/6 some units)", view_model.progress)
-  end
-
-  def test_fractional_percent_complete_of_task_with_custom_size_is_rounded_up_to_nearest_integer
-    task = Task.new(1, "some name", 4, "some units", 6)
-
-    view_model = @view_model_factory.create_view_model(task)
-
-    assert_equal("67% complete (4/6 some units)", view_model.progress)
-  end
-
-  # TODO: Parameterise tests of progress?
 
   def test_default_units_are_percent
     task = Task.new(7, "Saved task name", 89)
@@ -122,6 +102,4 @@ class TestTaskViewModel < Minitest::Test
 
     assert_equal("some units", view_model.units)
   end
-
-  # TODO: Test progress which is not out of 100
 end
