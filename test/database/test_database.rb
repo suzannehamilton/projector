@@ -33,7 +33,13 @@ class TestDatabase < Minitest::Test
     assert_equal(Task.new(1, "Some task", 0, "some units", 55), task)
   end
 
-  # TODO: Test that adding a task with an existing ID is rejected
+  def test_rejects_adding_task_which_already_has_id
+    new_task = Task.new(5, "some name")
+
+    assert_raises ArgumentError do
+      @database.add(new_task)
+    end
+  end
 
   def test_lists_single_task
     @database.add(Task.new(nil, "Some task"))
