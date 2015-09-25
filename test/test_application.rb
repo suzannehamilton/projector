@@ -8,7 +8,8 @@ class TestApplication < Minitest::Test
   def setup
     @database = MiniTest::Mock.new
     @view_model_factory = MiniTest::Mock.new
-    @application = Application.new(@database, @view_model_factory)
+    @task_factory = MiniTest::Mock.new
+    @application = Application.new(@database, @task_factory, @view_model_factory)
   end
 
   def test_lists_no_tasks
@@ -46,22 +47,22 @@ class TestApplication < Minitest::Test
   end
 
   def test_adding_a_task_to_list_adds_task_and_returns_task_details
-    task = Task.new(7, "Saved task name", 0)
-    @database.expect(:add, task, [Task.new(nil, "Some task", 0)])
+    @task_factory.expect(:task, "new task", [nil, "Some task", 0, nil, nil])
+    @database.expect(:add, "saved task", ["new task"])
 
     view_model = "some view model"
-    @view_model_factory.expect(:create_view_model, view_model, [task])
+    @view_model_factory.expect(:create_view_model, view_model, ["saved task"])
 
     assert_equal(ModelAndView.new(view_model, Views::ADD), @application.add("Some task"))
     @database.verify
   end
 
   def test_can_add_task_with_units
-    task = Task.new(7, "Saved task name", 0, "some units")
-    @database.expect(:add, task, [Task.new(nil, "Some task", 0, "some units", nil)])
+    @task_factory.expect(:task, "new task", [nil, "Some task", 0, "some units", nil])
+    @database.expect(:add, "saved task", ["new task"])
 
     view_model = "some view model"
-    @view_model_factory.expect(:create_view_model, view_model, [task])
+    @view_model_factory.expect(:create_view_model, view_model, ["saved task"])
 
     assert_equal(ModelAndView.new(view_model, Views::ADD), @application.add("Some task", "some units"))
     @database.verify
@@ -70,11 +71,11 @@ class TestApplication < Minitest::Test
   # TODO: Test that size cannot be specified when creating a task without units
 
   def test_can_add_task_with_units_and_size
-    task = Task.new(4, "Saved task name", 0, "some units", 42)
-    @database.expect(:add, task, [Task.new(nil, "Some task", 0, "some units", 42)])
+    @task_factory.expect(:task, "new task", [nil, "Some task", 0, "some units", 42])
+    @database.expect(:add, "saved task", ["new task"])
 
     view_model = "some view model"
-    @view_model_factory.expect(:create_view_model, view_model, [task])
+    @view_model_factory.expect(:create_view_model, view_model, ["saved task"])
 
     assert_equal(ModelAndView.new(view_model, Views::ADD), @application.add("Some task", "some units", 42))
     @database.verify

@@ -1,11 +1,13 @@
+require_relative "model/task_factory"
 require_relative "view/task_view_model"
 require_relative "view/views"
 require_relative "view/model_and_view"
 
 class Application
 
-  def initialize(database, view_model_factory)
+  def initialize(database, task_factory, view_model_factory)
     @database = database
+    @task_factory = task_factory
     @view_model_factory = view_model_factory
   end
 
@@ -20,7 +22,7 @@ class Application
   def add(task_name, units = nil, size = nil)
     validate_task_size(size)
 
-    task = @database.add(Task.new(nil, task_name, 0, units, size))
+    task = @database.add(@task_factory.task(nil, task_name, 0, units, size))
 
     view_model = @view_model_factory.create_view_model(task)
 
