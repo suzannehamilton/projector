@@ -272,6 +272,12 @@ class TestTask < Minitest::Test
 
     assert_nil(updated_task.units)
     assert_nil(updated_task.size)
+  end
+
+  def test_removing_units_from_task_with_custom_unit_preserves_progress
+    task = Task.new(4, "Task name", 80, "original units")
+    updated_task = task.update_units(nil)
+
     assert_equal(80, updated_task.progress)
   end
 
@@ -283,7 +289,13 @@ class TestTask < Minitest::Test
     assert_nil(updated_task.size)
   end
 
+  def test_removing_units_from_task_with_custom_size_converts_progress_to_percent
+    task = Task.new(4, "Task name", 1, "original units", 8)
+    updated_task = task.update_units(nil)
+
+    assert_equal(12.5, updated_task.progress)
+  end
+
   # TODO: Test that units must be specified if the task has a size
   # TODO: Test that size cannot be updated when units are percent
-  # TODO: Test that updating units to percent when there is a custom size converts the progress
 end

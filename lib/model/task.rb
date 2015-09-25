@@ -35,7 +35,13 @@ class Task
       updated_task_size = @size
     end
 
-    updated_task = Task.new(@id, @name, @progress, units, updated_task_size)
+    if units.nil? && !@size.nil?
+      updated_progress = 100 * @progress.to_f / @size
+    else
+      updated_progress = @progress
+    end
+
+    updated_task = Task.new(@id, @name, updated_progress, units, updated_task_size)
   end
 
   def ==(o)
