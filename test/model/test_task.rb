@@ -228,8 +228,6 @@ class TestTask < Minitest::Test
     updated_task = task.update_units("some units")
 
     assert_equal("some units", updated_task.units)
-    assert_nil(updated_task.size)
-    assert_equal(0, updated_task.progress)
   end
 
   def test_can_update_units_of_task_in_progress
@@ -237,8 +235,20 @@ class TestTask < Minitest::Test
     updated_task = task.update_units("some units")
 
     assert_equal("some units", updated_task.units)
-    assert_nil(updated_task.size)
+  end
+
+  def test_adding_units_preserves_progress
+    task = Task.new(4, "Task name", 80)
+    updated_task = task.update_units("some units")
+
     assert_equal(80, updated_task.progress)
+  end
+
+  def test_adding_units_sets_size
+    task = Task.new(4, "Task name", 80)
+    updated_task = task.update_units("some units")
+
+    assert_equal(100, updated_task.size)
   end
 
   def test_can_update_units_of_task_with_custom_size
@@ -246,6 +256,12 @@ class TestTask < Minitest::Test
     updated_task = task.update_units("some units")
 
     assert_equal("some units", updated_task.units)
+  end
+
+  def test_can_updating_units_of_task_with_custom_size_preserves_size_and_progress
+    task = Task.new(4, "Task name", 80, "original units", 152)
+    updated_task = task.update_units("some units")
+
     assert_equal(152, updated_task.size)
     assert_equal(80, updated_task.progress)
   end

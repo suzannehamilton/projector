@@ -27,7 +27,13 @@ class Task
   end
 
   def update_units(units)
-    updated_task_size = units.nil? ? nil : @size
+    if units.nil?
+      updated_task_size = nil
+    elsif @size.nil?
+      updated_task_size = 100
+    else
+      updated_task_size = @size
+    end
 
     updated_task = Task.new(@id, @name, @progress, units, updated_task_size)
   end

@@ -47,7 +47,6 @@ class TestApplication < Minitest::Test
 
   def test_adding_a_task_to_list_adds_task_and_returns_task_details
     task = Task.new(7, "Saved task name", 0)
-    # TODO: Create builder for task
     @database.expect(:add, task, [Task.new(nil, "Some task", 0)])
 
     view_model = "some view model"
