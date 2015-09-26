@@ -9,8 +9,8 @@ require_relative "view/task_view_model"
 class CliInitializer
 
   def self.build_application
-    database = DatabaseResolver.new.get_database
     task_factory = TaskFactory.new
+    database = DatabaseResolver.new(task_factory).get_database
     task_view_model_factory = TaskViewModelFactory.new
 
     return Application.new(database, task_factory, task_view_model_factory)

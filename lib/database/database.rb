@@ -3,9 +3,11 @@ require_relative "../model/task"
 
 class Database
 
-  def initialize(db_file)
+  def initialize(db_file, task_factory)
     # Open the database
     @db = SQLite3::Database.new db_file
+
+    @task_factory = task_factory
 
     # Create the tasks table if it doesn't already exist
     rows = @db.execute <<-SQL
@@ -20,7 +22,7 @@ class Database
 
   def list
     @db.execute("select rowid, name, progress, units, size from task")
-      .map { |r| Task.new(r[0], r[1], r[2], r[3], r[4]) }
+      .map { |r| @task_factory.task(r[0], r[1], r[2], r[3], r[4]) }
   end
 
   def add(task)
@@ -34,7 +36,7 @@ class Database
   def get(task_id)
     tasks = @db.execute("select name, progress, units, size from task where rowid = ( ? )", task_id)
     task = tasks[0]
-    tasks.empty? ? nil : Task.new(task_id, task[0], task[1], task[2], task[3])
+    tasks.empty? ? nil : @task_factory.task(task_id, task[0], task[1], task[2], task[3])
   end
 
   # Update an existing task

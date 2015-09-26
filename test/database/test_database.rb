@@ -7,7 +7,8 @@ class TestDatabase < Minitest::Test
 
   def setup
     File::delete(TEST_DB_FILE) if File::exist?(TEST_DB_FILE)
-    @database = Database.new(TEST_DB_FILE)
+    @task_factory = TaskFactory.new
+    @database = Database.new(TEST_DB_FILE, @task_factory)
   end
 
   def after_tests
