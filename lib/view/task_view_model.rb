@@ -20,14 +20,14 @@ class TaskViewModel
   end
 
   def progress
-    size = @task.size.nil? ? 100 : @task.size
+    size = @task.progress.size.nil? ? 100 : @task.progress.size
     # TODO: Push onto Task? Or Progress class within Task?
-    percent_done = (100 * @task.progress.to_f / size).round
-    progress = @task.units.nil? ? "" : " (#{@task.progress}/#{size} #{@task.units})"
+    percent_done = (100 * @task.progress.value.to_f / size).round
+    progress = @task.progress.units.nil? ? "" : " (#{@task.progress.value}/#{size} #{@task.progress.units})"
     "#{percent_done}% complete" + progress
   end
 
   def units
-    @task.units.nil? ? "percent" : "#{@task.units}"
+    @task.progress.units.nil? ? "percent" : "#{@task.progress.units}"
   end
 end
