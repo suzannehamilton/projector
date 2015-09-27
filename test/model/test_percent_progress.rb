@@ -113,4 +113,11 @@ class TestPercentProgress < Minitest::Test
 
     assert_equal(CustomProgress.new("some units", 80, 100), updated_progress)
   end
+
+  def test_removing_units_does_not_change_progress
+    original_progress = PercentProgress.new(80)
+    updated_progress = original_progress.update_units(nil)
+
+    assert_equal(original_progress, updated_progress)
+  end
 end

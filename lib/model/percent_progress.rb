@@ -26,8 +26,7 @@ class PercentProgress
 
   def update_units(new_units)
     if new_units.nil?
-      nil
-      # TODO: Fill in and test
+      self
     else
       CustomProgress.new(new_units, @value)
     end
