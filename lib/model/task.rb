@@ -4,7 +4,7 @@ class Task
   attr_reader :name
   attr_reader :progress
 
-  def initialize(id, name, progress = Progress.new)
+  def initialize(id, name, progress = PercentProgress.new)
     validate_id(id)
     validate_name(name)
 

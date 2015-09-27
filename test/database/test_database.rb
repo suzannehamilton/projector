@@ -25,13 +25,13 @@ class TestDatabase < Minitest::Test
   end
 
   def test_can_add_a_single_task_with_units
-    task = @database.add(Task.new(nil, "Some task", Progress.new(0, "some units")))
-    assert_equal(Task.new(1, "Some task", Progress.new(0, "some units")), task)
+    task = @database.add(Task.new(nil, "Some task", CustomProgress.new("some units")))
+    assert_equal(Task.new(1, "Some task", CustomProgress.new("some units")), task)
   end
 
   def test_can_add_a_single_task_with_units_and_size
-    task = @database.add(Task.new(nil, "Some task", Progress.new(0, "some units", 55)))
-    assert_equal(Task.new(1, "Some task", Progress.new(0, "some units", 55)), task)
+    task = @database.add(Task.new(nil, "Some task", CustomProgress.new("some units", 0, 55)))
+    assert_equal(Task.new(1, "Some task", CustomProgress.new("some units", 0, 55)), task)
   end
 
   def test_rejects_adding_task_which_already_has_id
@@ -48,13 +48,13 @@ class TestDatabase < Minitest::Test
   end
 
   def test_lists_task_with_units
-    @database.add(Task.new(nil, "Some task", Progress.new(0, "some units")))
-    assert_equal([Task.new(1, "Some task", Progress.new(0, "some units"))], @database.list)
+    @database.add(Task.new(nil, "Some task", CustomProgress.new("some units")))
+    assert_equal([Task.new(1, "Some task", CustomProgress.new("some units"))], @database.list)
   end
 
   def test_lists_task_with_units_and_size
-    @database.add(Task.new(nil, "Some task", Progress.new(0, "some units", 14)))
-    assert_equal([Task.new(1, "Some task", Progress.new(0, "some units", 14))], @database.list)
+    @database.add(Task.new(nil, "Some task", CustomProgress.new("some units", 0, 14)))
+    assert_equal([Task.new(1, "Some task", CustomProgress.new("some units", 0, 14))], @database.list)
   end
 
   def test_can_add_multiple_tasks
@@ -82,8 +82,8 @@ class TestDatabase < Minitest::Test
   end
 
   def test_getting_a_task_by_id_returns_task_with_all_optional_properties
-    @database.add(Task.new(nil, "some task", Progress.new(0, "some units", 45)))
-    assert_equal(Task.new(1, "some task", Progress.new(0, "some units", 45)), @database.get(1))
+    @database.add(Task.new(nil, "some task", CustomProgress.new("some units", 15, 45)))
+    assert_equal(Task.new(1, "some task", CustomProgress.new("some units", 15, 45)), @database.get(1))
   end
 
   def test_deleting_a_task_removes_it_from_the_db
@@ -93,14 +93,14 @@ class TestDatabase < Minitest::Test
 
   def test_save_task_updates_task
     task = @database.add(Task.new(nil, "some task name"))
-    updated_task = Task.new(task.id, "new name", Progress.new(42, "new units", 77))
+    updated_task = Task.new(task.id, "new name", CustomProgress.new("new units", 42, 77))
     @database.save(updated_task)
 
     assert_equal(updated_task, @database.get(task.id))
   end
 
   def test_save_task_can_make_optional_fields_nil
-    task = @database.add(Task.new(nil, "some task name", Progress.new(60, "original units", 80)))
+    task = @database.add(Task.new(nil, "some task name", CustomProgress.new("original units", 60, 80)))
     updated_task = Task.new(task.id, "new name")
     @database.save(updated_task)
 
@@ -109,14 +109,14 @@ class TestDatabase < Minitest::Test
 
   def test_save_task_updates_value_in_list
     task = @database.add(Task.new(nil, "some task"))
-    updated_task = Task.new(task.id, "new name", Progress.new(75, "new units"))
+    updated_task = Task.new(task.id, "new name", CustomProgress.new("new units", 75))
     @database.save(updated_task)
 
     assert_equal([updated_task], @database.list)
   end
 
   def test_save_task_rejects_task_with_no_id
-    new_task = Task.new(nil, "new name", Progress.new(42, "new units"))
+    new_task = Task.new(nil, "new name")
 
     assert_raises ArgumentError do
       @database.save(new_task)

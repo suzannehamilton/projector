@@ -28,7 +28,13 @@ class Database
   def add(task)
     task.id.nil? or raise ArgumentError.new("Cannot create new task. Task already has an id: '#{task.id}'")
 
-    @db.execute("insert into task values ( ?, ?, ?, ? )", task.name, 0, task.progress.units, task.progress.size)
+    @db.execute(
+      "insert into task values ( ?, ?, ?, ? )",
+      task.name,
+      task.progress.value,
+      task.progress.units,
+      task.progress.size)
+
     new_task_id = @db.last_insert_row_id()
     get(new_task_id)
   end

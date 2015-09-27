@@ -1,6 +1,7 @@
 require "minitest/autorun"
 require "model/task_factory"
 
+# TODO: Rewrite tests to check type of progress?
 class TestTaskFactory < Minitest::Test
 
   def setup
@@ -44,11 +45,10 @@ class TestTaskFactory < Minitest::Test
     assert_nil(task.progress.size)
   end
 
-  # TODO: Should this be 100?
-  def test_default_size_of_task_with_units_is_none
+  def test_default_size_of_task_with_units_is_100
     task = @task_factory.task(1, "some name", 0, "some units")
 
-    assert_nil(task.progress.size)
+    assert_equal(100, task.progress.size)
   end
 
   def test_creates_task_with_custom_size

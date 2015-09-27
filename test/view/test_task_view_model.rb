@@ -46,7 +46,7 @@ class TestTaskViewModel < Minitest::Test
 
   percent_combinations.each do |p|
     define_method("test_task_in_percent_and_progress_#{p.value}_is_#{p.percent}_percent_complete") do
-      task = Task.new(1, "some name", Progress.new(p.value))
+      task = Task.new(1, "some name", PercentProgress.new(p.value))
 
       view_model = @view_model_factory.create_view_model(task)
 
@@ -54,7 +54,7 @@ class TestTaskViewModel < Minitest::Test
     end
 
     define_method("test_task_with_default_size_and_progress_#{p.value}_is_#{p.percent}_percent_complete") do
-      task = Task.new(1, "some name", Progress.new(p.value, "some units"))
+      task = Task.new(1, "some name", CustomProgress.new("some units", p.value))
 
       view_model = @view_model_factory.create_view_model(task)
 
@@ -79,7 +79,7 @@ class TestTaskViewModel < Minitest::Test
 
   progress_combinations.each do |p|
     define_method("test_task_with_size_#{p.size}_and_progress_#{p.value}_is_#{p.percent}_percent_complete") do
-      task = Task.new(1, "some name", Progress.new(p.value, "some units", p.size))
+      task = Task.new(1, "some name", CustomProgress.new("some units", p.value, p.size))
 
       view_model = @view_model_factory.create_view_model(task)
 
@@ -87,8 +87,8 @@ class TestTaskViewModel < Minitest::Test
     end
   end
 
-  def test_default_units_are_percent
-    task = Task.new(7, "Saved task name", Progress.new(89))
+  def test_units_of_percent_progress_are_percent
+    task = Task.new(7, "Saved task name", PercentProgress.new(89))
 
     view_model = @view_model_factory.create_view_model(task)
 
@@ -96,7 +96,7 @@ class TestTaskViewModel < Minitest::Test
   end
 
   def test_custom_units_are_rendered_as_given
-    task = Task.new(7, "Saved task name", Progress.new(89, "some units"))
+    task = Task.new(7, "Saved task name", CustomProgress.new("some units", 89))
 
     view_model = @view_model_factory.create_view_model(task)
 

@@ -43,13 +43,13 @@ class TestTask < Minitest::Test
   end
 
   def test_can_get_progress
-    task = Task.new(4, "some name", Progress.new(57))
-    assert_equal(Progress.new(57), task.progress)
+    task = Task.new(4, "some name", CustomProgress.new("some units", 60, 200))
+    assert_equal(CustomProgress.new("some units", 60, 200), task.progress)
   end
 
   def test_default_progress_is_zero
     task = Task.new(4, "some name")
-    assert_equal(Progress.new(0), task.progress)
+    assert_equal(PercentProgress.new(0), task.progress)
   end
 
   def test_task_is_not_complete_when_progress_is_not_complete
@@ -67,7 +67,7 @@ class TestTask < Minitest::Test
   end
 
   def test_updating_progress_preserves_other_fields
-    task = Task.new(4, "some name", Progress.new(0, "some units", 90))
+    task = Task.new(4, "some name", CustomProgress.new("some units", 0, 90))
     updated_task = task.update_progress(82)
 
     assert_equal(4, updated_task.id)
@@ -86,7 +86,7 @@ class TestTask < Minitest::Test
   end
 
   def test_updating_custom_units_preserves_other_fields
-    task = Task.new(4, "some name", Progress.new(30, "original units", 90))
+    task = Task.new(4, "some name", CustomProgress.new("original units", 30, 90))
     updated_task = task.update_units("other units")
 
     assert_equal(4, updated_task.id)
