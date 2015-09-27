@@ -56,4 +56,14 @@ class TestTaskFactory < Minitest::Test
 
     assert_equal(44, task.progress.size)
   end
+
+  def test_size_cannot_be_defined_without_units
+    e = assert_raises Thor::MalformattedArgumentError do
+      @task_factory.task(1, "some name", 0, nil, 90)
+    end
+
+    assert e.message.include? "units"
+    assert e.message.include? "size"
+    assert e.message.include? "90"
+  end
 end
