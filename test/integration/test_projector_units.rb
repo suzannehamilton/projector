@@ -28,7 +28,5 @@ class TestProjectorUnits < TestProjector
     end
   end
 
-  # TODO: Test switching back to percent when max in new units is not 100
   # TODO: Test updating size when switching units
-  # TODO: Test updating units when size is not 100
 end
