@@ -20,6 +20,10 @@ class PercentProgress
     @value == 100
   end
 
+  def percent_done
+    @value.round
+  end
+
   def update_progress(new_progress)
     PercentProgress.new(new_progress)
   end

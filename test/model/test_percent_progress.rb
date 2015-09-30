@@ -120,4 +120,19 @@ class TestPercentProgress < Minitest::Test
 
     assert_equal(original_progress, updated_progress)
   end
+
+  percent_combinations = [
+    [0, 0],
+    [42, 42],
+    [100, 100],
+    [23.467, 23],
+    [23.5, 24],
+    [23.84457, 24]
+  ]
+
+  percent_combinations.each do |p|
+    define_method("test_task_in_percent_and_progress_#{p[0]}_is_#{p[1]}_percent_complete") do
+      assert_equal(p[1], PercentProgress.new(p[0]).percent_done)
+    end
+  end
 end

@@ -14,6 +14,10 @@ class CustomProgress
     @value == @size
   end
 
+  def percent_done
+    (100 * @value.to_f / @size).round
+  end
+
   def update_progress(new_progress)
     CustomProgress.new(@units, new_progress, @size)
   end

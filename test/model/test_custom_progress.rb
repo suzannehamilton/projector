@@ -134,6 +134,27 @@ class TestCustomProgress < Minitest::Test
     assert_equal(PercentProgress.new(12.5), updated_progress)
   end
 
+  progress_combinations = [
+    [0, 100, 0],
+    [1, 100, 1],
+    [13, 100, 13],
+    [100, 100, 100],
+    [0, 12, 0],
+    [3, 12, 25],
+    [12, 12, 100],
+    [58.346, 100, 58],
+    [58.5, 100, 59],
+    [3, 9, 33],
+    [6, 9, 67],
+    [13.578, 16.467, 82]
+  ]
+
+  progress_combinations.each do |p|
+    define_method("test_task_with_size_#{p[1]}_and_progress_#{p[0]}_is_#{p[2]}_percent_complete") do
+      assert_equal(p[2], CustomProgress.new("some units", p[0], p[1]).percent_done)
+    end
+  end
+
   # TODO: Test that units must be specified if the task has a size
   # TODO: Test that size cannot be updated when units are percent
 end

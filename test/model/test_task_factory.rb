@@ -1,7 +1,6 @@
 require "minitest/autorun"
 require "model/task_factory"
 
-# TODO: Rewrite tests to check type of progress?
 class TestTaskFactory < Minitest::Test
 
   def setup
