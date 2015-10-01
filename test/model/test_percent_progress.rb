@@ -135,4 +135,6 @@ class TestPercentProgress < Minitest::Test
       assert_equal(p[1], PercentProgress.new(p[0]).percent_done)
     end
   end
+
+  # TODO: Test that size cannot be updated when units are percent
 end

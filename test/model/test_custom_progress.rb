@@ -156,5 +156,4 @@ class TestCustomProgress < Minitest::Test
   end
 
   # TODO: Test that units must be specified if the task has a size
-  # TODO: Test that size cannot be updated when units are percent
 end

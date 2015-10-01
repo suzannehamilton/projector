@@ -36,5 +36,11 @@ class TestProjectorAdd < TestProjector
     end
   end
 
+  def test_size_can_be_non_integer
+    assert_output("Added task 1: 'Dye the sheep pretty colours', 0% complete (0/4.5 sheep dyed)\n") do
+      Projector.new.invoke(:add, ["Dye the sheep pretty colours"], :units => "sheep dyed", :size => 4.5)
+    end
+  end
+
   # TODO: Allow task size to be updated later
 end

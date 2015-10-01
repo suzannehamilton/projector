@@ -62,5 +62,13 @@ class TestProjectorUpdate < TestProjector
     end
   end
 
-  # TODO: Progress can be decimal
+  def test_progress_can_be_non_integer
+    capture_io do
+      Projector.new.invoke(:add, ["Walk the guinea pigs"], :units => "guinea pigs", :size => 10)
+    end
+
+    assert_output("Updated task 1, 'Walk the guinea pigs' to 48% complete (4.8/10 guinea pigs)\n") do
+      Projector.new.invoke(:update, ["1", "4.8"])
+    end
+  end
 end
