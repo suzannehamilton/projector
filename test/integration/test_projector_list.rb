@@ -17,5 +17,14 @@ class TestProjectorList < TestProjector
     end
   end
 
-  # TODO: Test list on tasks with progress
+  def test_lists_task_with_progress
+    capture_io do
+      Projector.new.invoke(:add, ["Walk the guinea pigs"], :units => "guinea pigs", :size => 10)
+      Projector.new.invoke(:update, ["1", "4"])
+    end
+
+    assert_task_list_output([TaskViewModel.new(1, "Walk the guinea pigs", 4, "guinea pigs", 10, 40)]) do
+      Projector.new.invoke(:list)
+    end
+  end
 end
