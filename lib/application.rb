@@ -65,16 +65,22 @@ class Application
     ModelAndView.new(view_model, Views::UNITS)
   end
 
-  # TODO: Test that updating size to progress marks task as complete
   def size(task_id, new_size)
     task = get_task(task_id)
 
     updated_task = task.update_size(new_size)
-    @database.save(updated_task)
+
+    if updated_task.complete?
+      @database.delete(task_id)
+      view = Views::COMPLETE
+    else
+      @database.save(updated_task)
+      view = Views::SIZE
+    end
 
     view_model = @view_model_factory.create_view_model(updated_task)
 
-    ModelAndView.new(view_model, Views::SIZE)
+    ModelAndView.new(view_model, view)
   end
 
   private

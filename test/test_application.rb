@@ -182,6 +182,7 @@ class TestApplication < Minitest::Test
     @database.expect(:get, task, [4])
     task.expect(:nil?, false)
     task.expect(:update_size, updated_task, [30])
+    updated_task.expect(:complete?, false)
     @database.expect(:save, nil, [updated_task])
 
     @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
@@ -199,6 +200,23 @@ class TestApplication < Minitest::Test
     end
 
     assert_equal("No task with number 4", e.message)
+    @database.verify
+  end
+
+  def test_reducing_size_to_task_progress_marks_task_as_complete
+    task = MiniTest::Mock.new
+    updated_task = MiniTest::Mock.new
+
+    @database.expect(:get, task, [6])
+    task.expect(:nil?, false)
+    task.expect(:update_size, updated_task, [20])
+    updated_task.expect(:complete?, true)
+    @database.expect(:delete, nil, [6])
+
+    @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
+
+    assert_equal(ModelAndView.new("some view model", Views::COMPLETE), @application.size(6, 20))
+
     @database.verify
   end
 end
