@@ -3,7 +3,14 @@ require "model/custom_progress"
 
 class TestCustomProgress < Minitest::Test
 
-  # TODO: Validate presence of units
+  def test_units_must_be_given
+    e = assert_raises ArgumentError do
+      CustomProgress.new(nil)
+    end
+
+    assert(e.message.include?("units"))
+    assert(e.message.include?("nil"))
+  end
 
   def test_zero_progress_is_valid
     progress = CustomProgress.new("some units", 0)

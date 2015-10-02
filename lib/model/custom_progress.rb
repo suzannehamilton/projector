@@ -3,6 +3,7 @@ class CustomProgress
   attr_reader :units, :value, :size
 
   def initialize(units, value = 0, size = 100)
+    validate_units(units)
     validate_size(size)
     validate_progress(value, size)
 
@@ -50,6 +51,10 @@ class CustomProgress
   end
 
   private
+
+  def validate_units(units)
+    !units.nil? or raise ArgumentError.new("Progress units must not be nil")
+  end
 
   def validate_size(size)
     size > 0 or raise Thor::MalformattedArgumentError.new("Task size must be greater than 0, but got #{size}")
