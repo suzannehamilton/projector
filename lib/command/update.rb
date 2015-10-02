@@ -6,10 +6,9 @@ class Update < Thor::Group
     @application = CliInitializer::build_application
   end
 
-# TODO: Rename percent_done arg
   argument :id, :type => :numeric
-  argument :percent_done, :type => :numeric
+  argument :progress, :type => :numeric
   def update
-    say @application.update(id, percent_done).render
+    say @application.update(id, progress).render
   end
 end
