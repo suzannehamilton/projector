@@ -25,6 +25,12 @@ class TestTaskViewModel < Minitest::Test
     assert_equal("some name", view_model.name)
   end
 
+  def test_size_is_task_progress_size
+    task = Task.new(4, "some name", CustomProgress.new("some units", 2, 31))
+    view_model = @view_model_factory.create_view_model(task)
+    assert_equal(31, view_model.size)
+  end
+
   def test_progress_is_just_percentage_if_task_has_no_units
     progress = MiniTest::Mock.new
     progress.expect(:units, nil)

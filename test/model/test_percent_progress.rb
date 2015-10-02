@@ -121,6 +121,16 @@ class TestPercentProgress < Minitest::Test
     assert_equal(original_progress, updated_progress)
   end
 
+  def test_size_cannot_be_updated
+    progress = PercentProgress.new(20)
+
+    e = assert_raises Thor::InvocationError do
+      progress.update_size(40)
+    end
+
+    assert_equal("Cannot update size of task with no units", e.message)
+  end
+
   percent_combinations = [
     [0, 0],
     [42, 42],
@@ -135,6 +145,4 @@ class TestPercentProgress < Minitest::Test
       assert_equal(p[1], PercentProgress.new(p[0]).percent_done)
     end
   end
-
-  # TODO: Test that size cannot be updated when units are percent
 end

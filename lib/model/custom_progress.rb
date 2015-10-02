@@ -31,6 +31,10 @@ class CustomProgress
     end
   end
 
+  def update_size(new_size)
+    CustomProgress.new(@units, @value, new_size)
+  end
+
   def ==(o)
     o.class == self.class &&
       o.units == @units &&
@@ -47,9 +51,8 @@ class CustomProgress
   private
 
   def validate_progress(progress, task_size)
-    if progress < 0 || progress > task_size
-      raise Thor::MalformattedArgumentError.new(
-        "Cannot update task. Expected progress between 0 and #{task_size}, but got '#{progress}'")
-    end
+    progress >= 0 or raise Thor::MalformattedArgumentError.new("Task progress must not be negative, but got #{progress}")
+    progress <= task_size or raise Thor::MalformattedArgumentError.new(
+      "Task progress '#{progress}' cannot be larger than task size #{task_size}")
   end
 end

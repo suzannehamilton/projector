@@ -19,6 +19,10 @@ class TaskViewModel
     @task.name
   end
 
+  def size
+    @task.progress.size
+  end
+
   def progress
     units = @task.progress.units
     progress = units.nil? ? "" : " (#{@task.progress.value}/#{@task.progress.size} #{units})"

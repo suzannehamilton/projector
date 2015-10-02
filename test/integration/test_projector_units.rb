@@ -27,6 +27,4 @@ class TestProjectorUnits < TestProjector
       Projector.new.invoke(:list)
     end
   end
-
-  # TODO: Test updating size when switching units
 end

@@ -1,4 +1,4 @@
-class Update < Thor::Group
+class Size < Thor::Group
 
   def initialize(args = [], local_options = {}, config = {})
     super
@@ -6,10 +6,9 @@ class Update < Thor::Group
     @application = CliInitializer::build_application
   end
 
-# TODO: Rename percent_done arg
   argument :id, :type => :numeric
-  argument :percent_done, :type => :numeric
-  def update
-    say @application.update(id, percent_done).render
+  argument :new_size, :type => :numeric, :required => true
+  def size
+    say @application.size(id, new_size).render
   end
 end

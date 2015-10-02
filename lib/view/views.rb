@@ -22,6 +22,12 @@ class UnitsView
   end
 end
 
+class SizeView
+  def render(task)
+    "Updated size of task #{task.id}, '#{task.name}', to #{task.size}. #{task.progress}"
+  end
+end
+
 class ListView
   def render(tasks)
     if tasks.empty?
@@ -40,4 +46,5 @@ class Views
   COMPLETE = CompleteView.new
   UPDATE = UpdateView.new
   UNITS = UnitsView.new
+  SIZE = SizeView.new
 end

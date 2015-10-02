@@ -49,6 +49,20 @@ class TestView < Minitest::Test
       view.render(task))
   end
 
+  def test_renders_size_update
+    task = MiniTest::Mock.new
+    task.expect(:id, 3)
+    task.expect(:name, "some name")
+    task.expect(:size, 40)
+    task.expect(:progress, "some progress")
+
+    view = Views::SIZE
+
+    assert_equal(
+      "Updated size of task 3, 'some name', to 40. some progress",
+      view.render(task))
+  end
+
   def test_renders_empty_task_list
     view = Views::LIST
 

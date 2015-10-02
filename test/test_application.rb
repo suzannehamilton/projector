@@ -68,8 +68,6 @@ class TestApplication < Minitest::Test
     @database.verify
   end
 
-  # TODO: Test that size cannot be specified when creating a task without units
-
   def test_can_add_task_with_units_and_size
     @task_factory.expect(:task, "new task", [nil, "Some task", 0, "some units", 42])
     @database.expect(:add, "saved task", ["new task"])
@@ -187,6 +185,33 @@ class TestApplication < Minitest::Test
 
     e = assert_raises Thor::InvocationError do
       @application.units(4, "updated units")
+    end
+
+    assert_equal("No task with number 4", e.message)
+    @database.verify
+  end
+
+  def test_can_update_size_of_task
+    task = MiniTest::Mock.new
+    updated_task = MiniTest::Mock.new
+
+    @database.expect(:get, task, [4])
+    task.expect(:nil?, false)
+    task.expect(:update_size, updated_task, [30])
+    @database.expect(:save, nil, [updated_task])
+
+    @view_model_factory.expect(:create_view_model, "some view model", [updated_task])
+
+    assert_equal(ModelAndView.new("some view model", Views::SIZE), @application.size(4, 30))
+
+    @database.verify
+  end
+
+  def test_cannot_update_size_of_non_existent_task
+    @database.expect(:get, nil, [4])
+
+    e = assert_raises Thor::InvocationError do
+      @application.size(4, 20)
     end
 
     assert_equal("No task with number 4", e.message)

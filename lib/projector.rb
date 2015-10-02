@@ -5,6 +5,7 @@ require_relative "command/add"
 require_relative "command/complete"
 require_relative "command/update"
 require_relative "command/units"
+require_relative "command/size"
 
 class Projector < Thor
 
@@ -19,4 +20,5 @@ class Projector < Thor
   register(Complete, "complete", "complete TASK_ID", "Mark task labelled TASK_ID as complete")
   register(Update, "update", "update TASK_ID PROGRESS", "Udate progress of task labelled TASK_ID to PROGRESS")
   register(Units, "units", "units TASK_ID UNITS", "Update task labelled TASK_ID to use units UNITS")
+  register(Size, "size", "size TASK_ID SIZE", "Update task labelled TASK_ID to size SIZE")
 end

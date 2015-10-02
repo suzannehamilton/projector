@@ -114,4 +114,15 @@ class TestTask < Minitest::Test
 
     assert_equal("updated progress", updated_task.progress)
   end
+
+  def test_can_update_size
+    original_progress = MiniTest::Mock.new
+    task = Task.new(5, "some name", original_progress)
+
+    original_progress.expect(:update_size, "updated progress", [12])
+
+    updated_task = task.update_size(12)
+
+    assert_equal("updated progress", updated_task.progress)
+  end
 end

@@ -67,6 +67,18 @@ class Application
     ModelAndView.new(view_model, Views::UNITS)
   end
 
+  # TODO: Test that updating size to progress marks task as
+  def size(task_id, new_size)
+    task = get_task(task_id)
+
+    updated_task = task.update_size(new_size)
+    @database.save(updated_task)
+
+    view_model = @view_model_factory.create_view_model(updated_task)
+
+    ModelAndView.new(view_model, Views::SIZE)
+  end
+
   private
 
   def get_task(task_id)
@@ -79,6 +91,7 @@ class Application
     end
   end
 
+  # TODO: Delete because validation is delegated to Progress?
   def validate_task_size(task_size)
     if !task_size.nil? && task_size <= 0
       raise Thor::MalformattedArgumentError.new(

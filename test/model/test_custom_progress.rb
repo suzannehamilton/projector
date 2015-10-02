@@ -93,7 +93,7 @@ class TestCustomProgress < Minitest::Test
       progress.update_progress(-12)
     end
 
-    assert_equal("Cannot update task. Expected progress between 0 and 20, but got '-12'", e.message)
+    assert e.message.include? "-12"
   end
 
   def test_progress_cannot_be_more_than_task_size
@@ -103,7 +103,10 @@ class TestCustomProgress < Minitest::Test
       progress.update_progress(51)
     end
 
-    assert_equal("Cannot update task. Expected progress between 0 and 50, but got '51'", e.message)
+    assert e.message.include? "progress"
+    assert e.message.include? "size"
+    assert e.message.include? "50"
+    assert e.message.include? "51"
   end
 
   def test_updating_progress_to_size_of_task_marks_task_as_complete
@@ -134,6 +137,42 @@ class TestCustomProgress < Minitest::Test
     assert_equal(PercentProgress.new(12.5), updated_progress)
   end
 
+  def test_can_update_size
+    progress = CustomProgress.new("some units", 4, 10)
+    updated_progress = progress.update_size(8)
+
+    assert_equal(8, updated_progress.size)
+  end
+
+  def test_can_update_size_to_equal_progress
+    progress = CustomProgress.new("some units", 4, 10)
+    updated_progress = progress.update_size(4)
+
+    assert_equal(4, updated_progress.size)
+    assert updated_progress.complete?
+  end
+
+  def test_updating_size_preserves_other_fields
+    progress = CustomProgress.new("some units", 4, 10)
+    updated_progress = progress.update_size(8)
+
+    assert_equal("some units", updated_progress.units)
+    assert_equal(4, updated_progress.value)
+  end
+
+  def test_size_cannot_be_less_than_progress
+    progress = CustomProgress.new("some units", 40, 50)
+
+    e = assert_raises Thor::MalformattedArgumentError do
+      progress.update_size(39)
+    end
+
+    assert e.message.include? "progress"
+    assert e.message.include? "size"
+    assert e.message.include? "39"
+    assert e.message.include? "40"
+  end
+
   progress_combinations = [
     [0, 100, 0],
     [1, 100, 1],
@@ -154,6 +193,4 @@ class TestCustomProgress < Minitest::Test
       assert_equal(p[2], CustomProgress.new("some units", p[0], p[1]).percent_done)
     end
   end
-
-  # TODO: Test that units must be specified if the task has a size
 end

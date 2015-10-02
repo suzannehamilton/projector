@@ -36,6 +36,10 @@ class PercentProgress
     end
   end
 
+  def update_size(size)
+    raise Thor::InvocationError.new("Cannot update size of task with no units")
+  end
+
   def ==(o)
     o.class == self.class &&
       o.value == @value
