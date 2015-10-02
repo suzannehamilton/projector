@@ -42,6 +42,24 @@ class TestCustomProgress < Minitest::Test
     assert(e.message.include?("40"))
   end
 
+  def test_zero_size_is_invalid
+    e = assert_raises Thor::MalformattedArgumentError do
+      CustomProgress.new("units", 0, 0)
+    end
+
+    assert(e.message.include?("0"))
+    assert(e.message.include?("size"))
+  end
+
+  def test_negative_size_is_invalid
+    e = assert_raises Thor::MalformattedArgumentError do
+      CustomProgress.new("units", 0, -4)
+    end
+
+    assert(e.message.include?("-4"))
+    assert(e.message.include?("size"))
+  end
+
   def test_can_get_units
     progress = CustomProgress.new("some units")
     assert_equal("some units", progress.units)

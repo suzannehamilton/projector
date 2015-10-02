@@ -79,22 +79,6 @@ class TestApplication < Minitest::Test
     @database.verify
   end
 
-  def test_zero_sized_task_is_invalid
-    e = assert_raises Thor::MalformattedArgumentError do
-      @application.add("some task", "some units", 0)
-    end
-
-    assert_equal("Cannot create task. Task size must be a postive value, but got '0'", e.message)
-  end
-
-  def test_negative_sized_task_is_invalid
-    e = assert_raises Thor::MalformattedArgumentError do
-      @application.add("some task", "some units", -3)
-    end
-
-    assert_equal("Cannot create task. Task size must be a postive value, but got '-3'", e.message)
-  end
-
   def test_cannot_complete_non_existent_task
     @database.expect(:get, nil, [4])
 

@@ -20,8 +20,6 @@ class Application
   end
 
   def add(task_name, units = nil, size = nil)
-    validate_task_size(size)
-
     task = @database.add(@task_factory.task(nil, task_name, 0, units, size))
 
     view_model = @view_model_factory.create_view_model(task)
@@ -67,7 +65,7 @@ class Application
     ModelAndView.new(view_model, Views::UNITS)
   end
 
-  # TODO: Test that updating size to progress marks task as
+  # TODO: Test that updating size to progress marks task as complete
   def size(task_id, new_size)
     task = get_task(task_id)
 
@@ -88,14 +86,6 @@ class Application
       raise Thor::InvocationError.new("No task with number #{task_id}")
     else
       task
-    end
-  end
-
-  # TODO: Delete because validation is delegated to Progress?
-  def validate_task_size(task_size)
-    if !task_size.nil? && task_size <= 0
-      raise Thor::MalformattedArgumentError.new(
-        "Cannot create task. Task size must be a postive value, but got '#{task_size}'")
     end
   end
 end
