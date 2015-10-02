@@ -41,6 +41,4 @@ class TestProjectorAdd < TestProjector
       Projector.new.invoke(:add, ["Dye the sheep pretty colours"], :units => "sheep dyed", :size => 4.5)
     end
   end
-
-  # TODO: Allow task size to be updated later
 end
