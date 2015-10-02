@@ -6,6 +6,7 @@ require_relative "command/complete"
 require_relative "command/update"
 require_relative "command/units"
 require_relative "command/size"
+require_relative "command/random_task"
 
 class Projector < Thor
 
@@ -21,4 +22,5 @@ class Projector < Thor
   register(Update, "update", "update TASK_ID PROGRESS", "Udate progress of task labelled TASK_ID to PROGRESS")
   register(Units, "units", "units TASK_ID UNITS", "Update task labelled TASK_ID to use units UNITS")
   register(Size, "size", "size TASK_ID SIZE", "Update task labelled TASK_ID to size SIZE")
+  register(RandomTask, "random", "random", "Get a random task to work on")
 end
