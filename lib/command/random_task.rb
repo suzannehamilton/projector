@@ -7,6 +7,6 @@ class RandomTask < Thor::Group
   end
 
   def random
-    say "Nothing left to do!"
+    say @application.random.render
   end
 end

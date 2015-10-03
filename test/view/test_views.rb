@@ -99,4 +99,20 @@ class TestView < Minitest::Test
       [["id", "name", "progress"], [1, "task 1", "task 1 progress"], [2, "task 2", "task 2 progress"]],
       view.render([task_1, task_2]))
   end
+
+  def test_renders_random_task
+    task = MiniTest::Mock.new
+    task.expect(:nil?, false)
+    task.expect(:id, 5)
+    task.expect(:name, "Task Name")
+    task.expect(:progress, "task progress")
+
+    view = Views::RANDOM
+
+    assert_equal("5, Task Name, task progress", view.render(task))
+  end
+
+  def test_displays_nothing_left_to_do_notice_if_no_random_task_can_be_selected
+    assert_equal("Nothing left to do!", Views::RANDOM.render(nil))
+  end
 end

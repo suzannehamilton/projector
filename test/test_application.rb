@@ -8,8 +8,9 @@ class TestApplication < Minitest::Test
   def setup
     @database = MiniTest::Mock.new
     @view_model_factory = MiniTest::Mock.new
+    @random_task_service = MiniTest::Mock.new
     @task_factory = MiniTest::Mock.new
-    @application = Application.new(@database, @task_factory, @view_model_factory)
+    @application = Application.new(@database, @task_factory, @random_task_service, @view_model_factory)
   end
 
   def test_lists_no_tasks
@@ -218,5 +219,23 @@ class TestApplication < Minitest::Test
     assert_equal(ModelAndView.new("some view model", Views::COMPLETE), @application.size(6, 20))
 
     @database.verify
+  end
+
+  def test_gets_a_random_task_from_full_list
+    all_tasks = "all tasks"
+    selected_task = "some task"
+    @database.expect(:list, all_tasks)
+    @random_task_service.expect(:get_random_task, selected_task, [all_tasks])
+
+    view_model = "some view model"
+    @view_model_factory.expect(:create_view_model, view_model, [selected_task])
+
+    assert_equal(ModelAndView.new(view_model, Views::RANDOM), @application.random)
+  end
+
+  def test_renders_missing_random_task_if_db_has_no_tasks
+    @database.expect(:list, [])
+
+    assert_equal(ModelAndView.new(nil, Views::RANDOM), @application.random)
   end
 end

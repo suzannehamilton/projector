@@ -5,9 +5,10 @@ require_relative "view/model_and_view"
 
 class Application
 
-  def initialize(database, task_factory, view_model_factory)
+  def initialize(database, task_factory, random_task_service, view_model_factory)
     @database = database
     @task_factory = task_factory
+    @random_task_service = random_task_service
     @view_model_factory = view_model_factory
   end
 
@@ -81,6 +82,19 @@ class Application
     view_model = @view_model_factory.create_view_model(updated_task)
 
     ModelAndView.new(view_model, view)
+  end
+
+  def random
+    all_tasks = @database.list
+
+    if all_tasks.empty?
+      view_model = nil
+    else
+      random_task = @random_task_service.get_random_task(all_tasks)
+      view_model = @view_model_factory.create_view_model(random_task)
+    end
+
+    ModelAndView.new(view_model, Views::RANDOM)
   end
 
   private

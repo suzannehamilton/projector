@@ -40,6 +40,16 @@ class ListView
   end
 end
 
+class RandomTaskView
+  def render(task)
+    if task.nil?
+      "Nothing left to do!"
+    else
+      "#{task.id}, #{task.name}, #{task.progress}"
+    end
+  end
+end
+
 class Views
   ADD = AddView.new
   LIST = ListView.new
@@ -47,4 +57,5 @@ class Views
   UPDATE = UpdateView.new
   UNITS = UnitsView.new
   SIZE = SizeView.new
+  RANDOM = RandomTaskView.new
 end
