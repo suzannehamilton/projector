@@ -29,5 +29,29 @@ class TestRandomTaskService < Minitest::Test
     assert all_tasks.include? random_task
   end
 
-  # TODO: Test random selection
+  def test_random_selection_can_include_any_task
+    task1 = "some task 1"
+    task2 = "some task 2"
+    task3 = "some task 3"
+
+    all_tasks = [task1, task2, task3]
+
+    task_tally = {
+      task1 => 0,
+      task2 => 0,
+      task3 => 0
+    }
+
+    number_of_tests = 50
+
+    number_of_tests.times do
+      random_task = @random_task_service.get_random_task(all_tasks)
+
+      task_tally[random_task] = task_tally[random_task] + 1
+    end
+
+    assert task_tally[task1] > 0
+    assert task_tally[task2] > 0
+    assert task_tally[task3] > 0
+  end
 end

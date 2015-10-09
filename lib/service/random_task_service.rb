@@ -1,6 +1,6 @@
 class RandomTaskService
 
   def get_random_task(tasks)
-    tasks.empty? ? nil : tasks[0]
+    tasks.empty? ? nil : tasks.sample
   end
 end
