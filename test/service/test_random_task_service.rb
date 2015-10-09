@@ -42,7 +42,7 @@ class TestRandomTaskService < Minitest::Test
       task3 => 0
     }
 
-    number_of_tests = 50
+    number_of_tests = 100
 
     number_of_tests.times do
       random_task = @random_task_service.get_random_task(all_tasks)
@@ -50,8 +50,8 @@ class TestRandomTaskService < Minitest::Test
       task_tally[random_task] = task_tally[random_task] + 1
     end
 
-    assert task_tally[task1] > 0
-    assert task_tally[task2] > 0
-    assert task_tally[task3] > 0
+    assert task_tally[task1] > 20
+    assert task_tally[task2] > 20
+    assert task_tally[task3] > 20
   end
 end
